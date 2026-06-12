@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
 import { Trash2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -224,14 +223,6 @@ export function CommentSection({
           </p>
         )}
       </div>
-    </div>
-  );
-}
-
-export function MarkdownContent({ content }: { content: string }) {
-  return (
-    <div className="prose-cyber">
-      <ReactMarkdown>{content}</ReactMarkdown>
     </div>
   );
 }

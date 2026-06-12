@@ -88,7 +88,7 @@ export function NewThreadForm({ categories, isLoggedIn }: NewThreadFormProps) {
           <Textarea
             id="content"
             name="content"
-            placeholder="分享你的想法、建议或疑问...支持 Markdown 格式"
+            placeholder="支持 Markdown 与 LaTeX 公式，例如：行内 $E=mc^2$，独立公式 $$\Delta E_G$$"
             className="min-h-[200px]"
             required
             minLength={10}

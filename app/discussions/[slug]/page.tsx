@@ -6,10 +6,8 @@ import { getThreadBySlug } from "@/lib/queries";
 import { deleteThread } from "@/app/actions/threads";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { Button } from "@/components/ui/button";
-import {
-  CommentSection,
-  MarkdownContent,
-} from "@/components/discussion/CommentSection";
+import { CommentSection } from "@/components/discussion/CommentSection";
+import { MarkdownContent } from "@/components/discussion/MarkdownContent";
 import { formatDate, getAuthorName } from "@/lib/utils";
 
 export default async function ThreadDetailPage({
