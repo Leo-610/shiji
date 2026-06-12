@@ -36,7 +36,7 @@ export async function createThread(formData: FormData) {
 
   const parsed = createThreadSchema.safeParse(raw);
   if (!parsed.success) {
-    return { error: parsed.error.errors[0]?.message ?? "输入无效" };
+    return { error: parsed.error.issues[0]?.message ?? "输入无效" };
   }
 
   if (!session?.user && !parsed.data.guestName?.trim()) {
@@ -75,7 +75,7 @@ export async function createComment(formData: FormData) {
 
   const parsed = createCommentSchema.safeParse(raw);
   if (!parsed.success) {
-    return { error: parsed.error.errors[0]?.message ?? "输入无效" };
+    return { error: parsed.error.issues[0]?.message ?? "输入无效" };
   }
 
   if (!session?.user && !parsed.data.guestName?.trim()) {
