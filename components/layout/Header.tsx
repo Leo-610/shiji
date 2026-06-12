@@ -20,7 +20,7 @@ export function Header({ user }: HeaderProps) {
             SHIJI
           </span>
           <span className="text-xs text-purple-400/80 hidden sm:inline">
-            // 科幻讨论区
+            {"// 科幻讨论区"}
           </span>
         </Link>
 
