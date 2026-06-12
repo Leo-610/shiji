@@ -71,6 +71,10 @@ npm run dev
 
 ## 部署到 Vercel
 
+详细步骤见 [DEPLOY.md](DEPLOY.md)。快速导入：
+
+**[在 Vercel 一键导入此仓库](https://vercel.com/new/clone?repository-url=https://github.com/Leo-610/shiji)**
+
 ### 1. 推送代码到 GitHub
 
 ```bash

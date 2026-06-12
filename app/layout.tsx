@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+
+export const dynamic = "force-dynamic";
 import { Orbitron, Noto_Sans_SC } from "next/font/google";
 import { auth } from "@/lib/auth";
 import { Header } from "@/components/layout/Header";
