@@ -139,6 +139,12 @@ export const threadFavorites = pgTable(
   (t) => [primaryKey({ columns: [t.userId, t.threadId] })]
 );
 
+export const rateLimitEvents = pgTable("rate_limit_events", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  key: text("key").notNull(),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
 export const usersRelations = relations(users, ({ many }) => ({
   threads: many(threads),
   comments: many(comments),

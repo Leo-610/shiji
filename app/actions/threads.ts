@@ -7,6 +7,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { threads, comments } from "@/lib/db/schema";
+import { rateLimitForUserOrIp } from "@/lib/rate-limit";
 import { createThreadSlug } from "@/lib/utils";
 
 const createThreadSchema = z.object({
@@ -40,6 +41,11 @@ export async function createThread(formData: FormData) {
 
   if (!session?.user && !parsed.data.guestName?.trim()) {
     return { error: "匿名发帖请填写昵称" };
+  }
+
+  const rate = await rateLimitForUserOrIp("create_thread", session?.user?.id);
+  if (!rate.allowed) {
+    return { error: rate.error };
   }
 
   const slug = createThreadSlug();
@@ -78,6 +84,11 @@ export async function createComment(formData: FormData) {
 
   if (!session?.user && !parsed.data.guestName?.trim()) {
     return { error: "匿名评论请填写昵称" };
+  }
+
+  const rate = await rateLimitForUserOrIp("create_comment", session?.user?.id);
+  if (!rate.allowed) {
+    return { error: rate.error };
   }
 
   await db.insert(comments).values({
