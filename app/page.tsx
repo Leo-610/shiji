@@ -27,19 +27,22 @@ export default async function HomePage() {
         </div>
 
         <p className="font-orbitron text-xs tracking-[0.3em] text-purple-400 mb-4 uppercase">
-          Sci-Fi Novel Forum
+          Sci-Fi Planet Award · Novel Forum
         </p>
 
-        <GlitchText className="text-4xl sm:text-6xl font-bold mb-4">
-          史记
+        <GlitchText className="text-4xl sm:text-6xl font-bold mb-4 !font-[family-name:var(--font-noto)]">
+          时寂
         </GlitchText>
 
         <h2 className="text-xl sm:text-2xl text-gray-300 mb-2 font-light">
-          一部尚未写完的科幻史诗
+          当意识可以被数据化，死亡还算终点吗？
         </h2>
 
-        <p className="text-gray-500 max-w-xl mx-auto mb-8 text-sm sm:text-base leading-relaxed">
-          在霓虹与暗影交织的未来都市，一段关于记忆、身份与真相的故事正在书写。
+        <p className="text-gray-500 max-w-2xl mx-auto mb-8 text-sm sm:text-base leading-relaxed">
+          《时寂》是一部以量子意识与灵魂数据化为核心的近未来硬科幻长篇。
+          人类发现意识源于神经元微管中的量子相干过程，由此诞生了捕获、储存乃至延续意识的技术——
+          当悲欢可以被量化，普通人走进将意识商业化的阴影里，每一步都在追问：
+          我们怕失去的，究竟是那个人，还是关于那个人的一切记忆？
           欢迎加入讨论，你的每一个建议都可能改变故事的走向。
         </p>
 
@@ -107,15 +110,28 @@ export default async function HomePage() {
       </section>
 
       {/* About */}
-      <section className="text-center py-8">
-        <NeonCard className="p-8 max-w-2xl mx-auto" glow="purple">
+      <section className="text-center py-8 space-y-6">
+        <NeonCard className="p-8 max-w-3xl mx-auto" glow="purple">
           <p className="font-orbitron text-xs tracking-[0.2em] text-cyan-400/60 mb-3">
-            ABOUT THIS PROJECT
+            ABOUT · 作品简介
           </p>
-          <p className="text-gray-400 text-sm leading-relaxed">
-            这是一个开放的小说创作讨论空间。无论你是资深科幻迷还是偶然路过的读者，
-            都可以在这里分享对世界观、角色、剧情走向的看法，帮助作者打磨这部科幻作品。
-            匿名发言或登录后管理自己的帖子，选择权在你手中。
+          <p className="text-gray-400 text-sm leading-relaxed text-left sm:text-center">
+            故事以严谨的硬科幻推演为骨，以亲情与人物成长为魂：谁有权决定一段意识的命运？
+            当技术把「复活」变成商品，一个普通人为了留住最在乎的人，一步步走进他从未预料的深渊。
+            作品入围第四届科幻星球大赛文学方向新星扶持计划（全球仅 4 项），探讨意识上传、伦理困境与人性温度——
+            不给标准答案，只把问题留在读者心里：如果今天技术真的能留住你最在乎的人，
+            你愿意付出什么代价，又能接受什么代价？
+          </p>
+        </NeonCard>
+
+        <NeonCard className="p-6 max-w-3xl mx-auto" glow="cyan">
+          <p className="font-orbitron text-xs tracking-[0.2em] text-purple-400/60 mb-3">
+            FORUM · 讨论区说明
+          </p>
+          <p className="text-gray-500 text-sm leading-relaxed">
+            这里是《时寂》的读者共创空间。你可以讨论世界观设定、角色弧光、剧情反转与写作建议，
+            匿名发言或登录后管理自己的帖子。科幻星球大赛倡导「科幻 + 科技 + 人文」的融合表达——
+            期待听见你对这部作品的每一次真诚追问。
           </p>
         </NeonCard>
       </section>

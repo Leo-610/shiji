@@ -20,9 +20,9 @@ const notoSansSC = Noto_Sans_SC({
 });
 
 export const metadata: Metadata = {
-  title: "SHIJI — 科幻小说讨论区",
+  title: "时寂 — 科幻小说读者讨论区",
   description:
-    "一个赛博朋克风格的科幻小说读者讨论论坛，分享你对小说创作的建议与想法",
+    "《时寂》读者讨论论坛：量子意识、灵魂数据化与伦理困境的硬科幻创作交流空间",
 };
 
 export default async function RootLayout({
@@ -41,9 +41,9 @@ export default async function RootLayout({
         <footer className="border-t border-cyan-500/10 py-8 mt-16">
           <div className="mx-auto max-w-6xl px-4 text-center text-sm text-gray-500">
             <p className="font-orbitron text-cyan-500/60 text-xs tracking-widest mb-2">
-              SHIJI PROJECT
+              SHIJI · 时寂
             </p>
-            <p>科幻小说讨论论坛 · 读者共创未来</p>
+            <p>科幻小说读者讨论论坛 · 与未来对话</p>
           </div>
         </footer>
       </body>

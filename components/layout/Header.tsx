@@ -16,11 +16,11 @@ export function Header({ user }: HeaderProps) {
     <header className="sticky top-0 z-50 border-b border-cyan-500/20 bg-black/60 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="font-orbitron text-lg font-bold text-cyan-400 group-hover:text-cyan-300 transition-colors">
-            SHIJI
+          <span className="text-lg font-bold text-cyan-400 group-hover:text-cyan-300 transition-colors tracking-wide">
+            时寂
           </span>
-          <span className="text-xs text-purple-400/80 hidden sm:inline">
-            {"// 科幻讨论区"}
+          <span className="font-orbitron text-xs text-purple-400/80 hidden sm:inline tracking-wider">
+            {"// SHIJI"}
           </span>
         </Link>
 
