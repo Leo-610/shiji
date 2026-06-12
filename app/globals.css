@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@theme {
+  --font-orbitron: "Orbitron", sans-serif;
+  --font-noto: "Noto Sans SC", sans-serif;
+
+  --color-cyber-bg: #0a0a0f;
+  --color-cyber-cyan: #00f0ff;
+  --color-cyber-purple: #bf00ff;
+  --color-cyber-red: #ff0040;
+
+  --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
+}
+
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-cyber-bg);
+  color: #e5e7eb;
+  font-family: var(--font-noto);
+  min-height: 100vh;
+}
+
+.font-orbitron {
+  font-family: var(--font-orbitron);
+}
+
+/* Markdown prose styles */
+.prose-cyber {
+  color: #d1d5db;
+  line-height: 1.75;
+}
+
+.prose-cyber h1,
+.prose-cyber h2,
+.prose-cyber h3 {
+  color: #00f0ff;
+  font-weight: 600;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.prose-cyber p {
+  margin-bottom: 1em;
+}
+
+.prose-cyber a {
+  color: #00f0ff;
+  text-decoration: underline;
+}
+
+.prose-cyber code {
+  background: rgba(0, 240, 255, 0.1);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+  color: #00f0ff;
+}
+
+.prose-cyber pre {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 240, 255, 0.2);
+  border-radius: 8px;
+  padding: 1em;
+  overflow-x: auto;
+  margin-bottom: 1em;
+}
+
+.prose-cyber pre code {
+  background: none;
+  padding: 0;
+}
+
+.prose-cyber blockquote {
+  border-left: 3px solid #bf00ff;
+  padding-left: 1em;
+  color: #9ca3af;
+  margin-bottom: 1em;
+}
+
+.prose-cyber ul,
+.prose-cyber ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.prose-cyber li {
+  margin-bottom: 0.25em;
+}
