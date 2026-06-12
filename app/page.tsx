@@ -30,10 +30,7 @@ export default async function HomePage() {
 
         <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
             <HeroReveal delay={0.1} className="shrink-0">
-              <NovelCover3D size="lg" priority showMedal />
-              <p className="mt-3 text-center lg:text-left text-[10px] text-amber-400/70 tracking-wide font-orbitron">
-                第四届科幻星球大赛 · 科幻新星扶持计划 · 启明星
-              </p>
+              <NovelCover3D size="lg" priority />
             </HeroReveal>
 
           <div className="flex-1 text-center lg:text-left">
