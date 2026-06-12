@@ -59,7 +59,7 @@ export function CommentSection({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-medium text-cyan-300">
+      <h2 className="text-lg font-medium text-theme-accent">
         评论 ({comments.length})
       </h2>
 
@@ -118,10 +118,10 @@ export function CommentSection({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-cyan-300">
+                        <span className="text-sm font-medium text-theme-heading">
                           {authorName}
                         </span>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-theme-subtle">
                           {formatDate(comment.createdAt)}
                         </span>
                       </div>
@@ -165,7 +165,7 @@ export function CommentSection({
                           )}
                       </div>
                     </div>
-                    <p className="mt-2 text-sm text-gray-300 whitespace-pre-wrap">
+                    <p className="mt-2 text-sm text-theme-heading whitespace-pre-wrap">
                       {comment.content}
                     </p>
                   </div>
@@ -180,7 +180,7 @@ export function CommentSection({
                 return (
                   <NeonCard
                     key={reply.id}
-                    className="p-3 ml-8 border-gray-700/50"
+                    className="p-3 ml-8 border-[color:var(--app-border-subtle)]"
                     glow="none"
                   >
                     <div className="flex gap-3">
@@ -195,10 +195,10 @@ export function CommentSection({
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm text-cyan-300">
+                            <span className="text-sm text-theme-heading">
                               {replyAuthor}
                             </span>
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs text-theme-subtle">
                               {formatDate(reply.createdAt)}
                             </span>
                           </div>
@@ -231,7 +231,7 @@ export function CommentSection({
                               )}
                           </div>
                         </div>
-                        <p className="mt-1 text-sm text-gray-300 whitespace-pre-wrap">
+                        <p className="mt-1 text-sm text-theme-heading whitespace-pre-wrap">
                           {reply.content}
                         </p>
                       </div>
@@ -244,7 +244,7 @@ export function CommentSection({
         })}
 
         {comments.length === 0 && (
-          <p className="text-center text-gray-500 py-8">
+          <p className="text-center text-theme-muted py-8">
             暂无评论，成为第一个发言的读者吧
           </p>
         )}

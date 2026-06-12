@@ -8,16 +8,16 @@ interface NeonCardProps {
 
 export function NeonCard({ children, className, glow = "cyan" }: NeonCardProps) {
   const glowClass =
-    glow === "cyan"
-      ? "hover:shadow-[0_0_25px_rgba(0,240,255,0.15)] border-cyan-500/30"
+    glow === "none"
+      ? "border-[color:var(--app-border-subtle)]"
       : glow === "purple"
-        ? "hover:shadow-[0_0_25px_rgba(191,0,255,0.15)] border-purple-500/30"
-        : "border-gray-700/50";
+        ? "border-[color:var(--app-border)] hover:shadow-[0_0_25px_var(--app-shadow-purple)]"
+        : "border-[color:var(--app-border)] hover:shadow-[0_0_25px_var(--app-shadow-glow)]";
 
   return (
     <div
       className={cn(
-        "rounded-lg border bg-black/40 backdrop-blur-sm transition-all duration-300",
+        "rounded-lg border bg-theme-surface backdrop-blur-sm transition-all duration-300",
         glowClass,
         className
       )}

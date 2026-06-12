@@ -9,10 +9,10 @@ export default async function NewDiscussionPage() {
   return (
     <div className="max-w-2xl mx-auto space-y-6">
       <div>
-        <h1 className="text-2xl font-bold text-cyan-300 font-orbitron tracking-wide">
+        <h1 className="text-2xl font-bold text-theme-heading font-orbitron tracking-wide">
           发起讨论
         </h1>
-        <p className="text-sm text-gray-500 mt-1">
+        <p className="text-sm text-theme-muted mt-1">
           分享你对小说创作的想法与建议
         </p>
       </div>

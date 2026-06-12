@@ -21,7 +21,7 @@ export function MarkdownContent({ content }: { content: string }) {
 
   if (!mounted) {
     return (
-      <div className="prose-cyber whitespace-pre-wrap text-gray-300">
+      <div className="prose-cyber whitespace-pre-wrap text-theme-heading">
         {content}
       </div>
     );

@@ -11,16 +11,16 @@ export default function VerifyRequestPage() {
         <GlitchText as="h1" className="text-2xl font-bold mb-2">
           查收邮件
         </GlitchText>
-        <p className="text-sm text-gray-500">登录链接已发送</p>
+        <p className="text-sm text-theme-muted">登录链接已发送</p>
       </div>
 
       <NeonCard className="p-8 text-center space-y-4">
-        <Mail className="size-12 text-cyan-400 mx-auto opacity-80" />
-        <p className="text-gray-300 text-sm leading-relaxed">
+        <Mail className="size-12 text-theme-accent mx-auto opacity-80" />
+        <p className="text-theme-heading text-sm leading-relaxed">
           我们已向你的邮箱发送了一封包含登录链接的邮件。
           点击邮件中的按钮即可登录，链接 24 小时内有效。
         </p>
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-theme-muted">
           没收到？检查垃圾箱，或稍等几分钟后重试。
         </p>
         <Link href="/auth/signin">

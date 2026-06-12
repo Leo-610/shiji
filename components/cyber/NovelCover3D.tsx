@@ -82,12 +82,12 @@ export function NovelCover3D({
           style={{ width: w * 0.82, height: 22 }}
         />
         <div
-          className="absolute inset-0 rounded-[4px] bg-cyan-500/12 blur-2xl"
+          className="absolute inset-0 rounded-[4px] bg-[color:var(--app-accent)]/12 blur-2xl"
           style={{ transform: "scale(0.94) translateY(6px)" }}
         />
 
         <div
-          className="relative overflow-hidden rounded-[4px] border border-cyan-400/30 shadow-[0_28px_56px_rgba(0,0,0,0.55),0_0_40px_rgba(0,240,255,0.12)]"
+          className="relative overflow-hidden rounded-[4px] border border-[color:var(--app-border)] shadow-[0_24px_48px_rgba(0,0,0,0.35)] light:shadow-[0_16px_40px_rgba(0,0,0,0.12)]"
           style={{ width: w, height: h }}
         >
           <Image
@@ -99,7 +99,7 @@ export function NovelCover3D({
             className="h-full w-full object-cover"
           />
           <motion.div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-br from-cyan-200/16 via-transparent to-purple-400/10 mix-blend-screen"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-[color:var(--app-accent)]/10 mix-blend-screen"
             style={{ opacity: glareOpacity }}
           />
           <div className="pointer-events-none absolute inset-0 ring-1 ring-inset ring-white/10" />

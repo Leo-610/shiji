@@ -43,7 +43,7 @@ export function FavoriteButton({
       <Button
         variant="ghost"
         size="sm"
-        className="text-gray-500 hover:text-purple-300"
+        className="text-theme-muted hover:text-theme-heading"
         asChild
       >
         <Link href="/auth/signin">
@@ -63,14 +63,15 @@ export function FavoriteButton({
       onClick={handleToggle}
       className={cn(
         optimisticFavorited
-          ? "text-purple-400 hover:text-purple-300"
-          : "text-gray-400 hover:text-purple-300"
+          ? "text-theme-accent-secondary hover:opacity-80"
+          : "text-theme-muted hover:text-theme-heading"
       )}
     >
       <Bookmark
         className={cn(
           "size-4",
-          optimisticFavorited && "fill-purple-400 text-purple-400"
+          optimisticFavorited &&
+            "fill-[var(--app-accent-secondary)] text-[var(--app-accent-secondary)]"
         )}
       />
       {optimisticFavorited ? "已收藏" : "收藏"}

@@ -14,7 +14,7 @@ export function GlitchText({
   return (
     <Tag
       className={cn(
-        "relative font-orbitron tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-cyan-200 to-purple-400 animate-pulse-slow",
+        "relative font-orbitron tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-[var(--app-accent)] via-[color:var(--app-accent-hover)] to-[var(--app-accent-secondary)] animate-pulse-slow",
         className
       )}
     >

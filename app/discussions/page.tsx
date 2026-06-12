@@ -20,10 +20,10 @@ export default async function DiscussionsPage({
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-cyan-300 font-orbitron tracking-wide">
+          <h1 className="text-2xl font-bold text-theme-heading font-orbitron tracking-wide">
             讨论区
           </h1>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-theme-muted mt-1">
             按章节与话题浏览读者讨论
           </p>
         </div>
@@ -66,7 +66,7 @@ export default async function DiscussionsPage({
         </div>
       ) : (
         <NeonCard className="p-12 text-center">
-          <p className="text-gray-500 mb-4">
+          <p className="text-theme-muted mb-4">
             {categorySlug
               ? "该分类下暂无讨论"
               : "还没有讨论，成为第一个发言的读者"}

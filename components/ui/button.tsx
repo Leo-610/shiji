@@ -4,18 +4,18 @@ import * as React from "react";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-cyan-400/50",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 outline-none focus-visible:ring-2 focus-visible:ring-[color:var(--app-accent)]/50",
   {
     variants: {
       variant: {
         default:
-          "bg-cyan-500 text-black hover:bg-cyan-400 hover:shadow-[0_0_20px_rgba(0,240,255,0.4)]",
-        destructive:
-          "bg-red-600 text-white hover:bg-red-500",
+          "bg-[var(--app-accent)] text-[var(--app-accent-on)] hover:opacity-90 hover:shadow-[0_0_20px_var(--app-btn-shadow)]",
+        destructive: "bg-red-600 text-white hover:bg-red-500",
         outline:
-          "border border-cyan-500/50 bg-transparent text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(0,240,255,0.2)]",
-        ghost: "text-cyan-400 hover:bg-cyan-500/10",
-        link: "text-cyan-400 underline-offset-4 hover:underline",
+          "border border-[color:var(--app-border)] bg-transparent text-theme-accent hover:bg-[color:var(--app-accent)]/10 hover:shadow-[0_0_15px_var(--app-btn-outline-shadow)]",
+        ghost:
+          "text-theme-accent hover:bg-[color:var(--app-accent)]/10",
+        link: "text-theme-accent underline-offset-4 hover:underline",
       },
       size: {
         default: "h-9 px-4 py-2",

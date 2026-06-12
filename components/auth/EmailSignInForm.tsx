@@ -24,7 +24,7 @@ export function EmailSignInForm() {
   return (
     <form action={handleSubmit} className="space-y-4">
       <div className="space-y-2">
-        <Label htmlFor="email" className="text-gray-400">
+        <Label htmlFor="email">
           邮箱地址
         </Label>
         <Input
@@ -41,7 +41,7 @@ export function EmailSignInForm() {
         <Mail className="size-4" />
         {pending ? "发送中…" : "发送登录链接"}
       </Button>
-      <p className="text-xs text-gray-500 text-center">
+      <p className="text-xs text-theme-muted text-center">
         我们将向你的邮箱发送一次性登录链接，24 小时内有效
       </p>
     </form>

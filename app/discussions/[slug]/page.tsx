@@ -42,7 +42,7 @@ export default async function ThreadDetailPage({
       <div>
         <Link
           href="/discussions"
-          className="text-sm text-gray-500 hover:text-cyan-400 transition-colors"
+          className="text-sm text-theme-muted hover:text-theme-accent transition-colors"
         >
           ← 返回讨论区
         </Link>
@@ -50,18 +50,18 @@ export default async function ThreadDetailPage({
 
       <NeonCard className="p-6 sm:p-8">
         <div className="flex items-center gap-2 mb-4">
-          <span className="text-xs px-2 py-0.5 rounded border border-purple-500/40 text-purple-300 bg-purple-500/10">
+          <span className="text-xs px-2 py-0.5 rounded badge-theme">
             {thread.category.name}
           </span>
         </div>
 
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-100 mb-4">
+        <h1 className="text-2xl sm:text-3xl font-bold text-theme-heading mb-4">
           {thread.title}
         </h1>
 
-        <div className="flex items-center justify-between gap-4 mb-6 text-sm text-gray-500">
+        <div className="flex items-center justify-between gap-4 mb-6 text-sm text-theme-muted">
           <div className="flex items-center gap-3">
-            <span className="text-cyan-300">{authorName}</span>
+            <span className="text-theme-heading">{authorName}</span>
             <span>{formatDate(thread.createdAt)}</span>
           </div>
           {isAuthor && (
