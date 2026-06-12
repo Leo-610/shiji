@@ -1,5 +1,18 @@
 # Vercel 部署指南
 
+## 重要：确认连接的 Git 仓库
+
+你的 Vercel 项目必须连接 **`Leo-610/shiji`**，而不是 Vercel 自动创建的 `leo` 模板仓库。
+
+若部署日志显示 commit 为 `Initial commit — Created from https://vercel.com/new`，说明连错了仓库，构建会失败。
+
+**修复步骤：**
+
+1. 打开 Vercel 项目 → **Settings** → **Git**
+2. 点击 **Disconnect** 断开当前仓库
+3. 重新连接 **Leo-610/shiji** 仓库
+4. 或在 [导入 shiji](https://vercel.com/new/clone?repository-url=https://github.com/Leo-610/shiji) 新建项目
+
 ## 一键导入（推荐）
 
 1. 打开 [Vercel 导入项目](https://vercel.com/new/clone?repository-url=https://github.com/Leo-610/shiji)
