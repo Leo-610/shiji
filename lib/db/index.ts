@@ -1,31 +1,20 @@
 import { neon } from "@neondatabase/serverless";
-import { drizzle, type NeonHttpDatabase } from "drizzle-orm/neon-http";
+import { drizzle } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 
-type Db = NeonHttpDatabase<typeof schema>;
-
-let _db: Db | undefined;
-
-function getDb(): Db {
-  if (!_db) {
-    const url = process.env.DATABASE_URL;
-    if (!url) {
-      throw new Error(
-        "DATABASE_URL is not set. Configure it in Vercel Environment Variables."
-      );
-    }
-    _db = drizzle(neon(url), { schema });
+function getConnectionString(): string {
+  if (process.env.DATABASE_URL) {
+    return process.env.DATABASE_URL;
   }
-  return _db;
+
+  // Next.js production build loads server modules without env vars configured.
+  if (process.env.NEXT_PHASE === "phase-production-build") {
+    return "postgresql://build:build@localhost:5432/build";
+  }
+
+  throw new Error(
+    "DATABASE_URL is not set. Configure it in Vercel Environment Variables."
+  );
 }
 
-export const db = new Proxy({} as Db, {
-  get(_target, prop) {
-    const instance = getDb();
-    const value = instance[prop as keyof Db];
-    if (typeof value === "function") {
-      return (value as (...args: unknown[]) => unknown).bind(instance);
-    }
-    return value;
-  },
-});
+export const db = drizzle(neon(getConnectionString()), { schema });
