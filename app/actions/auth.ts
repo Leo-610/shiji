@@ -9,7 +9,7 @@ export async function signInWithEmail(formData: FormData) {
     return { error: "请输入有效的邮箱地址" };
   }
 
-  if (!process.env.AUTH_RESEND_KEY) {
+  if (!process.env.AUTH_RESEND_KEY && !process.env.RESEND_API_KEY) {
     return { error: "邮箱登录尚未配置" };
   }
 

@@ -6,7 +6,8 @@ import { EmailSignInForm } from "@/components/auth/EmailSignInForm";
 
 const githubConfigured =
   process.env.AUTH_GITHUB_ID && process.env.AUTH_GITHUB_SECRET;
-const resendConfigured = process.env.AUTH_RESEND_KEY;
+const resendConfigured =
+  process.env.AUTH_RESEND_KEY || process.env.RESEND_API_KEY;
 
 export default function SignInPage() {
   return (

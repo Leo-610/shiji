@@ -23,10 +23,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId: process.env.AUTH_GITHUB_ID ?? "",
       clientSecret: process.env.AUTH_GITHUB_SECRET ?? "",
     }),
-    ...(process.env.AUTH_RESEND_KEY
+    ...((process.env.AUTH_RESEND_KEY ?? process.env.RESEND_API_KEY)
       ? [
           Resend({
-            apiKey: process.env.AUTH_RESEND_KEY,
+            apiKey:
+              process.env.AUTH_RESEND_KEY ?? process.env.RESEND_API_KEY ?? "",
             from:
               process.env.AUTH_RESEND_FROM ??
               "量子余烬 <onboarding@resend.dev>",
