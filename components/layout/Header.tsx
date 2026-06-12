@@ -17,10 +17,10 @@ export function Header({ user }: HeaderProps) {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 group">
           <span className="text-lg font-bold text-cyan-400 group-hover:text-cyan-300 transition-colors tracking-wide">
-            时寂
+            量子余烬
           </span>
-          <span className="font-orbitron text-xs text-purple-400/80 hidden sm:inline tracking-wider">
-            {"// SHIJI"}
+          <span className="text-xs text-purple-400/80 hidden sm:inline">
+            {"// 时寂"}
           </span>
         </Link>
 

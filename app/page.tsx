@@ -30,16 +30,20 @@ export default async function HomePage() {
           Sci-Fi Planet Award · Novel Forum
         </p>
 
-        <GlitchText className="text-4xl sm:text-6xl font-bold mb-4 !font-[family-name:var(--font-noto)]">
-          时寂
+        <GlitchText className="text-4xl sm:text-6xl font-bold mb-3 !font-[family-name:var(--font-noto)]">
+          量子余烬
         </GlitchText>
+
+        <p className="text-sm text-purple-400/90 mb-4">
+          作者笔名：时寂
+        </p>
 
         <h2 className="text-xl sm:text-2xl text-gray-300 mb-2 font-light">
           当意识可以被数据化，死亡还算终点吗？
         </h2>
 
         <p className="text-gray-500 max-w-2xl mx-auto mb-8 text-sm sm:text-base leading-relaxed">
-          《时寂》是一部以量子意识与灵魂数据化为核心的近未来硬科幻长篇。
+          《量子余烬》是一部以量子意识与灵魂数据化为核心的近未来硬科幻长篇。
           人类发现意识源于神经元微管中的量子相干过程，由此诞生了捕获、储存乃至延续意识的技术——
           当悲欢可以被量化，普通人走进将意识商业化的阴影里，每一步都在追问：
           我们怕失去的，究竟是那个人，还是关于那个人的一切记忆？
@@ -116,8 +120,8 @@ export default async function HomePage() {
             ABOUT · 作品简介
           </p>
           <p className="text-gray-400 text-sm leading-relaxed text-left sm:text-center">
-            故事以严谨的硬科幻推演为骨，以亲情与人物成长为魂：谁有权决定一段意识的命运？
-            当技术把「复活」变成商品，一个普通人为了留住最在乎的人，一步步走进他从未预料的深渊。
+            《量子余烬》以严谨的硬科幻推演为骨，以亲情与人物成长为魂：谁有权决定一段意识的命运？
+            当技术把「复活」变成商品，少年林川为留住最在乎的人，一步步走进他从未预料的深渊。
             作品入围第四届科幻星球大赛文学方向新星扶持计划（全球仅 4 项），探讨意识上传、伦理困境与人性温度——
             不给标准答案，只把问题留在读者心里：如果今天技术真的能留住你最在乎的人，
             你愿意付出什么代价，又能接受什么代价？
@@ -129,9 +133,9 @@ export default async function HomePage() {
             FORUM · 讨论区说明
           </p>
           <p className="text-gray-500 text-sm leading-relaxed">
-            这里是《时寂》的读者共创空间。你可以讨论世界观设定、角色弧光、剧情反转与写作建议，
-            匿名发言或登录后管理自己的帖子。科幻星球大赛倡导「科幻 + 科技 + 人文」的融合表达——
-            期待听见你对这部作品的每一次真诚追问。
+            这里是《量子余烬》的读者共创空间，由作者「时寂」主持交流。
+            你可以讨论世界观设定、角色弧光、剧情反转与写作建议，匿名发言或登录后管理自己的帖子。
+            科幻星球大赛倡导「科幻 + 科技 + 人文」的融合表达——期待听见你对这部作品的每一次真诚追问。
           </p>
         </NeonCard>
       </section>

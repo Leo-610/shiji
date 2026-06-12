@@ -20,9 +20,9 @@ const notoSansSC = Noto_Sans_SC({
 });
 
 export const metadata: Metadata = {
-  title: "时寂 — 科幻小说读者讨论区",
+  title: "量子余烬 — 读者讨论区",
   description:
-    "《时寂》读者讨论论坛：量子意识、灵魂数据化与伦理困境的硬科幻创作交流空间",
+    "《量子余烬》读者讨论论坛（作者时寂）：量子意识、灵魂数据化与伦理困境的硬科幻交流空间",
 };
 
 export default async function RootLayout({
@@ -41,7 +41,7 @@ export default async function RootLayout({
         <footer className="border-t border-cyan-500/10 py-8 mt-16">
           <div className="mx-auto max-w-6xl px-4 text-center text-sm text-gray-500">
             <p className="font-orbitron text-cyan-500/60 text-xs tracking-widest mb-2">
-              SHIJI · 时寂
+              量子余烬 · 作者时寂
             </p>
             <p>科幻小说读者讨论论坛 · 与未来对话</p>
           </div>
