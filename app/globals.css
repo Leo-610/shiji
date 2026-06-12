@@ -5,16 +5,12 @@
   --font-noto: "Noto Sans SC", sans-serif;
 
   --color-cyber-bg: #0a0a0f;
-  --color-cyber-cyan: #00f0ff;
-  --color-cyber-purple: #bf00ff;
-  --color-cyber-red: #ff0040;
-
-  --animate-pulse-slow: pulse-slow 3s ease-in-out infinite;
-}
-
-@keyframes pulse-slow {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.85; }
+  --color-cyber-accent: #5b9fd4;
+  --color-cyber-accent-bright: #8ec5ea;
+  --color-cyber-accent-muted: #3d6285;
+  --color-cyber-cyan: #5b9fd4;
+  --color-cyber-purple: #5b9fd4;
+  --color-cyber-red: #e85d6a;
 }
 
 html {
@@ -32,6 +28,11 @@ body {
   font-family: var(--font-orbitron);
 }
 
+.font-display {
+  font-family: var(--font-orbitron);
+  letter-spacing: 0.06em;
+}
+
 /* Markdown prose styles */
 .prose-cyber {
   color: #d1d5db;
@@ -41,7 +42,7 @@ body {
 .prose-cyber h1,
 .prose-cyber h2,
 .prose-cyber h3 {
-  color: #00f0ff;
+  color: var(--color-cyber-accent-bright);
   font-weight: 600;
   margin-top: 1.5em;
   margin-bottom: 0.5em;
@@ -52,21 +53,22 @@ body {
 }
 
 .prose-cyber a {
-  color: #00f0ff;
+  color: var(--color-cyber-accent-bright);
   text-decoration: underline;
+  text-underline-offset: 2px;
 }
 
 .prose-cyber code {
-  background: rgba(0, 240, 255, 0.1);
+  background: rgba(91, 159, 212, 0.1);
   padding: 0.15em 0.4em;
   border-radius: 4px;
   font-size: 0.9em;
-  color: #00f0ff;
+  color: var(--color-cyber-accent-bright);
 }
 
 .prose-cyber pre {
-  background: rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(0, 240, 255, 0.2);
+  background: rgba(0, 0, 0, 0.45);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   padding: 1em;
   overflow-x: auto;
@@ -79,7 +81,7 @@ body {
 }
 
 .prose-cyber blockquote {
-  border-left: 3px solid #bf00ff;
+  border-left: 2px solid var(--color-cyber-accent-muted);
   padding-left: 1em;
   color: #9ca3af;
   margin-bottom: 1em;
@@ -105,7 +107,7 @@ body {
   margin: 1em 0;
   padding: 0.75em 1em;
   border-radius: 8px;
-  background: rgba(0, 240, 255, 0.05);
-  border: 1px solid rgba(0, 240, 255, 0.15);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
   overflow-x: auto;
 }

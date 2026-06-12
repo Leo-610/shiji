@@ -60,7 +60,7 @@ export function LikeButton({
       <Button
         variant="ghost"
         size={size}
-        className="text-gray-500 hover:text-cyan-300"
+        className="text-gray-500 hover:text-gray-300"
         asChild
       >
         <Link href="/auth/signin">
@@ -82,7 +82,7 @@ export function LikeButton({
         "tabular-nums",
         optimisticLiked
           ? "text-pink-400 hover:text-pink-300"
-          : "text-gray-400 hover:text-cyan-300"
+          : "text-gray-400 hover:text-gray-300"
       )}
     >
       <Heart

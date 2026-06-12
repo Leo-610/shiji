@@ -24,7 +24,7 @@ export default function SignInPage() {
       <NeonCard className="p-8 space-y-6">
         {resendConfigured && (
           <div>
-            <p className="text-xs font-orbitron tracking-widest text-cyan-400/70 mb-4 uppercase">
+            <p className="font-display text-[11px] tracking-[0.12em] text-gray-500 mb-4 uppercase">
               邮箱魔法链接
             </p>
             <EmailSignInForm />
@@ -34,7 +34,7 @@ export default function SignInPage() {
         {resendConfigured && githubConfigured && (
           <div className="relative">
             <div className="absolute inset-0 flex items-center">
-              <span className="w-full border-t border-cyan-500/10" />
+              <span className="w-full border-t border-white/[0.06]" />
             </div>
             <div className="relative flex justify-center text-xs uppercase">
               <span className="bg-black/40 px-2 text-gray-500">或</span>
@@ -49,7 +49,7 @@ export default function SignInPage() {
               await signIn("github", { redirectTo: "/discussions" });
             }}
           >
-            <Button type="submit" size="lg" className="w-full font-orbitron">
+            <Button type="submit" size="lg" className="w-full">
               使用 GitHub 登录
             </Button>
           </form>

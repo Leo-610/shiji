@@ -29,7 +29,7 @@ function SelectTrigger({
   return (
     <SelectPrimitive.Trigger
       className={cn(
-        "flex h-9 w-full items-center justify-between rounded-md border border-cyan-500/30 bg-black/50 px-3 py-2 text-sm text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-cyan-400/50 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
+        "flex h-9 w-full items-center justify-between rounded-md border border-white/10 bg-black/50 px-3 py-2 text-sm text-gray-100 shadow-sm focus:outline-none focus:ring-2 focus:ring-[color:var(--color-cyber-accent)]/35 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1",
         className
       )}
       {...props}
@@ -80,7 +80,7 @@ function SelectContent({
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
         className={cn(
-          "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border border-cyan-500/30 bg-[#0a0a0f] text-gray-100 shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+          "relative z-50 max-h-96 min-w-[8rem] overflow-hidden rounded-md border border-white/10 bg-[#0a0a0f] text-gray-100 shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
           position === "popper" &&
             "data-[side=bottom]:translate-y-1 data-[side=left]:-translate-x-1 data-[side=right]:translate-x-1 data-[side=top]:-translate-y-1",
           className
@@ -124,7 +124,7 @@ function SelectItem({
   return (
     <SelectPrimitive.Item
       className={cn(
-        "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-cyan-500/20 focus:text-cyan-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+        "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 pr-8 text-sm outline-none focus:bg-white/[0.06] focus:text-gray-100 data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
         className
       )}
       {...props}
@@ -145,7 +145,7 @@ function SelectSeparator({
 }: React.ComponentProps<typeof SelectPrimitive.Separator>) {
   return (
     <SelectPrimitive.Separator
-      className={cn("-mx-1 my-1 h-px bg-cyan-500/20", className)}
+      className={cn("-mx-1 my-1 h-px bg-white/10", className)}
       {...props}
     />
   );

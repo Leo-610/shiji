@@ -40,9 +40,9 @@ export default async function RootLayout({
           <GridBackground />
           <Header user={session?.user} />
           <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
-          <footer className="border-t border-cyan-500/10 py-8 mt-16">
+          <footer className="border-t border-white/[0.06] py-8 mt-16">
             <div className="mx-auto max-w-6xl px-4 text-center text-sm text-gray-500">
-              <p className="font-orbitron text-cyan-500/60 text-xs tracking-widest mb-2">
+              <p className="font-display text-gray-500 text-xs tracking-[0.12em] mb-2">
                 量子余烬 · 作者时寂
               </p>
               <p>科幻小说读者讨论论坛 · 与未来对话</p>

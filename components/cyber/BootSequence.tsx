@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { VantaNetBackground } from "@/components/cyber/VantaNetBackground";
 import { NovelCover3D } from "@/components/cyber/NovelCover3D";
 
-const STORAGE_KEY = "shiji-boot-v3";
+const STORAGE_KEY = "shiji-boot-v4";
 const DURATION_MS = 3600;
 
 const BOOT_LINES = [
@@ -73,30 +73,20 @@ export function BootSequence() {
           {/* Ambient orbs */}
           <div className="pointer-events-none absolute inset-0">
             <motion.div
-              className="absolute left-1/2 top-1/3 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full opacity-30 blur-[100px]"
+              className="absolute left-1/2 top-1/3 h-[360px] w-[360px] -translate-x-1/2 -translate-y-1/2 rounded-full blur-[100px]"
               style={{
                 background:
-                  "radial-gradient(circle, rgba(0,240,255,0.45) 0%, transparent 70%)",
+                  "radial-gradient(circle, rgba(91,159,212,0.28) 0%, transparent 70%)",
               }}
               initial={{ scale: 0.6, opacity: 0 }}
-              animate={{ scale: 1, opacity: 0.3 }}
+              animate={{ scale: 1, opacity: 0.18 }}
               transition={{ duration: 1.2, ease: appleEase }}
-            />
-            <motion.div
-              className="absolute bottom-0 right-0 h-[320px] w-[320px] rounded-full opacity-20 blur-[90px]"
-              style={{
-                background:
-                  "radial-gradient(circle, rgba(191,0,255,0.5) 0%, transparent 70%)",
-              }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 0.2 }}
-              transition={{ duration: 1.4, delay: 0.2, ease: appleEase }}
             />
           </div>
 
           {/* Scan line */}
           <motion.div
-            className="pointer-events-none absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"
+            className="pointer-events-none absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-[var(--color-cyber-accent)]/40 to-transparent"
             initial={{ top: "0%", opacity: 0 }}
             animate={{ top: ["0%", "100%", "0%"], opacity: [0, 0.8, 0] }}
             transition={{ duration: 2.8, ease: "linear", repeat: Infinity }}
@@ -127,7 +117,7 @@ export function BootSequence() {
                 <defs>
                   <linearGradient id="boot-ring" x1="0" y1="0" x2="120" y2="120">
                     <stop stopColor="#00f0ff" />
-                    <stop offset="1" stopColor="#bf00ff" />
+                    <stop offset="1" stopColor="#3d6285" />
                   </linearGradient>
                 </defs>
               </svg>
@@ -135,7 +125,7 @@ export function BootSequence() {
             </motion.div>
 
             <motion.p
-              className="font-orbitron text-[10px] sm:text-xs tracking-[0.45em] text-cyan-400/70 uppercase mb-3"
+              className="font-display text-[10px] sm:text-xs tracking-[0.14em] text-gray-500 uppercase mb-3"
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8, ease: appleEase, delay: 0.45 }}
@@ -144,7 +134,7 @@ export function BootSequence() {
             </motion.p>
 
             <motion.h1
-              className="text-3xl sm:text-5xl font-bold tracking-wide text-transparent bg-clip-text bg-gradient-to-r from-cyan-200 via-white to-purple-300"
+              className="text-3xl sm:text-5xl font-bold tracking-tight text-transparent bg-clip-text bg-gradient-to-br from-[var(--color-cyber-accent-bright)] via-gray-100 to-[var(--color-cyber-accent)]"
               initial={{ opacity: 0, y: 16, filter: "blur(8px)" }}
               animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
               transition={{ duration: 1, ease: appleEase, delay: 0.55 }}
@@ -153,7 +143,7 @@ export function BootSequence() {
             </motion.h1>
 
             <motion.p
-              className="mt-2 text-sm text-purple-400/80 tracking-widest"
+              className="mt-2 text-sm text-gray-400"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 0.8, ease: appleEase, delay: 0.75 }}
@@ -166,7 +156,7 @@ export function BootSequence() {
           <div className="absolute bottom-0 left-0 right-0 px-6 pb-8 sm:pb-10">
             <div className="mx-auto max-w-md">
               <motion.p
-                className="font-orbitron text-[10px] tracking-[0.2em] text-gray-500 mb-3 tabular-nums"
+                className="text-[10px] tracking-wide text-gray-500 mb-3 tabular-nums"
                 key={lineIndex}
                 initial={{ opacity: 0, y: 4 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -177,14 +167,14 @@ export function BootSequence() {
 
               <div className="relative h-[2px] overflow-hidden rounded-full bg-white/5">
                 <motion.div
-                  className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-cyan-400 via-cyan-200 to-purple-400 shadow-[0_0_12px_rgba(0,240,255,0.6)]"
+                  className="absolute inset-y-0 left-0 rounded-full bg-[var(--color-cyber-accent)]"
                   style={{ width: `${progress * 100}%` }}
                 />
               </div>
 
-              <div className="mt-2 flex items-center justify-between text-[10px] text-gray-600 font-orbitron tracking-wider">
+              <div className="mt-2 flex items-center justify-between text-[10px] text-gray-600 font-display tracking-wider">
                 <span>SYS.BOOT</span>
-                <span className="tabular-nums text-cyan-500/70">
+                <span className="tabular-nums text-gray-500">
                   {Math.round(progress * 100).toString().padStart(3, "0")}%
                 </span>
               </div>
@@ -194,7 +184,7 @@ export function BootSequence() {
           <button
             type="button"
             onClick={finish}
-            className="absolute top-5 right-5 text-[10px] font-orbitron tracking-[0.2em] text-gray-600 hover:text-cyan-400/80 transition-colors uppercase"
+            className="absolute top-5 right-5 text-[10px] tracking-[0.12em] text-gray-600 hover:text-gray-400 transition-colors uppercase"
           >
             Skip
           </button>

@@ -15,7 +15,7 @@ export default function VerifyRequestPage() {
       </div>
 
       <NeonCard className="p-8 text-center space-y-4">
-        <Mail className="size-12 text-cyan-400 mx-auto opacity-80" />
+        <Mail className="size-12 text-[var(--color-cyber-accent-bright)] mx-auto opacity-70" />
         <p className="text-gray-300 text-sm leading-relaxed">
           我们已向你的邮箱发送了一封包含登录链接的邮件。
           点击邮件中的按钮即可登录，链接 24 小时内有效。
