@@ -1,5 +1,6 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
+import Resend from "next-auth/providers/resend";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/lib/db";
 import {
@@ -22,9 +23,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId: process.env.AUTH_GITHUB_ID ?? "",
       clientSecret: process.env.AUTH_GITHUB_SECRET ?? "",
     }),
+    ...(process.env.AUTH_RESEND_KEY
+      ? [
+          Resend({
+            apiKey: process.env.AUTH_RESEND_KEY,
+            from:
+              process.env.AUTH_RESEND_FROM ??
+              "量子余烬 <onboarding@resend.dev>",
+          }),
+        ]
+      : []),
   ],
   pages: {
     signIn: "/auth/signin",
+    verifyRequest: "/auth/verify-request",
   },
   session: {
     strategy: "jwt",

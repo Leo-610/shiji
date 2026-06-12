@@ -97,9 +97,54 @@ export const comments = pgTable("comments", {
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
+export const threadLikes = pgTable(
+  "thread_likes",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    threadId: uuid("thread_id")
+      .notNull()
+      .references(() => threads.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.threadId] })]
+);
+
+export const commentLikes = pgTable(
+  "comment_likes",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    commentId: uuid("comment_id")
+      .notNull()
+      .references(() => comments.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.commentId] })]
+);
+
+export const threadFavorites = pgTable(
+  "thread_favorites",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    threadId: uuid("thread_id")
+      .notNull()
+      .references(() => threads.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.threadId] })]
+);
+
 export const usersRelations = relations(users, ({ many }) => ({
   threads: many(threads),
   comments: many(comments),
+  threadLikes: many(threadLikes),
+  commentLikes: many(commentLikes),
+  threadFavorites: many(threadFavorites),
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({

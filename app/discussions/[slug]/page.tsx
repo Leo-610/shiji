@@ -9,6 +9,9 @@ import { Button } from "@/components/ui/button";
 import { CommentSection } from "@/components/discussion/CommentSection";
 import { MarkdownContent } from "@/components/discussion/MarkdownContent";
 import { formatDate, getAuthorName, decodeSlugParam } from "@/lib/utils";
+import { getThreadEngagement } from "@/lib/queries/engagement";
+import { threadUrl } from "@/lib/site";
+import { ThreadEngagementBar } from "@/components/discussion/ThreadEngagementBar";
 
 export default async function ThreadDetailPage({
   params,
@@ -26,6 +29,13 @@ export default async function ThreadDetailPage({
 
   const authorName = getAuthorName(thread.author, thread.guestName);
   const isAuthor = session?.user?.id === thread.authorId;
+  const isLoggedIn = !!session?.user;
+  const commentIds = thread.comments.map((c) => c.id);
+  const engagement = await getThreadEngagement(
+    thread.id,
+    commentIds,
+    session?.user?.id
+  );
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
@@ -75,6 +85,17 @@ export default async function ThreadDetailPage({
         </div>
 
         <MarkdownContent content={thread.content} />
+
+        <ThreadEngagementBar
+          threadId={thread.id}
+          threadSlug={thread.slug}
+          threadTitle={thread.title}
+          shareUrl={threadUrl(thread.slug)}
+          likeCount={engagement.threadLikeCount}
+          liked={engagement.threadLiked}
+          favorited={engagement.favorited}
+          isLoggedIn={isLoggedIn}
+        />
       </NeonCard>
 
       <CommentSection
@@ -82,7 +103,9 @@ export default async function ThreadDetailPage({
         threadSlug={thread.slug}
         comments={thread.comments}
         currentUserId={session?.user?.id}
-        isLoggedIn={!!session?.user}
+        isLoggedIn={isLoggedIn}
+        commentLikeCounts={engagement.commentLikeCounts}
+        commentLikedIds={engagement.commentLikedIds}
       />
     </div>
   );

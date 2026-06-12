@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { createComment, deleteComment } from "@/app/actions/threads";
+import { LikeButton } from "@/components/discussion/LikeButton";
 import { formatDate, getAuthorName } from "@/lib/utils";
 
 interface CommentData {
@@ -26,6 +27,8 @@ interface CommentSectionProps {
   comments: CommentData[];
   currentUserId?: string;
   isLoggedIn: boolean;
+  commentLikeCounts?: Record<string, number>;
+  commentLikedIds?: string[];
 }
 
 export function CommentSection({
@@ -34,7 +37,10 @@ export function CommentSection({
   comments,
   currentUserId,
   isLoggedIn,
+  commentLikeCounts = {},
+  commentLikedIds = [],
 }: CommentSectionProps) {
+  const likedSet = new Set(commentLikedIds);
   const [error, setError] = useState<string | null>(null);
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
 
@@ -120,6 +126,15 @@ export function CommentSection({
                         </span>
                       </div>
                       <div className="flex items-center gap-1">
+                        <LikeButton
+                          target="comment"
+                          targetId={comment.id}
+                          threadSlug={threadSlug}
+                          count={commentLikeCounts[comment.id] ?? 0}
+                          liked={likedSet.has(comment.id)}
+                          isLoggedIn={isLoggedIn}
+                          size="icon"
+                        />
                         <Button
                           variant="ghost"
                           size="sm"
@@ -187,23 +202,34 @@ export function CommentSection({
                               {formatDate(reply.createdAt)}
                             </span>
                           </div>
-                          {currentUserId &&
-                            reply.authorId === currentUserId && (
-                              <form
-                                action={async () => {
-                                  await deleteComment(reply.id, threadSlug);
-                                }}
-                              >
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  type="submit"
-                                  className="text-red-400 hover:text-red-300 size-7"
+                          <div className="flex items-center gap-1">
+                            <LikeButton
+                              target="comment"
+                              targetId={reply.id}
+                              threadSlug={threadSlug}
+                              count={commentLikeCounts[reply.id] ?? 0}
+                              liked={likedSet.has(reply.id)}
+                              isLoggedIn={isLoggedIn}
+                              size="icon"
+                            />
+                            {currentUserId &&
+                              reply.authorId === currentUserId && (
+                                <form
+                                  action={async () => {
+                                    await deleteComment(reply.id, threadSlug);
+                                  }}
                                 >
-                                  <Trash2 className="size-3" />
-                                </Button>
-                              </form>
-                            )}
+                                  <Button
+                                    variant="ghost"
+                                    size="icon"
+                                    type="submit"
+                                    className="text-red-400 hover:text-red-300 size-7"
+                                  >
+                                    <Trash2 className="size-3" />
+                                  </Button>
+                                </form>
+                              )}
+                          </div>
                         </div>
                         <p className="mt-1 text-sm text-gray-300 whitespace-pre-wrap">
                           {reply.content}
