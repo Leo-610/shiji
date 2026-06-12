@@ -5,6 +5,7 @@ import { Orbitron, Noto_Sans_SC } from "next/font/google";
 import { auth } from "@/lib/auth";
 import { Header } from "@/components/layout/Header";
 import { GridBackground } from "@/components/cyber/GridBackground";
+import { AppShell } from "@/components/providers/AppShell";
 import "./globals.css";
 
 const orbitron = Orbitron({
@@ -35,17 +36,19 @@ export default async function RootLayout({
   return (
     <html lang="zh-CN" className={`${orbitron.variable} ${notoSansSC.variable}`}>
       <body className="antialiased">
-        <GridBackground />
-        <Header user={session?.user} />
-        <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
-        <footer className="border-t border-cyan-500/10 py-8 mt-16">
-          <div className="mx-auto max-w-6xl px-4 text-center text-sm text-gray-500">
-            <p className="font-orbitron text-cyan-500/60 text-xs tracking-widest mb-2">
-              量子余烬 · 作者时寂
-            </p>
-            <p>科幻小说读者讨论论坛 · 与未来对话</p>
-          </div>
-        </footer>
+        <AppShell>
+          <GridBackground />
+          <Header user={session?.user} />
+          <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
+          <footer className="border-t border-cyan-500/10 py-8 mt-16">
+            <div className="mx-auto max-w-6xl px-4 text-center text-sm text-gray-500">
+              <p className="font-orbitron text-cyan-500/60 text-xs tracking-widest mb-2">
+                量子余烬 · 作者时寂
+              </p>
+              <p>科幻小说读者讨论论坛 · 与未来对话</p>
+            </div>
+          </footer>
+        </AppShell>
       </body>
     </html>
   );
