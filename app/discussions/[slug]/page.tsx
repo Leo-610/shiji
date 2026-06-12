@@ -8,14 +8,15 @@ import { NeonCard } from "@/components/cyber/NeonCard";
 import { Button } from "@/components/ui/button";
 import { CommentSection } from "@/components/discussion/CommentSection";
 import { MarkdownContent } from "@/components/discussion/MarkdownContent";
-import { formatDate, getAuthorName } from "@/lib/utils";
+import { formatDate, getAuthorName, decodeSlugParam } from "@/lib/utils";
 
 export default async function ThreadDetailPage({
   params,
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { slug } = await params;
+  const { slug: rawSlug } = await params;
+  const slug = decodeSlugParam(rawSlug);
   const session = await auth();
   const thread = await getThreadBySlug(slug);
 

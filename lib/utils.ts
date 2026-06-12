@@ -15,6 +15,23 @@ export function slugify(text: string): string {
     .slice(0, 80);
 }
 
+/** Decode dynamic route slug; production may pass percent-encoded Unicode. */
+export function decodeSlugParam(slug: string): string {
+  if (!slug.includes("%")) {
+    return slug;
+  }
+  try {
+    return decodeURIComponent(slug);
+  } catch {
+    return slug;
+  }
+}
+
+/** ASCII-only URL slug — avoids encoding issues with Chinese titles. */
+export function createThreadSlug(): string {
+  return `t-${crypto.randomUUID().replace(/-/g, "").slice(0, 12)}`;
+}
+
 export function formatDate(date: Date): string {
   return new Intl.DateTimeFormat("zh-CN", {
     year: "numeric",

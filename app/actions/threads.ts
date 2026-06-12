@@ -3,12 +3,11 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
-import { nanoid } from "nanoid";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { threads, comments } from "@/lib/db/schema";
-import { slugify } from "@/lib/utils";
+import { createThreadSlug } from "@/lib/utils";
 
 const createThreadSchema = z.object({
   title: z.string().min(2, "标题至少 2 个字符").max(200),
@@ -43,8 +42,7 @@ export async function createThread(formData: FormData) {
     return { error: "匿名发帖请填写昵称" };
   }
 
-  const baseSlug = slugify(parsed.data.title) || "thread";
-  const slug = `${baseSlug}-${nanoid(6)}`;
+  const slug = createThreadSlug();
 
   const [thread] = await db
     .insert(threads)
