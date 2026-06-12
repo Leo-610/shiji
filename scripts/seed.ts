@@ -1,6 +1,8 @@
+import "../lib/load-env";
 import { neon } from "@neondatabase/serverless";
 import { drizzle } from "drizzle-orm/neon-http";
 import { categories } from "../lib/db/schema";
+import { getDatabaseUrl } from "../lib/load-env";
 
 const seedCategories = [
   { name: "世界观设定", slug: "worldbuilding", sortOrder: 1 },
@@ -12,12 +14,8 @@ const seedCategories = [
 ];
 
 async function seed() {
-  if (!process.env.DATABASE_URL) {
-    console.error("DATABASE_URL is not set");
-    process.exit(1);
-  }
-
-  const sql = neon(process.env.DATABASE_URL);
+  const databaseUrl = getDatabaseUrl();
+  const sql = neon(databaseUrl);
   const db = drizzle(sql);
 
   console.log("Seeding categories...");

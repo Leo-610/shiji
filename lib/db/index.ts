@@ -3,8 +3,13 @@ import { drizzle } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 
 function getConnectionString(): string {
-  if (process.env.DATABASE_URL) {
-    return process.env.DATABASE_URL;
+  const url =
+    process.env.DATABASE_URL ??
+    process.env.POSTGRES_URL ??
+    process.env.POSTGRES_URL_NON_POOLING;
+
+  if (url) {
+    return url;
   }
 
   // Next.js production build loads server modules without env vars configured.

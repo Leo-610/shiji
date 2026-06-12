@@ -39,3 +39,4 @@ VERCEL_ENV.txt
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+.env*

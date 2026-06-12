@@ -43,6 +43,9 @@ vercel env pull .env.local --yes --environment=production
 echo ""
 echo "==> Initializing database"
 npm install --silent
+# drizzle-kit and tsx do not auto-load .env.local
+export DATABASE_URL="${DATABASE_URL:-$(grep '^DATABASE_URL=' .env.local 2>/dev/null | cut -d= -f2- | tr -d '"')}"
+export DATABASE_URL="${DATABASE_URL:-$(grep '^POSTGRES_URL=' .env.local 2>/dev/null | cut -d= -f2- | tr -d '"')}"
 npm run db:push
 npm run db:seed
 
