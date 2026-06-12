@@ -1,16 +1,31 @@
 import { neon } from "@neondatabase/serverless";
-import { drizzle } from "drizzle-orm/neon-http";
+import { drizzle, type NeonHttpDatabase } from "drizzle-orm/neon-http";
 import * as schema from "./schema";
 
-function createDb() {
-  const url = process.env.DATABASE_URL;
-  if (!url) {
-    throw new Error(
-      "DATABASE_URL is not set. Copy .env.example to .env.local and configure your Neon database."
-    );
+type Db = NeonHttpDatabase<typeof schema>;
+
+let _db: Db | undefined;
+
+function getDb(): Db {
+  if (!_db) {
+    const url = process.env.DATABASE_URL;
+    if (!url) {
+      throw new Error(
+        "DATABASE_URL is not set. Configure it in Vercel Environment Variables."
+      );
+    }
+    _db = drizzle(neon(url), { schema });
   }
-  const sql = neon(url);
-  return drizzle(sql, { schema });
+  return _db;
 }
 
-export const db = createDb();
+export const db = new Proxy({} as Db, {
+  get(_target, prop) {
+    const instance = getDb();
+    const value = instance[prop as keyof Db];
+    if (typeof value === "function") {
+      return (value as (...args: unknown[]) => unknown).bind(instance);
+    }
+    return value;
+  },
+});
