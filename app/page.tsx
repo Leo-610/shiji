@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, MessageSquare, Users } from "lucide-react";
 import { GlitchText } from "@/components/cyber/GlitchText";
 import { HeroReveal } from "@/components/cyber/HeroReveal";
+import { NovelCover3D } from "@/components/cyber/NovelCover3D";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { ThreadCard } from "@/components/discussion/ThreadCard";
 import { Button } from "@/components/ui/button";
@@ -16,8 +17,8 @@ export default async function HomePage() {
   return (
     <div className="space-y-16">
       {/* Hero */}
-      <section className="relative py-16 sm:py-24 text-center">
-        <div className="absolute inset-0 -z-10 flex items-center justify-center">
+      <section className="relative py-12 sm:py-20">
+        <div className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
           <div
             className="h-[300px] w-[600px] rounded-full opacity-10 blur-[80px] animate-pulse-slow"
             style={{
@@ -27,55 +28,63 @@ export default async function HomePage() {
           />
         </div>
 
-        <HeroReveal delay={0.05}>
-          <p className="font-orbitron text-xs tracking-[0.3em] text-purple-400 mb-4 uppercase">
-            Sci-Fi Planet Award · Novel Forum
-          </p>
-        </HeroReveal>
+        <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
+          <HeroReveal delay={0.1} className="shrink-0">
+            <NovelCover3D size="lg" priority />
+          </HeroReveal>
 
-        <HeroReveal delay={0.15}>
-          <GlitchText className="text-4xl sm:text-6xl font-bold mb-3 !font-[family-name:var(--font-noto)]">
-            量子余烬
-          </GlitchText>
-        </HeroReveal>
+          <div className="flex-1 text-center lg:text-left">
+            <HeroReveal delay={0.05}>
+              <p className="font-orbitron text-xs tracking-[0.3em] text-purple-400 mb-4 uppercase">
+                Sci-Fi Planet Award · Novel Forum
+              </p>
+            </HeroReveal>
 
-        <HeroReveal delay={0.25}>
-          <p className="text-sm text-purple-400/90 mb-4">
-            作者笔名：时寂
-          </p>
-        </HeroReveal>
+            <HeroReveal delay={0.15}>
+              <GlitchText className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-3 !font-[family-name:var(--font-noto)]">
+                量子余烬
+              </GlitchText>
+            </HeroReveal>
 
-        <HeroReveal delay={0.35}>
-          <h2 className="text-xl sm:text-2xl text-gray-300 mb-2 font-light">
-            当意识可以被数据化，死亡还算终点吗？
-          </h2>
-        </HeroReveal>
+            <HeroReveal delay={0.25}>
+              <p className="text-sm text-purple-400/90 mb-4">
+                作者笔名：时寂
+              </p>
+            </HeroReveal>
 
-        <HeroReveal delay={0.45}>
-        <p className="text-gray-500 max-w-2xl mx-auto mb-8 text-sm sm:text-base leading-relaxed">
-          《量子余烬》是一部以量子意识与灵魂数据化为核心的近未来硬科幻长篇。
-          人类发现意识源于神经元微管中的量子相干过程，由此诞生了捕获、储存乃至延续意识的技术——
-          当悲欢可以被量化，普通人走进将意识商业化的阴影里，每一步都在追问：
-          我们怕失去的，究竟是那个人，还是关于那个人的一切记忆？
-          欢迎加入讨论，你的每一个建议都可能改变故事的走向。
-        </p>
-        </HeroReveal>
+            <HeroReveal delay={0.35}>
+              <h2 className="text-xl sm:text-2xl text-gray-300 mb-2 font-light">
+                当意识可以被数据化，死亡还算终点吗？
+              </h2>
+            </HeroReveal>
 
-        <HeroReveal delay={0.55}>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/discussions">
-              <Button size="lg" className="font-orbitron tracking-wider">
-                进入讨论区
-                <ArrowRight className="size-4" />
-              </Button>
-            </Link>
-            <Link href="/discussions/new">
-              <Button variant="outline" size="lg">
-                发表建议
-              </Button>
-            </Link>
+            <HeroReveal delay={0.45}>
+              <p className="text-gray-500 max-w-2xl mb-8 text-sm sm:text-base leading-relaxed lg:mx-0 mx-auto">
+                《量子余烬》是一部以量子意识与灵魂数据化为核心的近未来硬科幻长篇。
+                人类发现意识源于神经元微管中的量子相干过程，由此诞生了捕获、储存乃至延续意识的技术——
+                当悲欢可以被量化，普通人走进将意识商业化的阴影里，每一步都在追问：
+                我们怕失去的，究竟是那个人，还是关于那个人的一切记忆？
+                欢迎加入讨论，你的每一个建议都可能改变故事的走向。
+              </p>
+            </HeroReveal>
+
+            <HeroReveal delay={0.55}>
+              <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
+                <Link href="/discussions">
+                  <Button size="lg" className="font-orbitron tracking-wider">
+                    进入讨论区
+                    <ArrowRight className="size-4" />
+                  </Button>
+                </Link>
+                <Link href="/discussions/new">
+                  <Button variant="outline" size="lg">
+                    发表建议
+                  </Button>
+                </Link>
+              </div>
+            </HeroReveal>
           </div>
-        </HeroReveal>
+        </div>
       </section>
 
       {/* Stats */}

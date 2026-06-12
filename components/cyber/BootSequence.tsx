@@ -2,8 +2,10 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { VantaNetBackground } from "@/components/cyber/VantaNetBackground";
+import { NovelCover3D } from "@/components/cyber/NovelCover3D";
 
-const STORAGE_KEY = "shiji-boot-v1";
+const STORAGE_KEY = "shiji-boot-v2";
 const DURATION_MS = 3600;
 
 const BOOT_LINES = [
@@ -66,6 +68,8 @@ export function BootSequence() {
           transition={{ duration: 0.85, ease: appleEase }}
           aria-hidden={!visible}
         >
+          <VantaNetBackground />
+
           {/* Ambient orbs */}
           <div className="pointer-events-none absolute inset-0">
             <motion.div
@@ -90,16 +94,6 @@ export function BootSequence() {
             />
           </div>
 
-          {/* Grid */}
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.12]"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(0,240,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(0,240,255,0.2) 1px, transparent 1px)",
-              backgroundSize: "48px 48px",
-            }}
-          />
-
           {/* Scan line */}
           <motion.div
             className="pointer-events-none absolute left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent"
@@ -111,14 +105,13 @@ export function BootSequence() {
           {/* Center mark */}
           <div className="relative flex h-full flex-col items-center justify-center px-6">
             <motion.div
-              className="relative mb-10 flex items-center justify-center"
+              className="relative mb-8 flex items-center justify-center"
               initial={{ scale: 0.88, opacity: 0, filter: "blur(12px)" }}
               animate={{ scale: 1, opacity: 1, filter: "blur(0px)" }}
               transition={{ duration: 1.1, ease: appleEase, delay: 0.15 }}
             >
-              {/* Orbital ring — inspired by premium product reveal motion */}
               <svg
-                className="absolute size-28 sm:size-32 animate-[spin_12s_linear_infinite] opacity-70"
+                className="absolute size-[220px] sm:size-[260px] animate-[spin_14s_linear_infinite] opacity-50"
                 viewBox="0 0 120 120"
                 fill="none"
                 aria-hidden
@@ -128,7 +121,7 @@ export function BootSequence() {
                   cy="60"
                   r="54"
                   stroke="url(#boot-ring)"
-                  strokeWidth="1"
+                  strokeWidth="0.5"
                   strokeDasharray="4 10"
                 />
                 <defs>
@@ -138,29 +131,7 @@ export function BootSequence() {
                   </linearGradient>
                 </defs>
               </svg>
-              <svg
-                className="absolute size-20 sm:size-24 animate-[spin_8s_linear_infinite_reverse] opacity-50"
-                viewBox="0 0 100 100"
-                fill="none"
-                aria-hidden
-              >
-                <circle
-                  cx="50"
-                  cy="50"
-                  r="44"
-                  stroke="rgba(0,240,255,0.35)"
-                  strokeWidth="0.5"
-                  strokeDasharray="2 8"
-                />
-              </svg>
-
-              <div
-                className="relative flex size-16 sm:size-20 items-center justify-center rounded-2xl border border-cyan-500/30 bg-black/40 shadow-[0_0_40px_rgba(0,240,255,0.15)] backdrop-blur-md"
-              >
-                <span className="font-orbitron text-lg sm:text-xl font-bold tracking-widest text-cyan-300">
-                  QE
-                </span>
-              </div>
+              <NovelCover3D size="md" priority />
             </motion.div>
 
             <motion.p
