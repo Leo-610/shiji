@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { VantaNetBackground } from "@/components/cyber/VantaNetBackground";
 import { NovelCover3D } from "@/components/cyber/NovelCover3D";
 
-const STORAGE_KEY = "shiji-boot-v2";
+const STORAGE_KEY = "shiji-boot-v3";
 const DURATION_MS = 3600;
 
 const BOOT_LINES = [
