@@ -68,6 +68,24 @@ npm run db:seed
 git push origin main
 ```
 
+## 最快完成清单（约 3 分钟）
+
+1. **登录 Vercel** → 打开 https://vercel.com/new/clone?repository-url=https://github.com/Leo-610/shiji
+2. 点击 **Continue with GitHub** 登录，确认仓库为 `Leo-610/shiji`，项目名 `shiji`，点击 **Deploy**
+3. 部署开始后进入 **Settings → Environment Variables**，添加：
+   - `DATABASE_URL` — 在 Storage 创建 Neon 数据库后复制
+   - `AUTH_SECRET` — 运行 `openssl rand -base64 32`
+   - `AUTH_URL` — 你的 Vercel 域名，如 `https://shiji.vercel.app`
+4. 添加变量后点击 **Redeploy**
+5. 本地初始化数据库：
+   ```bash
+   export DATABASE_URL="你的 Neon 连接串"
+   npm install
+   ./scripts/setup-production.sh
+   ```
+
+若已有 `leo` 项目：在 **Settings → Git** 断开 `leo` 仓库，改为连接 `Leo-610/shiji`，然后 Redeploy。
+
 ## 验证部署
 
 部署成功后访问：
