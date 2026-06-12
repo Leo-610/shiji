@@ -14,8 +14,10 @@ export function GridBackground() {
         style={{ background: "radial-gradient(circle, #00f0ff 0%, transparent 70%)" }}
       />
       <div
-        className="absolute -bottom-1/4 -right-1/4 h-[600px] w-[600px] rounded-full opacity-15 blur-[100px]"
-        style={{ background: "radial-gradient(circle, #bf00ff 0%, transparent 70%)" }}
+        className="absolute -bottom-1/4 -right-1/4 h-[600px] w-[600px] rounded-full opacity-12 blur-[100px]"
+        style={{
+          background: "radial-gradient(circle, rgba(0,140,220,0.5) 0%, transparent 70%)",
+        }}
       />
       <div
         className="absolute inset-0 opacity-[0.03]"

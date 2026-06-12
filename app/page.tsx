@@ -18,12 +18,12 @@ export default async function HomePage() {
     <div className="space-y-16">
       {/* Hero */}
       <section className="relative py-12 sm:py-20">
-        <div className="absolute inset-0 -z-10 flex items-center justify-center pointer-events-none">
+        <div className="absolute inset-0 -z-10 pointer-events-none">
           <div
-            className="h-[300px] w-[600px] rounded-full opacity-10 blur-[80px] animate-pulse-slow"
+            className="absolute top-1/2 -translate-y-1/2 left-[5%] lg:left-[2%] h-[260px] w-[380px] rounded-full blur-[90px] opacity-[0.14]"
             style={{
               background:
-                "radial-gradient(circle, #00f0ff 0%, #bf00ff 50%, transparent 70%)",
+                "radial-gradient(circle, rgba(0,200,255,0.55) 0%, rgba(0,120,200,0.2) 42%, transparent 72%)",
             }}
           />
         </div>
@@ -33,9 +33,13 @@ export default async function HomePage() {
               <NovelCover3D size="lg" priority />
             </HeroReveal>
 
-          <div className="flex-1 text-center lg:text-left">
+          <div className="relative flex-1 text-center lg:text-left">
+            <div
+              className="pointer-events-none absolute -inset-x-4 -inset-y-2 -z-10 rounded-2xl bg-[#0a0a0f]/55 lg:bg-gradient-to-r lg:from-[#0a0a0f]/75 lg:via-[#0a0a0f]/45 lg:to-transparent"
+              aria-hidden
+            />
             <HeroReveal delay={0.05}>
-              <p className="font-orbitron text-xs tracking-[0.3em] text-purple-400 mb-4 uppercase">
+              <p className="font-orbitron text-xs tracking-[0.3em] text-cyan-400/75 mb-4 uppercase">
                 Sci-Fi Planet Award · Novel Forum
               </p>
             </HeroReveal>
@@ -47,19 +51,19 @@ export default async function HomePage() {
             </HeroReveal>
 
             <HeroReveal delay={0.25}>
-              <p className="text-sm text-purple-400/90 mb-4">
+              <p className="text-sm text-cyan-300/80 mb-4">
                 作者笔名：时寂
               </p>
             </HeroReveal>
 
             <HeroReveal delay={0.35}>
-              <h2 className="text-xl sm:text-2xl text-gray-300 mb-2 font-light">
+              <h2 className="text-xl sm:text-2xl text-gray-200 mb-2 font-light">
                 当意识可以被数据化，死亡还算终点吗？
               </h2>
             </HeroReveal>
 
             <HeroReveal delay={0.45}>
-              <p className="text-gray-500 max-w-2xl mb-8 text-sm sm:text-base leading-relaxed lg:mx-0 mx-auto">
+              <p className="text-gray-300/90 max-w-2xl mb-8 text-sm sm:text-base leading-relaxed lg:mx-0 mx-auto">
                 《量子余烬》是一部以量子意识与灵魂数据化为核心的近未来硬科幻长篇。
                 人类发现意识源于神经元微管中的量子相干过程，由此诞生了捕获、储存乃至延续意识的技术——
                 当悲欢可以被量化，普通人走进将意识商业化的阴影里，每一步都在追问：
