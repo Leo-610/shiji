@@ -13,13 +13,13 @@ interface HeaderProps {
 
 export function Header({ user }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-50 border-b border-white/[0.06] bg-[#0a0a0f]/85 backdrop-blur-md">
+    <header className="sticky top-0 z-50 border-b border-cyan-500/20 bg-black/60 backdrop-blur-md">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center gap-2 group">
-          <span className="font-display text-base font-semibold text-gray-100 group-hover:text-[var(--color-cyber-accent-bright)] transition-colors">
+          <span className="text-lg font-bold text-cyan-400 group-hover:text-cyan-300 transition-colors tracking-wide">
             量子余烬
           </span>
-          <span className="text-xs text-gray-500 hidden sm:inline">
+          <span className="text-xs text-purple-400/80 hidden sm:inline">
             {"// 时寂"}
           </span>
         </Link>
@@ -27,13 +27,13 @@ export function Header({ user }: HeaderProps) {
         <nav className="flex items-center gap-1 sm:gap-4">
           <Link
             href="/discussions"
-            className="text-sm text-gray-400 hover:text-gray-200 transition-colors px-2 py-1"
+            className="text-sm text-gray-400 hover:text-cyan-400 transition-colors px-2 py-1"
           >
             讨论区
           </Link>
           <Link
             href="/discussions/new"
-            className="text-sm text-gray-400 hover:text-gray-200 transition-colors px-2 py-1"
+            className="text-sm text-gray-400 hover:text-cyan-400 transition-colors px-2 py-1"
           >
             发帖
           </Link>

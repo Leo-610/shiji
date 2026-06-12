@@ -16,9 +16,9 @@ export function HeroReveal({
   return (
     <motion.div
       className={className}
-      initial={{ opacity: 0, y: 16 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, ease: appleEase, delay }}
+      initial={{ opacity: 0, y: 24, filter: "blur(10px)" }}
+      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      transition={{ duration: 0.9, ease: appleEase, delay }}
     >
       {children}
     </motion.div>

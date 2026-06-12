@@ -59,7 +59,7 @@ export function CommentSection({
 
   return (
     <div className="space-y-6">
-      <h2 className="text-lg font-medium text-gray-200">
+      <h2 className="text-lg font-medium text-cyan-300">
         评论 ({comments.length})
       </h2>
 
@@ -118,7 +118,7 @@ export function CommentSection({
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
                       <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-gray-300">
+                        <span className="text-sm font-medium text-cyan-300">
                           {authorName}
                         </span>
                         <span className="text-xs text-gray-500">
@@ -195,7 +195,7 @@ export function CommentSection({
                       <div className="flex-1">
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
-                            <span className="text-sm text-gray-300">
+                            <span className="text-sm text-cyan-300">
                               {replyAuthor}
                             </span>
                             <span className="text-xs text-gray-500">

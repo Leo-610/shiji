@@ -20,15 +20,15 @@ export function ThreadCard({ thread }: { thread: ThreadPreview }) {
 
   return (
     <Link href={`/discussions/${thread.slug}`}>
-      <NeonCard className="p-4 cursor-pointer group">
+      <NeonCard className="p-4 hover:border-cyan-400/50 cursor-pointer group">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
             <div className="flex items-center gap-2 mb-2">
-              <span className="text-xs px-2 py-0.5 rounded-md border border-white/10 text-gray-400 bg-white/[0.04]">
+              <span className="text-xs px-2 py-0.5 rounded border border-purple-500/40 text-purple-300 bg-purple-500/10">
                 {thread.category.name}
               </span>
             </div>
-            <h3 className="text-base font-medium text-gray-100 group-hover:text-[var(--color-cyber-accent-bright)] transition-colors truncate">
+            <h3 className="text-base font-medium text-gray-100 group-hover:text-cyan-300 transition-colors truncate">
               {thread.title}
             </h3>
             <div className="flex items-center gap-3 mt-2 text-xs text-gray-500">

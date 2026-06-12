@@ -37,7 +37,7 @@ export function ShareButton({ url, title }: ShareButtonProps) {
       variant="ghost"
       size="sm"
       onClick={handleShare}
-      className="text-gray-400 hover:text-gray-300"
+      className="text-gray-400 hover:text-cyan-300"
     >
       {status === "copied" ? (
         <>
@@ -73,7 +73,7 @@ export function CopyLinkButton({ url }: { url: string }) {
       variant="ghost"
       size="sm"
       onClick={handleCopy}
-      className="text-gray-400 hover:text-gray-300"
+      className="text-gray-400 hover:text-cyan-300"
     >
       {copied ? (
         <>

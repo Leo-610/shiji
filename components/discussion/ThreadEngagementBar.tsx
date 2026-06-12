@@ -26,7 +26,7 @@ export function ThreadEngagementBar({
   isLoggedIn,
 }: ThreadEngagementBarProps) {
   return (
-    <div className="flex flex-wrap items-center gap-1 border-t border-white/[0.06] pt-4 mt-6">
+    <div className="flex flex-wrap items-center gap-1 border-t border-cyan-500/10 pt-4 mt-6">
       <LikeButton
         target="thread"
         targetId={threadId}

@@ -23,7 +23,7 @@ export default async function HomePage() {
             className="absolute top-1/2 -translate-y-1/2 left-[5%] lg:left-[2%] h-[260px] w-[380px] rounded-full blur-[90px] opacity-[0.14]"
             style={{
               background:
-                "radial-gradient(circle, rgba(91,159,212,0.35) 0%, rgba(61,98,133,0.12) 45%, transparent 72%)",
+                "radial-gradient(circle, rgba(0,200,255,0.55) 0%, rgba(0,120,200,0.2) 42%, transparent 72%)",
             }}
           />
         </div>
@@ -39,7 +39,7 @@ export default async function HomePage() {
               aria-hidden
             />
             <HeroReveal delay={0.05}>
-              <p className="font-display text-[11px] tracking-[0.12em] text-gray-500 mb-4 uppercase">
+              <p className="font-orbitron text-xs tracking-[0.3em] text-cyan-400/75 mb-4 uppercase">
                 Sci-Fi Planet Award · Novel Forum
               </p>
             </HeroReveal>
@@ -51,7 +51,7 @@ export default async function HomePage() {
             </HeroReveal>
 
             <HeroReveal delay={0.25}>
-              <p className="text-sm text-gray-400 mb-4">
+              <p className="text-sm text-cyan-300/80 mb-4">
                 作者笔名：时寂
               </p>
             </HeroReveal>
@@ -75,7 +75,7 @@ export default async function HomePage() {
             <HeroReveal delay={0.55}>
               <div className="flex flex-col sm:flex-row items-center lg:items-start justify-center lg:justify-start gap-4">
                 <Link href="/discussions">
-                  <Button size="lg">
+                  <Button size="lg" className="font-orbitron tracking-wider">
                     进入讨论区
                     <ArrowRight className="size-4" />
                   </Button>
@@ -93,16 +93,16 @@ export default async function HomePage() {
 
       {/* Stats */}
       <section className="grid grid-cols-2 gap-4 sm:gap-6 max-w-md mx-auto">
-        <NeonCard className="p-6 text-center">
-          <MessageSquare className="size-6 text-[var(--color-cyber-accent-bright)] mx-auto mb-2 opacity-80" />
-          <p className="text-3xl font-semibold tabular-nums text-gray-100">
+        <NeonCard className="p-6 text-center" glow="cyan">
+          <MessageSquare className="size-6 text-cyan-400 mx-auto mb-2" />
+          <p className="font-orbitron text-3xl font-bold text-cyan-400">
             {stats.threads}
           </p>
           <p className="text-sm text-gray-500 mt-1">讨论帖</p>
         </NeonCard>
-        <NeonCard className="p-6 text-center">
-          <Users className="size-6 text-[var(--color-cyber-accent-bright)] mx-auto mb-2 opacity-80" />
-          <p className="text-3xl font-semibold tabular-nums text-gray-100">
+        <NeonCard className="p-6 text-center" glow="purple">
+          <Users className="size-6 text-purple-400 mx-auto mb-2" />
+          <p className="font-orbitron text-3xl font-bold text-purple-400">
             {stats.comments}
           </p>
           <p className="text-sm text-gray-500 mt-1">评论</p>
@@ -112,12 +112,12 @@ export default async function HomePage() {
       {/* Recent discussions */}
       <section>
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-lg font-medium text-gray-200">
+          <h2 className="text-lg font-medium text-cyan-300">
             最新讨论
           </h2>
           <Link
             href="/discussions"
-            className="text-sm text-gray-500 hover:text-gray-300 transition-colors"
+            className="text-sm text-gray-500 hover:text-cyan-400 transition-colors"
           >
             查看全部 →
           </Link>
@@ -141,8 +141,8 @@ export default async function HomePage() {
 
       {/* About */}
       <section className="text-center py-8 space-y-6">
-        <NeonCard className="p-8 max-w-3xl mx-auto">
-          <p className="font-display text-[11px] tracking-[0.12em] text-gray-500 mb-3 uppercase">
+        <NeonCard className="p-8 max-w-3xl mx-auto" glow="purple">
+          <p className="font-orbitron text-xs tracking-[0.2em] text-cyan-400/60 mb-3">
             ABOUT · 作品简介
           </p>
           <p className="text-gray-400 text-sm leading-relaxed text-left sm:text-center">
@@ -154,8 +154,8 @@ export default async function HomePage() {
           </p>
         </NeonCard>
 
-        <NeonCard className="p-6 max-w-3xl mx-auto">
-          <p className="font-display text-[11px] tracking-[0.12em] text-gray-500 mb-3 uppercase">
+        <NeonCard className="p-6 max-w-3xl mx-auto" glow="cyan">
+          <p className="font-orbitron text-xs tracking-[0.2em] text-purple-400/60 mb-3">
             FORUM · 讨论区说明
           </p>
           <p className="text-gray-500 text-sm leading-relaxed">
