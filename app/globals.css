@@ -1455,3 +1455,32 @@ html.light .title-badge-prophet {
 html.light .new-thread-fab {
   color: #0f172a;
 }
+
+/* ── Weekly tasks ── */
+.weekly-task-item {
+  border-color: var(--theme-border-subtle);
+  background: color-mix(in srgb, var(--app-bg) 25%, var(--app-surface-solid));
+}
+
+.weekly-task-item-done {
+  border-color: color-mix(in srgb, var(--app-accent) 35%, transparent);
+  background: color-mix(in srgb, var(--app-accent) 8%, var(--app-surface-solid));
+}
+
+.weekly-task-progress-track {
+  height: 4px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--app-fg-muted) 20%, transparent);
+  overflow: hidden;
+}
+
+.weekly-task-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--app-accent) 70%, transparent),
+    var(--app-accent)
+  );
+  transition: width 0.35s ease;
+}

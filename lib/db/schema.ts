@@ -208,6 +208,20 @@ export const userAchievements = pgTable(
   (t) => [primaryKey({ columns: [t.userId, t.achievementId] })]
 );
 
+export const userWeeklyTasks = pgTable(
+  "user_weekly_tasks",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    weekStart: text("week_start").notNull(),
+    taskId: text("task_id").notNull(),
+    progress: integer("progress").notNull().default(0),
+    completedAt: timestamp("completed_at", { mode: "date" }),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.weekStart, t.taskId] })]
+);
+
 export const rateLimitEvents = pgTable("rate_limit_events", {
   id: uuid("id").primaryKey().defaultRandom(),
   key: text("key").notNull(),
@@ -223,6 +237,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   shopItems: many(userShopItems),
   notifications: many(notifications),
   achievements: many(userAchievements),
+  weeklyTasks: many(userWeeklyTasks),
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({

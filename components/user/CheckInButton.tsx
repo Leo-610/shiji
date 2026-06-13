@@ -74,7 +74,11 @@ export function CheckInButton({
         window.setTimeout(() => setRevealFortune(true), 200);
       }
       setMessage(
-        `签到成功 +${result.xpGain} 经验 · +${result.pointsGain ?? 0} 积分${result.leveledUp ? ` · 升级至 Lv.${result.level}` : ""}`
+        `签到成功 +${result.xpGain} 经验 · +${result.pointsGain ?? 0} 积分${result.leveledUp ? ` · 升级至 Lv.${result.level}` : ""}${
+          result.weeklyRewards?.length
+            ? ` · 周任务「${result.weeklyRewards[0].name}」+${result.weeklyRewards[0].points}`
+            : ""
+        }`
       );
     }
   }

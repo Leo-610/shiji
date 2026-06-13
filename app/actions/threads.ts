@@ -17,6 +17,7 @@ import { POINT_REWARDS } from "@/lib/points";
 import { createThreadSlug } from "@/lib/utils";
 import { checkStatAchievements } from "@/lib/achievements";
 import { createReplyNotifications } from "@/lib/notifications";
+import { trackWeeklyTask } from "@/lib/weekly-tasks";
 
 const createThreadSchema = z.object({
   title: z.string().min(2, "标题至少 2 个字符").max(200),
@@ -80,6 +81,12 @@ export async function createThread(formData: FormData) {
     await awardXp(session.user.id, XP_REWARDS.createThread);
     await awardPoints(session.user.id, POINT_REWARDS.createThread);
     await checkStatAchievements(session.user.id);
+    const weeklyRewards = await trackWeeklyTask(session.user.id, "post_thread");
+    if (weeklyRewards.length > 0) {
+      revalidatePath("/profile");
+      revalidatePath("/shop");
+      revalidatePath("/", "layout");
+    }
   }
 
   revalidatePath("/");
@@ -145,6 +152,12 @@ export async function createComment(formData: FormData) {
       commenterName: session.user.name ?? null,
       commentContent: comment.content,
     });
+
+    const weeklyRewards = await trackWeeklyTask(session.user.id, "post_comments");
+    if (weeklyRewards.length > 0) {
+      revalidatePath("/profile");
+      revalidatePath("/shop");
+    }
   }
 
   revalidatePath(`/discussions/${thread.slug}`);

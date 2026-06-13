@@ -27,5 +27,6 @@ export function getPointRuleDescriptions() {
     { action: "帖子被点赞", points: POINT_REWARDS.receiveThreadLike, note: "每次新增点赞" },
     { action: "评论被点赞", points: POINT_REWARDS.receiveCommentLike, note: "每次新增点赞" },
     { action: "帖子被浏览", points: POINT_REWARDS.threadViewReceived, note: "每位登录读者首次浏览" },
+    { action: "每周任务", points: 170, note: "每周一刷新，三项合计最高奖励" },
   ];
 }

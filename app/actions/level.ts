@@ -22,6 +22,7 @@ import {
   checkStatAchievements,
   unlockAchievement,
 } from "@/lib/achievements";
+import { trackWeeklyTask } from "@/lib/weekly-tasks";
 
 export async function getMyLevelProfile() {
   const session = await auth();
@@ -144,6 +145,8 @@ export async function dailyCheckIn() {
     }
     await checkStatAchievements(session.user.id);
 
+    const weeklyRewards = await trackWeeklyTask(session.user.id, "check_in_days");
+
     revalidatePath("/profile");
     revalidatePath("/shop");
     revalidatePath("/", "layout");
@@ -159,6 +162,7 @@ export async function dailyCheckIn() {
       title: getLevelTitle(newLevel),
       leveledUp: newLevel > prevLevel,
       fortune: serializeFortune(fortune),
+      weeklyRewards,
     };
   } catch {
     return { error: "签到功能尚未就绪，请稍后再试" };

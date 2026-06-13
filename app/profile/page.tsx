@@ -4,12 +4,14 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getMyLevelProfile } from "@/app/actions/level";
 import { getMyAchievements } from "@/app/actions/achievements";
+import { getMyWeeklyTasks } from "@/app/actions/weekly-tasks";
 import { getXpRuleDescriptions } from "@/lib/level";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { GlitchText } from "@/components/cyber/GlitchText";
 import { LevelBadge } from "@/components/user/LevelBadge";
 import { CheckInButton } from "@/components/user/CheckInButton";
 import { AchievementGrid } from "@/components/user/AchievementGrid";
+import { WeeklyTasksCard } from "@/components/user/WeeklyTasksCard";
 import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
 import { getPointRuleDescriptions } from "@/lib/points";
 
@@ -21,6 +23,7 @@ export default async function ProfilePage() {
 
   const profile = await getMyLevelProfile();
   const achievements = await getMyAchievements();
+  const weeklyTasks = await getMyWeeklyTasks();
   const rules = getXpRuleDescriptions();
   const pointRules = getPointRuleDescriptions();
 
@@ -99,6 +102,12 @@ export default async function ProfilePage() {
             todayXp={profile.todayCheckInXp}
             initialFortune={profile.dailyFortune}
           />
+        )}
+
+        {weeklyTasks && (
+          <div className="border-t border-theme-subtle pt-6">
+            <WeeklyTasksCard board={weeklyTasks} />
+          </div>
         )}
       </NeonCard>
 
