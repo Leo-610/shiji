@@ -4,6 +4,7 @@ export const dynamic = "force-dynamic";
 import { Orbitron, Noto_Sans_SC } from "next/font/google";
 import { auth } from "@/lib/auth";
 import { Header } from "@/components/layout/Header";
+import { NewThreadFab } from "@/components/layout/NewThreadFab";
 import { GridBackground } from "@/components/cyber/GridBackground";
 import { AppShell } from "@/components/providers/AppShell";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
@@ -46,6 +47,7 @@ export default async function RootLayout({
             <GridBackground />
             <Header user={session?.user} />
             <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
+            <NewThreadFab />
             <footer className="border-t border-theme-subtle py-8 mt-16">
               <div className="mx-auto max-w-6xl px-4 text-center text-sm text-theme-muted">
                 <p className="font-orbitron text-theme-accent opacity-60 text-xs tracking-widest mb-2">

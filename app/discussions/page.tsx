@@ -27,7 +27,7 @@ export default async function DiscussionsPage({
             按章节与话题浏览读者讨论
           </p>
         </div>
-        <Link href="/discussions/new">
+        <Link href="/discussions/new" className="hidden sm:block">
           <Button>
             <Plus className="size-4" />
             发帖

@@ -1248,3 +1248,109 @@ html.light .title-badge-prophet {
     box-shadow: 0 0 16px rgba(255, 215, 0, 0.2);
   }
 }
+
+/* ── Mobile header drawer ── */
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
+}
+
+.mobile-nav-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 71;
+  width: min(300px, 88vw);
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--theme-border-subtle);
+  background: var(--app-surface);
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.35);
+  animation: mobile-nav-slide-in 0.22s ease-out;
+}
+
+@keyframes mobile-nav-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.mobile-nav-link-highlight {
+  background: color-mix(in srgb, var(--theme-accent) 10%, transparent);
+  border-left: 2px solid var(--theme-accent);
+}
+
+@media (max-width: 639px) {
+  .notification-panel-sheet {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    max-height: min(70vh, 480px);
+    border-radius: 12px 12px 0 0;
+    border-bottom: none;
+    animation: notification-sheet-in 0.2s ease-out;
+  }
+
+  .notification-panel-sheet::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: rgba(0, 0, 0, 0.45);
+  }
+}
+
+@keyframes notification-sheet-in {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* ── New thread FAB (mobile discussions list) ── */
+.new-thread-fab {
+  position: fixed;
+  right: 1rem;
+  bottom: 1.25rem;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.125rem;
+  border-radius: 999px;
+  color: #0a0e17;
+  background: var(--theme-accent);
+  font-family: var(--font-orbitron), monospace;
+  box-shadow:
+    0 4px 20px color-mix(in srgb, var(--theme-accent) 45%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--theme-accent) 30%, transparent);
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.new-thread-fab:active {
+  transform: scale(0.96);
+}
+
+.new-thread-fab:hover {
+  box-shadow:
+    0 6px 28px color-mix(in srgb, var(--theme-accent) 55%, transparent),
+    0 0 0 1px color-mix(in srgb, var(--theme-accent) 40%, transparent);
+}
+
+html.light .new-thread-fab {
+  color: #0f172a;
+}

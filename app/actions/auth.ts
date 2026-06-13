@@ -1,6 +1,6 @@
 "use server";
 
-import { signIn } from "@/lib/auth";
+import { signIn, signOut } from "@/lib/auth";
 import { rateLimitEmailSignIn } from "@/lib/rate-limit";
 
 export async function signInWithEmail(formData: FormData) {
@@ -23,4 +23,8 @@ export async function signInWithEmail(formData: FormData) {
     email,
     redirectTo: "/discussions",
   });
+}
+
+export async function signOutAction() {
+  await signOut({ redirectTo: "/" });
 }

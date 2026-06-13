@@ -88,7 +88,7 @@ export function NotificationBell() {
       </Button>
 
       {open && (
-        <div className="notification-panel">
+        <div className="notification-panel max-sm:notification-panel-sheet">
           <div className="flex items-center justify-between gap-2 px-3 py-2 border-b border-theme-subtle">
             <span className="text-xs font-orbitron tracking-widest text-theme-accent uppercase">
               通知
