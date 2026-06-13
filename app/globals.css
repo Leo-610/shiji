@@ -596,3 +596,130 @@ html.light .svip-badge-op {
 .thread-card-pinned {
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.08);
 }
+
+/* Shop avatar frames */
+.avatar-frame-ember,
+.avatar-frame-ion,
+.avatar-frame-nebula,
+.avatar-frame-entropy,
+.avatar-frame-solar,
+.avatar-frame-quantum,
+.avatar-frame-void,
+.avatar-frame-ascension {
+  position: relative;
+  border-radius: 9999px;
+  padding: 2px;
+  background-size: 200% 200%;
+  animation: svip-gradient-flow 3s ease infinite;
+}
+
+.avatar-frame-ember {
+  background: linear-gradient(135deg, #f97316, #ef4444, #fbbf24);
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.35);
+}
+
+.avatar-frame-ion {
+  background: linear-gradient(90deg, #22d3ee, var(--app-accent), #38bdf8);
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.3);
+}
+
+.avatar-frame-nebula {
+  background: linear-gradient(135deg, #c084fc, var(--app-accent), #818cf8);
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.35);
+}
+
+.avatar-frame-entropy {
+  background: linear-gradient(135deg, #7c3aed, #4c1d95, #c084fc);
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.35);
+}
+
+.avatar-frame-solar {
+  background: linear-gradient(135deg, #fbbf24, #f59e0b, #fcd34d);
+  box-shadow: 0 0 14px rgba(251, 191, 36, 0.4);
+}
+
+.avatar-frame-quantum {
+  background: linear-gradient(
+    135deg,
+    #22d3ee,
+    #c084fc,
+    #f472b6,
+    #fbbf24
+  );
+  box-shadow: 0 0 16px rgba(192, 132, 252, 0.4);
+}
+
+.avatar-frame-void {
+  background: linear-gradient(135deg, #1e1b4b, #312e81, #6366f1);
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.45);
+}
+
+.avatar-frame-ascension {
+  background: linear-gradient(
+    135deg,
+    #ffd700,
+    #ff6b6b,
+    #c084fc,
+    #22d3ee,
+    #ffd700
+  );
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.45);
+  animation: svip-gradient-flow 2s ease infinite;
+}
+
+.avatar-frame-ember::after,
+.avatar-frame-ion::after,
+.avatar-frame-nebula::after,
+.avatar-frame-entropy::after,
+.avatar-frame-solar::after,
+.avatar-frame-quantum::after,
+.avatar-frame-void::after,
+.avatar-frame-ascension::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  border-radius: 9999px;
+  background: var(--app-bg);
+  z-index: 0;
+}
+
+.shop-title-badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  color: var(--app-accent-bright, #67e8f9);
+  border: 1px solid rgba(0, 240, 255, 0.4);
+  background: linear-gradient(135deg, rgba(0, 240, 255, 0.12), rgba(192, 132, 252, 0.1));
+}
+
+.shop-title-badge-inline {
+  font-size: 10px;
+  padding: 2px 7px;
+}
+
+.shop-rarity-common {
+  color: #94a3b8;
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.shop-rarity-rare {
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+}
+
+.shop-rarity-epic {
+  color: #c084fc;
+  background: rgba(192, 132, 252, 0.12);
+  border: 1px solid rgba(192, 132, 252, 0.4);
+}
+
+.shop-rarity-legendary {
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.45);
+}

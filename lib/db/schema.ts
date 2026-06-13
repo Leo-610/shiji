@@ -23,6 +23,9 @@ export const users = pgTable("users", {
   lastCheckIn: text("last_check_in"),
   checkInStreak: integer("check_in_streak").notNull().default(0),
   dailyFortuneId: text("daily_fortune_id"),
+  points: integer("points").notNull().default(0),
+  equippedAvatarFrame: text("equipped_avatar_frame"),
+  equippedTitleBadge: text("equipped_title_badge"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
@@ -163,6 +166,18 @@ export const threadViews = pgTable(
   (t) => [primaryKey({ columns: [t.userId, t.threadId] })]
 );
 
+export const userShopItems = pgTable(
+  "user_shop_items",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    itemSlug: text("item_slug").notNull(),
+    purchasedAt: timestamp("purchased_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.itemSlug] })]
+);
+
 export const rateLimitEvents = pgTable("rate_limit_events", {
   id: uuid("id").primaryKey().defaultRandom(),
   key: text("key").notNull(),
@@ -175,6 +190,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   threadLikes: many(threadLikes),
   commentLikes: many(commentLikes),
   threadFavorites: many(threadFavorites),
+  shopItems: many(userShopItems),
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({

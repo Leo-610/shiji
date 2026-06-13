@@ -63,7 +63,7 @@ export function CheckInButton({
         setTimeout(() => setRevealFortune(true), 120);
       }
       setMessage(
-        `签到成功 +${result.xpGain} 经验${result.leveledUp ? ` · 升级至 Lv.${result.level}` : ""}`
+        `签到成功 +${result.xpGain} 经验 · +${result.pointsGain ?? 0} 积分${result.leveledUp ? ` · 升级至 Lv.${result.level}` : ""}`
       );
     }
   }

@@ -78,6 +78,8 @@ export default async function ThreadDetailPage({
               image={thread.author?.image}
               role={thread.author?.role}
               level={thread.author?.level}
+              avatarFrame={thread.author?.equippedAvatarFrame}
+              titleBadge={thread.author?.equippedTitleBadge}
               isThreadOp
               size="md"
             />

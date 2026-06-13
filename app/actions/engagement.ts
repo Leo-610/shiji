@@ -12,7 +12,9 @@ import {
   threads,
 } from "@/lib/db/schema";
 import { XP_REWARDS } from "@/lib/level";
+import { awardPoints } from "@/lib/award";
 import { awardXp } from "@/lib/xp";
+import { POINT_REWARDS } from "@/lib/points";
 
 async function requireUser() {
   const session = await auth();
@@ -57,6 +59,7 @@ export async function toggleThreadLike(threadId: string, threadSlug: string) {
   });
   if (thread?.authorId && thread.authorId !== user.userId) {
     await awardXp(thread.authorId, XP_REWARDS.receiveThreadLike);
+    await awardPoints(thread.authorId, POINT_REWARDS.receiveThreadLike);
   }
 
   revalidatePath(`/discussions/${threadSlug}`);
@@ -101,6 +104,7 @@ export async function toggleCommentLike(
   });
   if (comment?.authorId && comment.authorId !== user.userId) {
     await awardXp(comment.authorId, XP_REWARDS.receiveCommentLike);
+    await awardPoints(comment.authorId, POINT_REWARDS.receiveCommentLike);
   }
 
   revalidatePath(`/discussions/${threadSlug}`);

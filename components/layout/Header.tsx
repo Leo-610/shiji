@@ -1,9 +1,10 @@
 import Link from "next/link";
+import { Coins } from "lucide-react";
 import { signOut } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
 import { LevelBadge } from "@/components/user/LevelBadge";
+import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
 import { isSuperAdmin } from "@/lib/roles";
 
 interface HeaderProps {
@@ -13,6 +14,8 @@ interface HeaderProps {
     image?: string | null;
     role?: string | null;
     level?: number;
+    points?: number;
+    equippedAvatarFrame?: string | null;
   } | null;
 }
 
@@ -46,25 +49,44 @@ export function Header({ user }: HeaderProps) {
             发帖
           </Link>
           {user && (
-            <Link
-              href="/profile"
-              className="text-sm text-theme-muted hover:text-theme-accent transition-colors px-2 py-1 hidden sm:inline"
-            >
-              等级
-            </Link>
+            <>
+              <Link
+                href="/shop"
+                className="text-sm text-theme-muted hover:text-theme-accent transition-colors px-2 py-1 hidden sm:inline"
+              >
+                商店
+              </Link>
+              <Link
+                href="/profile"
+                className="text-sm text-theme-muted hover:text-theme-accent transition-colors px-2 py-1 hidden sm:inline"
+              >
+                等级
+              </Link>
+            </>
           )}
 
           <ThemeToggle />
 
           {user ? (
-            <div className="flex items-center gap-3 ml-1">
-              <Link href="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
-                <Avatar className="size-7">
-                  <AvatarImage src={user.image ?? undefined} />
-                  <AvatarFallback>
-                    {user.name?.[0]?.toUpperCase() ?? "U"}
-                  </AvatarFallback>
-                </Avatar>
+            <div className="flex items-center gap-2 sm:gap-3 ml-1">
+              <Link
+                href="/shop"
+                className="hidden sm:flex items-center gap-1 text-xs text-theme-muted hover:text-theme-accent transition-colors font-orbitron"
+              >
+                <Coins className="size-3.5" />
+                {user.points ?? 0}
+              </Link>
+              <Link
+                href="/profile"
+                className="flex items-center gap-2 hover:opacity-80 transition-opacity"
+              >
+                <AvatarWithFrame
+                  name={user.name}
+                  image={user.image}
+                  role={user.role}
+                  frameSlug={user.equippedAvatarFrame}
+                  size="sm"
+                />
                 <LevelBadge level={user.level ?? 1} className="hidden sm:inline-flex" />
               </Link>
               <span className="text-sm text-theme-heading hidden md:inline max-w-[100px] truncate">

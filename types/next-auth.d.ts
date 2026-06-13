@@ -8,6 +8,9 @@ declare module "next-auth" {
       role: UserRole;
       level: number;
       xp: number;
+      points: number;
+      equippedAvatarFrame: string | null;
+      equippedTitleBadge: string | null;
     } & DefaultSession["user"];
   }
 }
@@ -18,5 +21,8 @@ declare module "next-auth/jwt" {
     role?: UserRole;
     level?: number;
     xp?: number;
+    points?: number;
+    equippedAvatarFrame?: string | null;
+    equippedTitleBadge?: string | null;
   }
 }

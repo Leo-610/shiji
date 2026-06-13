@@ -17,6 +17,7 @@ import {
   getXpProgress,
   levelFromXp,
 } from "@/lib/level";
+import { getCheckInPoints } from "@/lib/points";
 
 export async function getMyLevelProfile() {
   const session = await auth();
@@ -31,6 +32,7 @@ export async function getMyLevelProfile() {
         lastCheckIn: true,
         checkInStreak: true,
         dailyFortuneId: true,
+        points: true,
       },
     });
     if (!user) return null;
@@ -68,6 +70,7 @@ export async function getMyLevelProfile() {
             : 1
       ),
       dailyFortune: fortune ? serializeFortune(fortune) : null,
+      points: user.points ?? 0,
     };
   } catch {
     return null;
@@ -92,6 +95,7 @@ export async function dailyCheckIn() {
         lastCheckIn: true,
         checkInStreak: true,
         dailyFortuneId: true,
+        points: true,
       },
     });
 
@@ -112,9 +116,11 @@ export async function dailyCheckIn() {
     const streak =
       user.lastCheckIn === yesterday ? (user.checkInStreak ?? 0) + 1 : 1;
     const xpGain = getCheckInXp(streak);
+    const pointsGain = getCheckInPoints(streak);
     const prevLevel = user.level ?? 1;
     const newXp = (user.xp ?? 0) + xpGain;
     const newLevel = levelFromXp(newXp);
+    const newPoints = (user.points ?? 0) + pointsGain;
     const fortune = pickDailyFortune(session.user.id, today);
 
     await db
@@ -124,18 +130,22 @@ export async function dailyCheckIn() {
         checkInStreak: streak,
         xp: newXp,
         level: newLevel,
+        points: newPoints,
         dailyFortuneId: fortune.id,
       })
       .where(eq(users.id, session.user.id));
 
     revalidatePath("/profile");
+    revalidatePath("/shop");
     revalidatePath("/", "layout");
 
     return {
       success: true,
       xpGain,
+      pointsGain,
       streak,
       xp: newXp,
+      points: newPoints,
       level: newLevel,
       title: getLevelTitle(newLevel),
       leveledUp: newLevel > prevLevel,

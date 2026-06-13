@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Coins } from "lucide-react";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getMyLevelProfile } from "@/app/actions/level";
@@ -7,7 +8,8 @@ import { NeonCard } from "@/components/cyber/NeonCard";
 import { GlitchText } from "@/components/cyber/GlitchText";
 import { LevelBadge } from "@/components/user/LevelBadge";
 import { CheckInButton } from "@/components/user/CheckInButton";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
+import { getPointRuleDescriptions } from "@/lib/points";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -17,6 +19,7 @@ export default async function ProfilePage() {
 
   const profile = await getMyLevelProfile();
   const rules = getXpRuleDescriptions();
+  const pointRules = getPointRuleDescriptions();
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
@@ -31,12 +34,13 @@ export default async function ProfilePage() {
 
       <NeonCard className="p-6 sm:p-8 space-y-6">
         <div className="flex items-center gap-4">
-          <Avatar className="size-14 border border-theme-subtle">
-            <AvatarImage src={session.user.image ?? undefined} />
-            <AvatarFallback>
-              {session.user.name?.[0]?.toUpperCase() ?? "U"}
-            </AvatarFallback>
-          </Avatar>
+          <AvatarWithFrame
+            name={session.user.name}
+            image={session.user.image}
+            role={session.user.role}
+            frameSlug={session.user.equippedAvatarFrame}
+            size="lg"
+          />
           <div className="min-w-0">
             <p className="text-lg font-medium text-theme-heading truncate">
               {session.user.name ?? "读者"}
@@ -75,6 +79,17 @@ export default async function ProfilePage() {
         )}
 
         {profile && (
+          <Link
+            href="/shop"
+            className="flex items-center gap-2 text-sm text-theme-muted hover:text-theme-accent transition-colors"
+          >
+            <Coins className="size-4" />
+            <span className="font-orbitron text-theme-accent">{profile.points}</span>
+            <span>积分 · 去商店兑换头像框</span>
+          </Link>
+        )}
+
+        {profile && (
           <CheckInButton
             checkedInToday={profile.checkedInToday}
             streak={profile.checkInStreak}
@@ -82,6 +97,33 @@ export default async function ProfilePage() {
             initialFortune={profile.dailyFortune}
           />
         )}
+      </NeonCard>
+
+      <NeonCard className="p-6 space-y-4">
+        <h2 className="text-sm font-orbitron tracking-widest text-theme-accent opacity-80 uppercase">
+          积分获取 · 商店兑换
+        </h2>
+        <ul className="space-y-3">
+          {pointRules.map((rule) => (
+            <li
+              key={rule.action}
+              className="flex items-start justify-between gap-4 text-sm border-b border-theme-subtle pb-3 last:border-0 last:pb-0"
+            >
+              <div>
+                <p className="text-theme-heading">{rule.action}</p>
+                <p className="text-xs text-theme-muted mt-0.5">{rule.note}</p>
+              </div>
+              <span className="text-theme-accent font-orbitron shrink-0">
+                +{rule.points}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p className="text-xs text-theme-muted">
+          <Link href="/shop" className="text-theme-accent hover:underline">
+            打开积分商店 →
+          </Link>
+        </p>
       </NeonCard>
 
       <NeonCard className="p-6 space-y-4">

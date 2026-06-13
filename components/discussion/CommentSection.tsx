@@ -25,6 +25,8 @@ interface CommentData {
     image: string | null;
     role?: string | null;
     level?: number | null;
+    equippedAvatarFrame?: string | null;
+    equippedTitleBadge?: string | null;
   } | null;
 }
 
@@ -136,6 +138,8 @@ export function CommentSection({
                     image={comment.author?.image}
                     role={comment.author?.role}
                     level={comment.author?.level}
+                    avatarFrame={comment.author?.equippedAvatarFrame}
+                    titleBadge={comment.author?.equippedTitleBadge}
                     isThreadOp={isCommentOp(comment.authorId)}
                     size="sm"
                     className="shrink-0"
@@ -208,6 +212,8 @@ export function CommentSection({
                         image={reply.author?.image}
                         role={reply.author?.role}
                         level={reply.author?.level}
+                        avatarFrame={reply.author?.equippedAvatarFrame}
+                        titleBadge={reply.author?.equippedTitleBadge}
                         isThreadOp={isCommentOp(reply.authorId)}
                         size="xs"
                         className="shrink-0"

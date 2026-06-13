@@ -16,6 +16,8 @@ interface ThreadPreview {
     image: string | null;
     role?: string | null;
     level?: number | null;
+    equippedAvatarFrame?: string | null;
+    equippedTitleBadge?: string | null;
   } | null;
   viewCount?: number;
   pinned?: boolean;
@@ -57,6 +59,8 @@ export function ThreadCard({ thread }: { thread: ThreadPreview }) {
                 image={thread.author?.image}
                 role={thread.author?.role}
                 level={thread.author?.level}
+                avatarFrame={thread.author?.equippedAvatarFrame}
+                titleBadge={thread.author?.equippedTitleBadge}
                 isThreadOp
                 size="sm"
                 showAvatar={false}

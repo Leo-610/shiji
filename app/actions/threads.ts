@@ -11,7 +11,9 @@ import { isSuperAdmin } from "@/lib/roles";
 import { rateLimitForUserOrIp } from "@/lib/rate-limit";
 import { CONTENT_MAX_LENGTH } from "@/lib/content";
 import { XP_REWARDS } from "@/lib/level";
+import { awardPoints } from "@/lib/award";
 import { awardXp } from "@/lib/xp";
+import { POINT_REWARDS } from "@/lib/points";
 import { createThreadSlug } from "@/lib/utils";
 
 const createThreadSchema = z.object({
@@ -74,6 +76,7 @@ export async function createThread(formData: FormData) {
 
   if (session?.user?.id) {
     await awardXp(session.user.id, XP_REWARDS.createThread);
+    await awardPoints(session.user.id, POINT_REWARDS.createThread);
   }
 
   revalidatePath("/");
@@ -115,6 +118,7 @@ export async function createComment(formData: FormData) {
 
   if (session?.user?.id) {
     await awardXp(session.user.id, XP_REWARDS.createComment);
+    await awardPoints(session.user.id, POINT_REWARDS.createComment);
   }
 
   const thread = await db.query.threads.findFirst({
