@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CONTENT_MAX_LENGTH } from "@/lib/content";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -92,7 +93,9 @@ export function NewThreadForm({ categories, isLoggedIn }: NewThreadFormProps) {
             className="min-h-[200px]"
             required
             minLength={10}
+            maxLength={CONTENT_MAX_LENGTH}
           />
+          <p className="text-xs text-theme-subtle">最多 {CONTENT_MAX_LENGTH} 字</p>
         </div>
 
         {error && <p className="text-sm text-red-400">{error}</p>}

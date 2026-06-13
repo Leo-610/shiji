@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { createComment, deleteComment } from "@/app/actions/threads";
+import { CONTENT_MAX_LENGTH } from "@/lib/content";
 import { LikeButton } from "@/components/discussion/LikeButton";
 import { formatDate, getAuthorName } from "@/lib/utils";
 
@@ -79,6 +80,7 @@ export function CommentSection({
             }
             required
             minLength={2}
+            maxLength={CONTENT_MAX_LENGTH}
           />
           {error && <p className="text-sm text-red-400">{error}</p>}
           <div className="flex items-center gap-2">

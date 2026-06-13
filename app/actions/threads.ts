@@ -8,17 +8,24 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { threads, comments } from "@/lib/db/schema";
 import { rateLimitForUserOrIp } from "@/lib/rate-limit";
+import { CONTENT_MAX_LENGTH } from "@/lib/content";
 import { createThreadSlug } from "@/lib/utils";
 
 const createThreadSchema = z.object({
   title: z.string().min(2, "标题至少 2 个字符").max(200),
-  content: z.string().min(10, "内容至少 10 个字符"),
+  content: z
+    .string()
+    .min(10, "内容至少 10 个字符")
+    .max(CONTENT_MAX_LENGTH, "内容不能超过 2 万字"),
   categoryId: z.string().uuid("请选择分类"),
   guestName: z.string().max(50).optional(),
 });
 
 const createCommentSchema = z.object({
-  content: z.string().min(2, "评论至少 2 个字符"),
+  content: z
+    .string()
+    .min(2, "评论至少 2 个字符")
+    .max(CONTENT_MAX_LENGTH, "评论不能超过 2 万字"),
   threadId: z.string().uuid(),
   parentId: z.string().uuid().optional(),
   guestName: z.string().max(50).optional(),
