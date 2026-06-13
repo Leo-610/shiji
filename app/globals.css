@@ -1650,3 +1650,65 @@ html.light .new-thread-fab {
   );
   transition: width 0.35s ease;
 }
+
+/* Wheel lottery */
+.wheel-rotor {
+  position: relative;
+  transform-origin: center center;
+  will-change: transform;
+}
+
+.wheel-segment-label {
+  position: absolute;
+  left: 50%;
+  top: 8%;
+  width: 2rem;
+  margin-left: -1rem;
+  text-align: center;
+  font-size: 0.65rem;
+  font-family: var(--font-orbitron), monospace;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 4px rgba(0, 0, 0, 0.65);
+  transform-origin: center 5.5rem;
+  pointer-events: none;
+  line-height: 1.1;
+}
+
+.wheel-pointer {
+  position: absolute;
+  left: 50%;
+  top: -0.35rem;
+  z-index: 3;
+  width: 0;
+  height: 0;
+  margin-left: -0.55rem;
+  border-left: 0.55rem solid transparent;
+  border-right: 0.55rem solid transparent;
+  border-top: 1rem solid var(--app-accent);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--app-accent) 60%, transparent));
+}
+
+.wheel-segment-label-dense {
+  font-size: 0.58rem;
+  transform-origin: center 6.25rem;
+  width: 1.75rem;
+  margin-left: -0.875rem;
+}
+
+.wheel-center-cap {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  margin: -1.5rem;
+  border-radius: 9999px;
+  border: 2px solid color-mix(in srgb, var(--app-accent) 45%, transparent);
+  background: var(--app-surface);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.12);
+  pointer-events: none;
+}

@@ -96,14 +96,22 @@ export default async function ProfilePage() {
         )}
 
         {profile && (
-          <Link
-            href="/shop"
-            className="flex items-center gap-2 text-sm text-theme-muted hover:text-theme-accent transition-colors"
-          >
-            <Coins className="size-4" />
-            <span className="font-orbitron text-theme-accent">{profile.points}</span>
-            <span>积分 · 去商店兑换头像框</span>
-          </Link>
+          <div className="flex flex-wrap items-center gap-4">
+            <Link
+              href="/shop"
+              className="flex items-center gap-2 text-sm text-theme-muted hover:text-theme-accent transition-colors"
+            >
+              <Coins className="size-4" />
+              <span className="font-orbitron text-theme-accent">{profile.points}</span>
+              <span>积分 · 商店</span>
+            </Link>
+            <Link
+              href="/wheel"
+              className="text-sm text-theme-muted hover:text-theme-accent transition-colors"
+            >
+              余烬大转盘 →
+            </Link>
+          </div>
         )}
 
         {profile && (

@@ -12,6 +12,7 @@ import {
 import { verifyEmailLoginOtp } from "@/lib/email-otp";
 import { getResendApiKey } from "@/lib/resend";
 import { assignReaderIdIfMissing } from "@/lib/reader-id";
+import { clearExpiredEquippedItems } from "@/lib/shop-ownership";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import {
   getSuperAdminGitHubUsername,
@@ -115,6 +116,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       }
       if (token.id) {
         try {
+          await clearExpiredEquippedItems(token.id as string);
           const dbUser = await db.query.users.findFirst({
             where: eq(users.id, token.id as string),
             columns: {

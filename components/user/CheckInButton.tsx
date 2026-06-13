@@ -75,6 +75,10 @@ export function CheckInButton({
       }
       setMessage(
         `签到成功 +${result.xpGain} 经验 · +${result.pointsGain ?? 0} 积分${result.leveledUp ? ` · 升级至 Lv.${result.level}` : ""}${
+          result.wheelTicketGain
+            ? ` · 至尊大吉 +${result.wheelTicketGain} 代积分券`
+            : ""
+        }${
           result.weeklyRewards?.length
             ? ` · 周任务「${result.weeklyRewards[0].name}」+${result.weeklyRewards[0].points}`
             : ""

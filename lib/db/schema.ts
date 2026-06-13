@@ -32,6 +32,14 @@ export const users = pgTable("users", {
   nameChangeCount: integer("name_change_count").notNull().default(0),
   /** Successful avatar uploads (first upload is free). */
   avatarChangeCount: integer("avatar_change_count").notNull().default(0),
+  /** Wheel lottery tickets — substitute for point cost per spin. */
+  wheelTickets: integer("wheel_tickets").notNull().default(0),
+  /** Wheel luck — improves rare prize weights over time. */
+  wheelLuck: integer("wheel_luck").notNull().default(0),
+  /** Legend shards — collect to redeem permanent legendary frame. */
+  legendShards: integer("legend_shards").notNull().default(0),
+  /** Last calendar date (Asia/Shanghai) a free wheel spin was used. */
+  lastFreeWheelDate: text("last_free_wheel_date"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
@@ -180,9 +188,23 @@ export const userShopItems = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     itemSlug: text("item_slug").notNull(),
     purchasedAt: timestamp("purchased_at", { mode: "date" }).defaultNow().notNull(),
+    /** Null = permanent (wheel grand prize). Shop purchases always set a date. */
+    expiresAt: timestamp("expires_at", { mode: "date" }),
   },
   (t) => [primaryKey({ columns: [t.userId, t.itemSlug] })]
 );
+
+/** Time-limited shop item trials (wheel grants, events). */
+export const userItemGrants = pgTable("user_item_grants", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  itemSlug: text("item_slug").notNull(),
+  source: text("source").notNull().default("wheel"),
+  grantedAt: timestamp("granted_at", { mode: "date" }).defaultNow().notNull(),
+  expiresAt: timestamp("expires_at", { mode: "date" }).notNull(),
+});
 
 export const notifications = pgTable("notifications", {
   id: uuid("id").primaryKey().defaultRandom(),
@@ -254,10 +276,18 @@ export const usersRelations = relations(users, ({ many }) => ({
   commentLikes: many(commentLikes),
   threadFavorites: many(threadFavorites),
   shopItems: many(userShopItems),
+  itemGrants: many(userItemGrants),
   notifications: many(notifications),
   achievements: many(userAchievements),
   weeklyTasks: many(userWeeklyTasks),
   dailyPoints: many(userDailyPoints),
+}));
+
+export const userItemGrantsRelations = relations(userItemGrants, ({ one }) => ({
+  user: one(users, {
+    fields: [userItemGrants.userId],
+    references: [users.id],
+  }),
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({

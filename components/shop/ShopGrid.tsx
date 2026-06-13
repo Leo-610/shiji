@@ -223,11 +223,18 @@ export function ShopGrid({
                         {loadingSlug === item.slug ? "…" : "装备"}
                       </Button>
                     )}
-                    {item.owned && (
-                      <span className="text-xs text-theme-muted flex items-center gap-1">
-                        <Sparkles className="size-3" /> 已拥有
-                      </span>
-                    )}
+              {item.owned && (
+                <span className="text-xs text-theme-muted flex items-center gap-1">
+                  <Sparkles className="size-3" />
+                  {item.isPermanent
+                    ? "永久"
+                    : item.purchaseExpiresLabel
+                      ? `有效 · ${item.purchaseExpiresLabel}`
+                      : item.trialExpiresLabel
+                        ? `体验 · ${item.trialExpiresLabel}`
+                        : "已拥有"}
+                </span>
+              )}
                   </div>
                 </NeonCard>
               ))}

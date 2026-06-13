@@ -1,16 +1,27 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { userShopItems, users } from "@/lib/db/schema";
+import { users } from "@/lib/db/schema";
 import {
   getShopItem,
   RARITY_LABELS,
   SHOP_ITEMS,
   type ShopItemType,
 } from "@/lib/shop-items";
+import {
+  clearExpiredEquippedItems,
+  formatGrantExpiry,
+  formatPurchaseExpiry,
+  getActiveGrants,
+  getActiveShopPurchases,
+  getOwnedShopSlugs,
+  grantOrExtendShopPurchase,
+  hasPermanentShopItem,
+  userOwnsShopItem,
+} from "@/lib/shop-ownership";
 import { checkStatAchievements } from "@/lib/achievements";
 
 export type ShopItemView = {
@@ -24,6 +35,9 @@ export type ShopItemView = {
   badgeLabel?: string;
   owned: boolean;
   equipped: boolean;
+  trialExpiresLabel?: string;
+  purchaseExpiresLabel?: string;
+  isPermanent?: boolean;
 };
 
 export async function getShopPageData() {
@@ -31,6 +45,8 @@ export async function getShopPageData() {
   if (!session?.user?.id) return null;
 
   try {
+    await clearExpiredEquippedItems(session.user.id);
+
     const user = await db.query.users.findFirst({
       where: eq(users.id, session.user.id),
       columns: {
@@ -41,11 +57,21 @@ export async function getShopPageData() {
     });
     if (!user) return null;
 
-    const ownedRows = await db.query.userShopItems.findMany({
-      where: eq(userShopItems.userId, session.user.id),
-      columns: { itemSlug: true },
-    });
-    const ownedSet = new Set(ownedRows.map((r) => r.itemSlug));
+    const ownedSet = await getOwnedShopSlugs(session.user.id);
+    const grants = await getActiveGrants(session.user.id);
+    const purchases = await getActiveShopPurchases(session.user.id);
+    const grantExpiry = new Map(
+      grants.map((g) => [g.itemSlug, formatGrantExpiry(g.expiresAt)])
+    );
+    const purchaseExpiry = new Map(
+      purchases.map((p) => [
+        p.itemSlug,
+        formatPurchaseExpiry(p.expiresAt),
+      ])
+    );
+    const permanentSlugs = new Set(
+      purchases.filter((p) => p.expiresAt === null).map((p) => p.itemSlug)
+    );
 
     const items: ShopItemView[] = SHOP_ITEMS.map((item) => ({
       slug: item.slug,
@@ -57,6 +83,9 @@ export async function getShopPageData() {
       rarityLabel: RARITY_LABELS[item.rarity],
       badgeLabel: item.badgeLabel,
       owned: ownedSet.has(item.slug),
+      trialExpiresLabel: grantExpiry.get(item.slug),
+      purchaseExpiresLabel: purchaseExpiry.get(item.slug),
+      isPermanent: permanentSlugs.has(item.slug),
       equipped:
         item.type === "avatar_frame"
           ? user.equippedAvatarFrame === item.slug
@@ -88,28 +117,26 @@ export async function purchaseShopItem(slug: string) {
     });
     if (!user) return { error: "用户不存在" };
 
-    const existing = await db.query.userShopItems.findFirst({
-      where: and(
-        eq(userShopItems.userId, session.user.id),
-        eq(userShopItems.itemSlug, slug)
-      ),
-    });
-    if (existing) return { error: "已拥有该物品" };
+    if (await hasPermanentShopItem(session.user.id, slug)) {
+      return { error: "已永久拥有该物品" };
+    }
 
     const points = user.points ?? 0;
     if (points < item.price) {
       return { error: `积分不足，还需 ${item.price - points} 积分` };
     }
 
+    let purchaseMeta: { expiresAt: Date; extended: boolean };
+    try {
+      purchaseMeta = await grantOrExtendShopPurchase(session.user.id, slug);
+    } catch {
+      return { error: "已永久拥有该物品" };
+    }
+
     await db
       .update(users)
       .set({ points: points - item.price })
       .where(eq(users.id, session.user.id));
-
-    await db.insert(userShopItems).values({
-      userId: session.user.id,
-      itemSlug: slug,
-    });
 
     await checkStatAchievements(session.user.id);
 
@@ -121,6 +148,9 @@ export async function purchaseShopItem(slug: string) {
       success: true,
       points: points - item.price,
       slug,
+      expiresAt: purchaseMeta.expiresAt.toISOString(),
+      extended: purchaseMeta.extended,
+      expiresLabel: formatPurchaseExpiry(purchaseMeta.expiresAt),
     };
   } catch {
     return { error: "商店尚未就绪，请稍后再试" };
@@ -135,13 +165,8 @@ export async function equipShopItem(slug: string) {
   if (!item) return { error: "商品不存在" };
 
   try {
-    const owned = await db.query.userShopItems.findFirst({
-      where: and(
-        eq(userShopItems.userId, session.user.id),
-        eq(userShopItems.itemSlug, slug)
-      ),
-    });
-    if (!owned) return { error: "请先兑换该物品" };
+    const owned = await userOwnsShopItem(session.user.id, slug);
+    if (!owned) return { error: "请先兑换或获得该物品" };
 
     if (item.type === "avatar_frame") {
       await db

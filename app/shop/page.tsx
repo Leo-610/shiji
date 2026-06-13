@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getShopPageData } from "@/app/actions/shop";
-import { getPointRuleDescriptions } from "@/lib/points";
+import { formatShopValidityNote } from "@/lib/shop-duration";
 import { ShopGrid } from "@/components/shop/ShopGrid";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { GlitchText } from "@/components/cyber/GlitchText";
@@ -25,6 +25,7 @@ export default async function ShopPage() {
         <p className="text-sm text-theme-muted">
           签到、发帖、互动获得积分 · 兑换头像框与称号
         </p>
+        <p className="text-xs text-theme-muted mt-1">{formatShopValidityNote()}</p>
       </div>
 
       {shop ? (

@@ -13,6 +13,7 @@ import {
   PenLine,
   ShoppingBag,
   Trophy,
+  Disc3,
   X,
 } from "lucide-react";
 import { signOutAction } from "@/app/actions/auth";
@@ -49,6 +50,7 @@ const navLinks: {
   { href: "/discussions", label: "讨论区", icon: MessageSquare },
   { href: "/discussions/new", label: "发帖", icon: PenLine, highlight: true },
   { href: "/shop", label: "积分商店", icon: ShoppingBag, authOnly: true },
+  { href: "/wheel", label: "余烬大转盘", icon: Disc3, authOnly: true },
   { href: "/profile", label: "我的等级 · 成就", icon: Trophy, authOnly: true },
   { href: "/admin", label: "站长后台", icon: LayoutDashboard, authOnly: true, adminOnly: true },
 ];

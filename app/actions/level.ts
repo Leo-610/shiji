@@ -101,6 +101,7 @@ export async function dailyCheckIn() {
         checkInStreak: true,
         dailyFortuneId: true,
         points: true,
+        wheelTickets: true,
       },
     });
 
@@ -127,6 +128,8 @@ export async function dailyCheckIn() {
     const newLevel = levelFromXp(newXp);
     const newPoints = (user.points ?? 0) + pointsGain;
     const fortune = pickDailyFortune(session.user.id, today);
+    const supremeTicketBonus = fortune.tier === "supreme" ? 1 : 0;
+    const newWheelTickets = (user.wheelTickets ?? 0) + supremeTicketBonus;
 
     await db
       .update(users)
@@ -137,6 +140,7 @@ export async function dailyCheckIn() {
         level: newLevel,
         points: newPoints,
         dailyFortuneId: fortune.id,
+        wheelTickets: newWheelTickets,
       })
       .where(eq(users.id, session.user.id));
 
@@ -149,12 +153,14 @@ export async function dailyCheckIn() {
 
     revalidatePath("/profile");
     revalidatePath("/shop");
+    revalidatePath("/wheel");
     revalidatePath("/", "layout");
 
     return {
       success: true,
       xpGain,
       pointsGain,
+      wheelTicketGain: supremeTicketBonus,
       streak,
       xp: newXp,
       points: newPoints,

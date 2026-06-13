@@ -61,6 +61,12 @@ export function Header({ user }: HeaderProps) {
                 商店
               </Link>
               <Link
+                href="/wheel"
+                className="text-sm text-theme-muted hover:text-theme-accent transition-colors px-2 py-1"
+              >
+                转盘
+              </Link>
+              <Link
                 href="/profile"
                 className="text-sm text-theme-muted hover:text-theme-accent transition-colors px-2 py-1"
               >
