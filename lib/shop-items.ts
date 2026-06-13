@@ -67,7 +67,7 @@ export const SHOP_ITEMS: ShopItem[] = [
     name: "日冕金环",
     description: "SVG 棱镜轨道动效 · 日冕金配色，棱镜结构。",
     type: "avatar_frame",
-    price: 500,
+    price: 1000,
     rarity: "epic",
   },
   {
@@ -75,7 +75,7 @@ export const SHOP_ITEMS: ShopItem[] = [
     name: "量子棱镜框",
     description: "SVG 棱镜轨道动效 · 七彩配色，高速轨道 + 棱镜折光。",
     type: "avatar_frame",
-    price: 500,
+    price: 1000,
     rarity: "epic",
   },
   {
@@ -83,15 +83,15 @@ export const SHOP_ITEMS: ShopItem[] = [
     name: "虚空裂隙框",
     description: "Lottie 羽翼动效 · 虚空靛换色，传说档压迫感。",
     type: "avatar_frame",
-    price: 500,
+    price: 4000,
     rarity: "legendary",
   },
   {
     slug: "frame-ascension",
     name: "升格神谕框",
-    description: "Lottie 羽翼动效 · 原色典藏款，积分商店动效框标准价。",
+    description: "Lottie 羽翼动效 · 原色典藏款，传说档旗舰动效框。",
     type: "avatar_frame",
-    price: 500,
+    price: 4000,
     rarity: "legendary",
   },
   {
