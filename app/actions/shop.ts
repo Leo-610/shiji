@@ -11,6 +11,7 @@ import {
   SHOP_ITEMS,
   type ShopItemType,
 } from "@/lib/shop-items";
+import { checkStatAchievements } from "@/lib/achievements";
 
 export type ShopItemView = {
   slug: string;
@@ -110,6 +111,8 @@ export async function purchaseShopItem(slug: string) {
       itemSlug: slug,
     });
 
+    await checkStatAchievements(session.user.id);
+
     revalidatePath("/shop");
     revalidatePath("/profile");
     revalidatePath("/", "layout");
@@ -151,6 +154,8 @@ export async function equipShopItem(slug: string) {
         .set({ equippedTitleBadge: slug })
         .where(eq(users.id, session.user.id));
     }
+
+    await checkStatAchievements(session.user.id);
 
     revalidatePath("/shop");
     revalidatePath("/profile");

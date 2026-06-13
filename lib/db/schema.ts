@@ -178,6 +178,36 @@ export const userShopItems = pgTable(
   (t) => [primaryKey({ columns: [t.userId, t.itemSlug] })]
 );
 
+export const notifications = pgTable("notifications", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  type: text("type").notNull(),
+  threadId: uuid("thread_id")
+    .notNull()
+    .references(() => threads.id, { onDelete: "cascade" }),
+  threadSlug: text("thread_slug").notNull(),
+  commentId: uuid("comment_id"),
+  actorId: uuid("actor_id").references(() => users.id, { onDelete: "set null" }),
+  actorName: text("actor_name"),
+  body: text("body").notNull(),
+  read: boolean("read").notNull().default(false),
+  createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+});
+
+export const userAchievements = pgTable(
+  "user_achievements",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    achievementId: text("achievement_id").notNull(),
+    unlockedAt: timestamp("unlocked_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.achievementId] })]
+);
+
 export const rateLimitEvents = pgTable("rate_limit_events", {
   id: uuid("id").primaryKey().defaultRandom(),
   key: text("key").notNull(),
@@ -191,6 +221,8 @@ export const usersRelations = relations(users, ({ many }) => ({
   commentLikes: many(commentLikes),
   threadFavorites: many(threadFavorites),
   shopItems: many(userShopItems),
+  notifications: many(notifications),
+  achievements: many(userAchievements),
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({

@@ -3,6 +3,7 @@ import { Coins } from "lucide-react";
 import { signOut } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { NotificationBell } from "@/components/layout/NotificationBell";
 import { LevelBadge } from "@/components/user/LevelBadge";
 import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
 import { isSuperAdmin } from "@/lib/roles";
@@ -66,6 +67,8 @@ export function Header({ user }: HeaderProps) {
           )}
 
           <ThemeToggle />
+
+          {user && <NotificationBell />}
 
           {user ? (
             <div className="flex items-center gap-2 sm:gap-3 ml-1">

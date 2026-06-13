@@ -3,11 +3,13 @@ import { Coins } from "lucide-react";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getMyLevelProfile } from "@/app/actions/level";
+import { getMyAchievements } from "@/app/actions/achievements";
 import { getXpRuleDescriptions } from "@/lib/level";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { GlitchText } from "@/components/cyber/GlitchText";
 import { LevelBadge } from "@/components/user/LevelBadge";
 import { CheckInButton } from "@/components/user/CheckInButton";
+import { AchievementGrid } from "@/components/user/AchievementGrid";
 import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
 import { getPointRuleDescriptions } from "@/lib/points";
 
@@ -18,6 +20,7 @@ export default async function ProfilePage() {
   }
 
   const profile = await getMyLevelProfile();
+  const achievements = await getMyAchievements();
   const rules = getXpRuleDescriptions();
   const pointRules = getPointRuleDescriptions();
 
@@ -98,6 +101,16 @@ export default async function ProfilePage() {
           />
         )}
       </NeonCard>
+
+      {achievements && (
+        <NeonCard className="p-6">
+          <AchievementGrid
+            items={achievements.items}
+            unlocked={achievements.unlocked}
+            total={achievements.total}
+          />
+        </NeonCard>
+      )}
 
       <NeonCard className="p-6 space-y-4">
         <h2 className="text-sm font-orbitron tracking-widest text-theme-accent opacity-80 uppercase">

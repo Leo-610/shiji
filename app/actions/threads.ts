@@ -15,6 +15,8 @@ import { awardPoints } from "@/lib/award";
 import { awardXp } from "@/lib/xp";
 import { POINT_REWARDS } from "@/lib/points";
 import { createThreadSlug } from "@/lib/utils";
+import { checkStatAchievements } from "@/lib/achievements";
+import { createReplyNotifications } from "@/lib/notifications";
 
 const createThreadSchema = z.object({
   title: z.string().min(2, "标题至少 2 个字符").max(200),
@@ -77,6 +79,7 @@ export async function createThread(formData: FormData) {
   if (session?.user?.id) {
     await awardXp(session.user.id, XP_REWARDS.createThread);
     await awardPoints(session.user.id, POINT_REWARDS.createThread);
+    await checkStatAchievements(session.user.id);
   }
 
   revalidatePath("/");
@@ -108,26 +111,44 @@ export async function createComment(formData: FormData) {
     return { error: rate.error };
   }
 
-  await db.insert(comments).values({
-    content: parsed.data.content,
-    threadId: parsed.data.threadId,
-    parentId: parsed.data.parentId ?? null,
-    authorId: session?.user?.id ?? null,
-    guestName: session?.user ? null : parsed.data.guestName?.trim(),
+  const thread = await db.query.threads.findFirst({
+    where: eq(threads.id, parsed.data.threadId),
+    columns: { id: true, slug: true, authorId: true },
   });
+
+  if (!thread) {
+    return { error: "帖子不存在" };
+  }
+
+  const [comment] = await db
+    .insert(comments)
+    .values({
+      content: parsed.data.content,
+      threadId: parsed.data.threadId,
+      parentId: parsed.data.parentId ?? null,
+      authorId: session?.user?.id ?? null,
+      guestName: session?.user ? null : parsed.data.guestName?.trim(),
+    })
+    .returning();
 
   if (session?.user?.id) {
     await awardXp(session.user.id, XP_REWARDS.createComment);
     await awardPoints(session.user.id, POINT_REWARDS.createComment);
+    await checkStatAchievements(session.user.id);
+
+    await createReplyNotifications({
+      threadId: thread.id,
+      threadSlug: thread.slug,
+      threadAuthorId: thread.authorId,
+      parentId: parsed.data.parentId,
+      commenterId: session.user.id,
+      commenterName: session.user.name ?? null,
+      commentContent: comment.content,
+    });
   }
 
-  const thread = await db.query.threads.findFirst({
-    where: eq(threads.id, parsed.data.threadId),
-  });
-
-  if (thread) {
-    revalidatePath(`/discussions/${thread.slug}`);
-  }
+  revalidatePath(`/discussions/${thread.slug}`);
+  revalidatePath("/", "layout");
 
   return { success: true };
 }

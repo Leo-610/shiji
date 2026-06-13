@@ -18,6 +18,10 @@ import {
   levelFromXp,
 } from "@/lib/level";
 import { getCheckInPoints } from "@/lib/points";
+import {
+  checkStatAchievements,
+  unlockAchievement,
+} from "@/lib/achievements";
 
 export async function getMyLevelProfile() {
   const session = await auth();
@@ -134,6 +138,11 @@ export async function dailyCheckIn() {
         dailyFortuneId: fortune.id,
       })
       .where(eq(users.id, session.user.id));
+
+    if (fortune.tier === "supreme") {
+      await unlockAchievement(session.user.id, "fortune_supreme");
+    }
+    await checkStatAchievements(session.user.id);
 
     revalidatePath("/profile");
     revalidatePath("/shop");
