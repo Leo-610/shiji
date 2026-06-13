@@ -8,6 +8,11 @@ import {
   FortuneCard,
   type FortuneCardData,
 } from "@/components/user/FortuneCard";
+import {
+  FortuneGachaAltar,
+  FortuneGachaRitual,
+} from "@/components/user/FortuneGachaStage";
+import { cn } from "@/lib/utils";
 
 interface CheckInButtonProps {
   checkedInToday: boolean;
@@ -39,7 +44,13 @@ export function CheckInButton({
     setMessage(null);
     setRevealFortune(false);
 
+    const ritualStart = Date.now();
     const result = await dailyCheckIn();
+    const ritualRemaining = 1600 - (Date.now() - ritualStart);
+    if (ritualRemaining > 0) {
+      await new Promise((r) => setTimeout(r, ritualRemaining));
+    }
+
     setLoading(false);
 
     if (result.error) {
@@ -60,7 +71,7 @@ export function CheckInButton({
       setCurrentStreak(result.streak ?? currentStreak);
       if (result.fortune) {
         setFortune(result.fortune);
-        setTimeout(() => setRevealFortune(true), 120);
+        window.setTimeout(() => setRevealFortune(true), 200);
       }
       setMessage(
         `签到成功 +${result.xpGain} 经验 · +${result.pointsGain ?? 0} 积分${result.leveledUp ? ` · 升级至 Lv.${result.level}` : ""}`
@@ -68,15 +79,18 @@ export function CheckInButton({
     }
   }
 
+  const showAltar = !done && !loading && !revealFortune;
+  const showCard = fortune !== null;
+
   return (
-    <div className="space-y-4">
+    <div className="fortune-gacha-panel space-y-4">
       <div className="flex items-center gap-3 flex-wrap">
         <Button
           type="button"
           size="lg"
           disabled={done || loading}
           onClick={handleCheckIn}
-          className="font-orbitron gap-2"
+          className="font-orbitron gap-2 shadow-[0_0_20px_rgba(0,240,255,0.15)]"
         >
           <CalendarCheck className="size-4" />
           {done ? "今日已签到" : loading ? "抽卡中…" : "签到抽卡"}
@@ -90,13 +104,33 @@ export function CheckInButton({
 
       {message && (
         <p
-          className={`text-sm ${done && !message.includes("已签到") ? "text-theme-accent" : "text-theme-muted"}`}
+          className={cn(
+            "text-sm",
+            done && !message.includes("已签到")
+              ? "text-theme-accent"
+              : "text-theme-muted"
+          )}
         >
           {message}
         </p>
       )}
 
-      {fortune && revealFortune && <FortuneCard fortune={fortune} revealed />}
+      <div className="fortune-gacha-stage">
+        {showAltar && <FortuneGachaAltar />}
+        <FortuneGachaRitual active={loading} />
+        {showCard && (
+          <div
+            className={cn(
+              loading && "opacity-0 pointer-events-none absolute inset-0"
+            )}
+          >
+            <FortuneCard
+              fortune={fortune}
+              revealed={revealFortune && !loading}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 }

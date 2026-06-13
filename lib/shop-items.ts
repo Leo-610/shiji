@@ -33,7 +33,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-ember",
     name: "余烬脉冲框",
-    description: "静态余烬光环，入门款纯色边框，无动效。",
+    description: "静态余烬光环，入门款纯色边框。",
     type: "avatar_frame",
     price: 120,
     rarity: "common",
@@ -41,7 +41,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-ion",
     name: "离子流框",
-    description: "静态离子光环，清爽青色边框，无动效。",
+    description: "静态离子光环，清爽青色边框。",
     type: "avatar_frame",
     price: 120,
     rarity: "common",
@@ -65,7 +65,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-solar",
     name: "日冕金环",
-    description: "SVG 棱镜轨道动效 · 日冕金配色，与量子棱镜同款结构。",
+    description: "SVG 棱镜轨道动效 · 日冕金配色，棱镜结构。",
     type: "avatar_frame",
     price: 500,
     rarity: "epic",

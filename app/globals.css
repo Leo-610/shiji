@@ -500,7 +500,206 @@ html.light .svip-badge-op {
   box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
 }
 
-/* Daily fortune gacha cards */
+/* Daily fortune gacha */
+.fortune-gacha-panel {
+  border: 1px solid color-mix(in srgb, var(--app-accent) 22%, transparent);
+  border-radius: 1rem;
+  padding: 1rem;
+  background: linear-gradient(
+    165deg,
+    color-mix(in srgb, var(--app-surface) 94%, transparent),
+    color-mix(in srgb, var(--app-bg) 90%, transparent)
+  );
+  box-shadow: inset 0 0 40px rgba(0, 240, 255, 0.04);
+}
+
+.fortune-gacha-stage {
+  position: relative;
+  min-height: 11rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fortune-gacha-altar,
+.fortune-gacha-ritual {
+  position: relative;
+  width: 100%;
+  min-height: 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.fortune-gacha-ritual {
+  background: radial-gradient(
+    circle at 50% 45%,
+    rgba(0, 240, 255, 0.08) 0%,
+    transparent 62%
+  );
+}
+
+.fortune-gacha-portal {
+  position: absolute;
+  inset: 12%;
+  border-radius: 9999px;
+  border: 1px dashed color-mix(in srgb, var(--app-accent) 35%, transparent);
+  animation: fortune-portal-spin 14s linear infinite;
+  pointer-events: none;
+}
+
+.fortune-gacha-portal-reverse {
+  inset: 18%;
+  animation-direction: reverse;
+  animation-duration: 9s;
+  border-style: solid;
+  opacity: 0.45;
+}
+
+.fortune-gacha-portal-idle {
+  inset: 16%;
+  animation-duration: 22s;
+  opacity: 0.55;
+}
+
+.fortune-gacha-portal-sm {
+  inset: 8%;
+  opacity: 0.5;
+  animation-duration: 18s;
+}
+
+.fortune-gacha-orb {
+  position: absolute;
+  width: 4.5rem;
+  height: 4.5rem;
+  border-radius: 9999px;
+  background: radial-gradient(
+    circle,
+    rgba(0, 240, 255, 0.35) 0%,
+    rgba(192, 132, 252, 0.15) 45%,
+    transparent 70%
+  );
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.fortune-gacha-orb-idle {
+  width: 3.5rem;
+  height: 3.5rem;
+  opacity: 0.65;
+  animation: fortune-orb-idle 3.5s ease-in-out infinite;
+}
+
+.fortune-ritual-bars {
+  display: flex;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.fortune-ritual-bar {
+  width: 2.5rem;
+  height: 3px;
+  border-radius: 9999px;
+  background: color-mix(in srgb, var(--app-border) 80%, transparent);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.fortune-ritual-bar-active {
+  background: var(--app-accent);
+  box-shadow: 0 0 8px rgba(0, 240, 255, 0.45);
+}
+
+.fortune-mystery-sigil {
+  color: var(--app-accent-bright, #67e8f9);
+  text-shadow: 0 0 18px rgba(0, 240, 255, 0.45);
+}
+
+.fortune-card-3d {
+  perspective: 1200px;
+}
+
+.fortune-card-inner {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.01s;
+}
+
+.fortune-card-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.fortune-card-mystery {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--app-bg) 70%, #0a1628),
+    color-mix(in srgb, var(--app-surface) 90%, transparent)
+  );
+}
+
+.fortune-card-front {
+  transform: rotateY(180deg);
+}
+
+.fortune-card-supreme-burst {
+  animation: fortune-supreme-pulse 2.5s ease-in-out infinite;
+}
+
+.fortune-burst-rays {
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    rgba(255, 215, 0, 0.12) 30deg,
+    transparent 60deg,
+    rgba(255, 107, 107, 0.1) 120deg,
+    transparent 150deg,
+    rgba(255, 215, 0, 0.12) 210deg,
+    transparent 240deg
+  );
+  animation: fortune-portal-spin 8s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes fortune-portal-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fortune-orb-idle {
+  0%,
+  100% {
+    transform: scale(0.92);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.85;
+  }
+}
+
+@keyframes fortune-supreme-pulse {
+  0%,
+  100% {
+    box-shadow:
+      0 0 24px rgba(255, 215, 0, 0.25),
+      inset 0 0 30px rgba(255, 107, 107, 0.08);
+  }
+  50% {
+    box-shadow:
+      0 0 32px rgba(255, 215, 0, 0.45),
+      inset 0 0 36px rgba(255, 107, 107, 0.14);
+  }
+}
+
 .fortune-card {
   background: linear-gradient(
     145deg,
