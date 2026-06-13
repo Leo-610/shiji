@@ -42,6 +42,7 @@ export default async function ProfilePage() {
         <ProfileSettingsForm
           initialName={session.user.name ?? null}
           initialImage={session.user.image ?? null}
+          readerId={session.user.readerId}
           role={session.user.role}
           frameSlug={session.user.equippedAvatarFrame}
         />

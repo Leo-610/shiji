@@ -24,6 +24,7 @@ interface CommentData {
   authorId: string | null;
   author: {
     name: string | null;
+    readerId?: number | null;
     image: string | null;
     role?: string | null;
     level?: number | null;
@@ -109,6 +110,7 @@ export function CommentSection({
           <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
             <PrestigeAuthor
               name={authorName}
+              readerId={author?.readerId}
               role={author?.role}
               level={author?.level}
               titleBadge={author?.equippedTitleBadge}

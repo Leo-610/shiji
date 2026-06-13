@@ -75,6 +75,7 @@ export default async function ThreadDetailPage({
           <div className="flex items-center gap-3 flex-wrap">
             <PrestigeAuthor
               name={authorName}
+              readerId={thread.author?.readerId}
               image={thread.author?.image}
               role={thread.author?.role}
               level={thread.author?.level}

@@ -11,6 +11,7 @@ import {
 } from "@/lib/db/schema";
 import { verifyEmailLoginOtp } from "@/lib/email-otp";
 import { getResendApiKey } from "@/lib/resend";
+import { assignReaderIdIfMissing } from "@/lib/reader-id";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import {
   getSuperAdminGitHubUsername,
@@ -61,6 +62,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                   })
                   .returning();
                 user = created;
+                await assignReaderIdIfMissing(user.id);
               } else if (!user.emailVerified) {
                 await db
                   .update(users)
@@ -118,6 +120,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             columns: {
               name: true,
               image: true,
+              readerId: true,
               role: true,
               level: true,
               xp: true,
@@ -127,6 +130,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
             },
           });
           if (dbUser) {
+            if (!dbUser.readerId) {
+              await assignReaderIdIfMissing(token.id as string);
+              const refreshed = await db.query.users.findFirst({
+                where: eq(users.id, token.id as string),
+                columns: { readerId: true },
+              });
+              token.readerId = refreshed?.readerId ?? null;
+            } else {
+              token.readerId = dbUser.readerId;
+            }
             token.name = dbUser.name ?? undefined;
             token.picture = dbUser.image ?? undefined;
             token.role = (dbUser.role as UserRole | undefined) ?? "user";
@@ -161,6 +174,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.level = (token.level as number | undefined) ?? 1;
         session.user.xp = (token.xp as number | undefined) ?? 0;
         session.user.points = (token.points as number | undefined) ?? 0;
+        session.user.readerId =
+          (token.readerId as number | null | undefined) ?? null;
         session.user.equippedAvatarFrame =
           (token.equippedAvatarFrame as string | null | undefined) ?? null;
         session.user.equippedTitleBadge =

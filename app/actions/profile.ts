@@ -11,6 +11,7 @@ import {
   AVATAR_MAX_BYTES,
   validateDisplayName,
 } from "@/lib/profile";
+import { isNicknameTaken } from "@/lib/reader-id";
 
 export async function updateProfileName(formData: FormData) {
   const session = await auth();
@@ -22,6 +23,10 @@ export async function updateProfileName(formData: FormData) {
   const parsed = validateDisplayName(raw);
   if (!parsed.ok) {
     return { error: parsed.error };
+  }
+
+  if (await isNicknameTaken(parsed.value, session.user.id)) {
+    return { error: "该昵称已被使用，请换一个" };
   }
 
   await db

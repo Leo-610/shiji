@@ -26,6 +26,8 @@ export const users = pgTable("users", {
   points: integer("points").notNull().default(0),
   equippedAvatarFrame: text("equipped_avatar_frame"),
   equippedTitleBadge: text("equipped_title_badge"),
+  /** Public display ID — unique, permanent, shown as #10001 */
+  readerId: integer("reader_id").unique(),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 

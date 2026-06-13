@@ -7,6 +7,7 @@ import { isSuperAdmin } from "@/lib/roles";
 
 interface PrestigeAuthorProps {
   name: string;
+  readerId?: number | null;
   image?: string | null;
   role?: string | null;
   level?: number | null;
@@ -21,6 +22,7 @@ interface PrestigeAuthorProps {
 
 export function PrestigeAuthor({
   name,
+  readerId,
   image,
   role,
   level,
@@ -63,6 +65,14 @@ export function PrestigeAuthor({
         >
           {name}
         </span>
+        {readerId != null && readerId > 0 && (
+          <span
+            className="text-[10px] font-orbitron text-theme-muted tabular-nums shrink-0"
+            title="读者 ID"
+          >
+            #{readerId}
+          </span>
+        )}
         <div className="flex items-center gap-1 flex-wrap max-w-full">
         {admin && (
           <span className="svip-badge svip-badge-admin shrink-0">

@@ -16,6 +16,7 @@ import type { UserRole } from "@/lib/roles";
 interface ProfileSettingsFormProps {
   initialName: string | null;
   initialImage: string | null;
+  readerId: number | null;
   role: UserRole;
   frameSlug: string | null;
 }
@@ -23,6 +24,7 @@ interface ProfileSettingsFormProps {
 export function ProfileSettingsForm({
   initialName,
   initialImage,
+  readerId,
   role,
   frameSlug,
 }: ProfileSettingsFormProps) {
@@ -77,6 +79,11 @@ export function ProfileSettingsForm({
         </h2>
         <p className="text-xs text-theme-muted mt-1">
           设置昵称与头像，讨论区将展示你的形象
+          {readerId != null && readerId > 0 && (
+            <span className="ml-2 font-orbitron text-theme-accent tabular-nums">
+              读者 ID #{readerId}
+            </span>
+          )}
         </p>
       </div>
 
@@ -157,7 +164,7 @@ export function ProfileSettingsForm({
               <p className="text-xs text-emerald-400">昵称已更新</p>
             )}
             <p className="text-[11px] text-theme-muted">
-              2–24 个字符，支持中文、字母、数字
+              2–24 个字符，支持中文、字母、数字；不可与已有昵称重复
             </p>
           </div>
         </div>
