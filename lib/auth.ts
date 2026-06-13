@@ -57,10 +57,14 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         profileLogin?.toLowerCase() ===
         getSuperAdminGitHubUsername().toLowerCase()
       ) {
-        await db
-          .update(users)
-          .set({ role: SUPER_ADMIN_ROLE })
-          .where(eq(users.id, user.id));
+        try {
+          await db
+            .update(users)
+            .set({ role: SUPER_ADMIN_ROLE })
+            .where(eq(users.id, user.id));
+        } catch {
+          // role column may be missing until migration is applied
+        }
       }
     },
   },
@@ -70,11 +74,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.id = user.id;
       }
       if (token.id) {
-        const dbUser = await db.query.users.findFirst({
-          where: eq(users.id, token.id as string),
-          columns: { role: true },
-        });
-        token.role = (dbUser?.role as UserRole | undefined) ?? "user";
+        try {
+          const dbUser = await db.query.users.findFirst({
+            where: eq(users.id, token.id as string),
+            columns: { role: true },
+          });
+          token.role = (dbUser?.role as UserRole | undefined) ?? "user";
+        } catch {
+          token.role = "user";
+        }
       }
       return token;
     },
