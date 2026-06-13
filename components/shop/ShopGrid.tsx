@@ -11,7 +11,7 @@ import {
 import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { Button } from "@/components/ui/button";
-import { getFrameTheme } from "@/lib/shop-items";
+import { getFrameTheme, getTitleBadgeClass } from "@/lib/shop-items";
 import { cn } from "@/lib/utils";
 
 interface ShopGridProps {
@@ -171,7 +171,14 @@ export function ShopGrid({
 
             {item.type === "title_badge" && item.badgeLabel && (
               <div className="flex justify-center py-1">
-                <span className="shop-title-badge">{item.badgeLabel}</span>
+                <span
+                  className={cn(
+                    "shop-title-badge",
+                    getTitleBadgeClass(item.slug)
+                  )}
+                >
+                  {item.badgeLabel}
+                </span>
               </div>
             )}
 

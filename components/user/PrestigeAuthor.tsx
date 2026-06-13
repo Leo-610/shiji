@@ -1,7 +1,7 @@
 import { Crown } from "lucide-react";
 import { LevelBadge } from "@/components/user/LevelBadge";
 import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
-import { getTitleBadge } from "@/lib/shop-items";
+import { getTitleBadge, getTitleBadgeClass } from "@/lib/shop-items";
 import { cn } from "@/lib/utils";
 import { isSuperAdmin } from "@/lib/roles";
 
@@ -70,7 +70,12 @@ export function PrestigeAuthor({
           </span>
         )}
         {shopBadge && (
-          <span className="shop-title-badge shop-title-badge-inline">
+          <span
+            className={cn(
+              "shop-title-badge shop-title-badge-inline",
+              getTitleBadgeClass(titleBadge)
+            )}
+          >
             {shopBadge}
           </span>
         )}
