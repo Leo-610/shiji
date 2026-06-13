@@ -151,7 +151,7 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#e0e7ff",
     glow: "#a78bfa",
     rarity: "rare",
-    lottieSrc: LOTTIE_ASSETS.widgetRing,
+    lottieSrc: LOTTIE_ASSETS.avatarFrame,
     lottieFilter: "hue-rotate(248deg) saturate(1.45) brightness(1.08)",
   },
   "frame-entropy": {
@@ -161,7 +161,7 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#ddd6fe",
     glow: "#7c3aed",
     rarity: "rare",
-    lottieSrc: LOTTIE_ASSETS.widgetRing,
+    lottieSrc: LOTTIE_ASSETS.avatarFrame,
     lottieFilter: "hue-rotate(265deg) saturate(1.35) brightness(0.95)",
   },
   "frame-solar": {
