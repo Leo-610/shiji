@@ -676,6 +676,11 @@ html.light .svip-badge-op {
   animation: avatar-orbit-spin 7s linear infinite reverse;
 }
 
+.avatar-frame-rotate-reverse {
+  transform-origin: 50% 50%;
+  animation: avatar-orbit-spin 11s linear infinite;
+}
+
 @keyframes avatar-halo-pulse {
   0%,
   100% {

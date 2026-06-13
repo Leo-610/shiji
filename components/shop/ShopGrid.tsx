@@ -11,7 +11,7 @@ import {
 import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { Button } from "@/components/ui/button";
-import { getFrameTheme, getTitleBadgeClass } from "@/lib/shop-items";
+import { getFrameTheme, frameHasAnimatedOverlay, getTitleBadgeClass } from "@/lib/shop-items";
 import { cn } from "@/lib/utils";
 
 interface ShopGridProps {
@@ -145,7 +145,7 @@ export function ShopGrid({
                   {item.rarityLabel}
                   {item.type === "avatar_frame" ? " · 头像框" : " · 称号"}
                   {item.type === "avatar_frame" &&
-                    getFrameTheme(item.slug)?.lottieSrc &&
+                    frameHasAnimatedOverlay(item.slug) &&
                     " · 动效"}
                 </span>
               </div>

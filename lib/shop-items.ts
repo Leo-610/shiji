@@ -14,6 +14,8 @@ export interface FrameTheme {
   lottieSrc?: string;
   /** CSS filter to tint a shared Lottie asset per frame theme. */
   lottieFilter?: string;
+  /** SVG overlay layout when not using Lottie. */
+  frameStyle?: "gems" | "entropy" | "prism";
 }
 
 export interface ShopItem {
@@ -47,7 +49,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-nebula",
     name: "星云旋臂框",
-    description: "同款 Lottie 动效 · 紫青换色款，讨论区辨识度拉满。",
+    description: "SVG 星环宝石动效 · 紫青配色，圆形光环 + 旋转宝石。",
     type: "avatar_frame",
     price: 500,
     rarity: "rare",
@@ -55,7 +57,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-entropy",
     name: "熵流之环",
-    description: "同款 Lottie 动效 · 暗紫换色款，神秘读者专属。",
+    description: "SVG 熵流轨道动效 · 暗紫配色，双轨逆流光环。",
     type: "avatar_frame",
     price: 500,
     rarity: "rare",
@@ -63,7 +65,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-solar",
     name: "日冕金环",
-    description: "同款 Lottie 动效 · 日冕金换色款，如同恒星大气层。",
+    description: "Lottie 羽翼动效 · 日冕金款，史诗档专属动效。",
     type: "avatar_frame",
     price: 500,
     rarity: "epic",
@@ -71,7 +73,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-quantum",
     name: "量子棱镜框",
-    description: "同款 Lottie 动效 · 棱镜青换色款，高阶收藏向。",
+    description: "SVG 棱镜轨道动效 · 七彩配色，高速轨道 + 棱镜折光。",
     type: "avatar_frame",
     price: 500,
     rarity: "epic",
@@ -79,7 +81,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-void",
     name: "虚空裂隙框",
-    description: "同款 Lottie 动效 · 虚空靛换色款，压迫感与高级感并存。",
+    description: "Lottie 羽翼动效 · 虚空靛换色，传说档压迫感。",
     type: "avatar_frame",
     price: 500,
     rarity: "legendary",
@@ -87,7 +89,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-ascension",
     name: "升格神谕框",
-    description: "同款 Lottie 动效 · 原色典藏款，积分商店动效框标准价。",
+    description: "Lottie 羽翼动效 · 原色典藏款，积分商店动效框标准价。",
     type: "avatar_frame",
     price: 500,
     rarity: "legendary",
@@ -223,8 +225,7 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#e0e7ff",
     glow: "#a78bfa",
     rarity: "rare",
-    lottieSrc: LOTTIE_ASSETS.avatarFrame,
-    lottieFilter: "hue-rotate(248deg) saturate(1.45) brightness(1.08)",
+    frameStyle: "gems",
   },
   "frame-entropy": {
     id: "entropy",
@@ -233,8 +234,7 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#ddd6fe",
     glow: "#7c3aed",
     rarity: "rare",
-    lottieSrc: LOTTIE_ASSETS.avatarFrame,
-    lottieFilter: "hue-rotate(265deg) saturate(1.35) brightness(0.95)",
+    frameStyle: "entropy",
   },
   "frame-solar": {
     id: "solar",
@@ -253,8 +253,7 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#c084fc",
     glow: "#e879f9",
     rarity: "epic",
-    lottieSrc: LOTTIE_ASSETS.avatarFrame,
-    lottieFilter: "hue-rotate(155deg) saturate(1.4) brightness(1.05)",
+    frameStyle: "prism",
   },
   "frame-void": {
     id: "void",
@@ -282,6 +281,12 @@ export function getFrameTheme(
 ): FrameTheme | null {
   if (!slug) return null;
   return FRAME_THEMES[slug] ?? null;
+}
+
+export function frameHasAnimatedOverlay(slug: string): boolean {
+  const theme = getFrameTheme(slug);
+  if (!theme) return false;
+  return !!theme.lottieSrc || theme.rarity !== "common";
 }
 
 export function getTitleBadge(slug: string | null | undefined): string | null {

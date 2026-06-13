@@ -11,11 +11,15 @@ function gemPoints(cx: number, cy: number, radius: number, count: number) {
 }
 
 export function AvatarFrameSvg({ theme }: { theme: FrameTheme }) {
-  const { id, primary, secondary, accent, glow, rarity } = theme;
+  const { id, primary, secondary, accent, glow, rarity, frameStyle } = theme;
   const uid = id.replace(/[^a-z0-9-]/gi, "");
-  const gems = gemPoints(50, 50, 46.5, rarity === "legendary" ? 8 : 4);
+  const style = frameStyle ?? "gems";
+  const gemCount =
+    style === "entropy" ? 6 : style === "gems" ? 5 : rarity === "legendary" ? 8 : 4;
+  const gems = gemPoints(50, 50, 46.5, gemCount);
   const arcs = gemPoints(50, 50, 44, 4);
   const isEpic = rarity === "epic" || rarity === "legendary";
+  const showChevrons = isEpic || style === "prism";
 
   return (
     <svg
@@ -34,6 +38,14 @@ export function AvatarFrameSvg({ theme }: { theme: FrameTheme }) {
           <stop offset="0%" stopColor={accent} />
           <stop offset="100%" stopColor={primary} />
         </linearGradient>
+        {style === "prism" && (
+          <linearGradient id={`fg3-${uid}`} x1="0%" y1="50%" x2="100%" y2="50%">
+            <stop offset="0%" stopColor={primary} />
+            <stop offset="33%" stopColor={accent} />
+            <stop offset="66%" stopColor={secondary} />
+            <stop offset="100%" stopColor={primary} />
+          </linearGradient>
+        )}
         <radialGradient id={`glow-${uid}`} cx="50%" cy="50%" r="50%">
           <stop offset="55%" stopColor={glow} stopOpacity="0" />
           <stop offset="78%" stopColor={glow} stopOpacity="0.35" />
@@ -63,15 +75,15 @@ export function AvatarFrameSvg({ theme }: { theme: FrameTheme }) {
           r="47"
           fill="none"
           stroke={`url(#fg-${uid})`}
-          strokeWidth="2.8"
+          strokeWidth={style === "entropy" ? 3 : 2.8}
         />
-        {rarity !== "common" &&
+        {style !== "prism" &&
           gems.map((p, i) => (
             <circle
               key={i}
               cx={p.x}
               cy={p.y}
-              r={rarity === "legendary" ? 2.4 : 2}
+              r={style === "entropy" ? 2.2 : rarity === "legendary" ? 2.4 : 2}
               fill={accent}
               opacity="0.95"
             />
@@ -85,13 +97,52 @@ export function AvatarFrameSvg({ theme }: { theme: FrameTheme }) {
           r="43.5"
           fill="none"
           stroke={accent}
-          strokeWidth="1.2"
-          strokeDasharray="5 7"
+          strokeWidth={style === "entropy" ? 1.6 : 1.2}
+          strokeDasharray={style === "entropy" ? "3 5" : "5 7"}
           opacity="0.75"
         />
       </g>
 
-      {isEpic && (
+      {style === "entropy" && (
+        <g className="avatar-frame-rotate-reverse">
+          <circle
+            cx="50"
+            cy="50"
+            r="41"
+            fill="none"
+            stroke={primary}
+            strokeWidth="1.4"
+            strokeDasharray="8 6"
+            opacity="0.55"
+          />
+        </g>
+      )}
+
+      {style === "prism" && (
+        <g className="avatar-frame-rotate-fast" opacity="0.9">
+          <circle
+            cx="50"
+            cy="50"
+            r="45"
+            fill="none"
+            stroke={`url(#fg3-${uid})`}
+            strokeWidth="2"
+            strokeDasharray="4 4"
+          />
+          <circle
+            cx="50"
+            cy="50"
+            r="40.5"
+            fill="none"
+            stroke={accent}
+            strokeWidth="1.1"
+            strokeDasharray="2 6"
+            opacity="0.8"
+          />
+        </g>
+      )}
+
+      {showChevrons && (
         <g className="avatar-frame-rotate-slow" opacity="0.85">
           {arcs.map((p, i) => (
             <path
