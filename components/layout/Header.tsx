@@ -66,6 +66,14 @@ export function Header({ user }: HeaderProps) {
               >
                 等级
               </Link>
+              {isSuperAdmin(user.role) && (
+                <Link
+                  href="/admin"
+                  className="text-sm text-theme-muted hover:text-theme-accent transition-colors px-2 py-1"
+                >
+                  管理
+                </Link>
+              )}
             </>
           )}
 

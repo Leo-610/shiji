@@ -5,6 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import {
   Coins,
+  LayoutDashboard,
   LogIn,
   LogOut,
   Menu,
@@ -43,11 +44,13 @@ const navLinks: {
   icon: typeof MessageSquare;
   highlight?: boolean;
   authOnly?: boolean;
+  adminOnly?: boolean;
 }[] = [
   { href: "/discussions", label: "讨论区", icon: MessageSquare },
   { href: "/discussions/new", label: "发帖", icon: PenLine, highlight: true },
   { href: "/shop", label: "积分商店", icon: ShoppingBag, authOnly: true },
   { href: "/profile", label: "我的等级 · 成就", icon: Trophy, authOnly: true },
+  { href: "/admin", label: "站长后台", icon: LayoutDashboard, authOnly: true, adminOnly: true },
 ];
 
 export function MobileNavDrawer({ user }: MobileNavDrawerProps) {
@@ -69,7 +72,11 @@ export function MobileNavDrawer({ user }: MobileNavDrawerProps) {
     };
   }, [open]);
 
-  const links = navLinks.filter((link) => !link.authOnly || user);
+  const links = navLinks.filter(
+    (link) =>
+      (!link.authOnly || user) &&
+      (!link.adminOnly || isSuperAdmin(user?.role))
+  );
 
   const overlay =
     open && mounted
