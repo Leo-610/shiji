@@ -859,6 +859,8 @@ html.light .svip-badge-op {
 }
 
 .avatar-premium-legendary {
+  --frame-glow: #a78bfa;
+  --frame-primary: #fbbf24;
   animation: legendary-shell-glow 2.8s ease-in-out infinite;
 }
 
@@ -874,22 +876,27 @@ html.light .svip-badge-op {
 @keyframes legendary-shell-glow {
   0%,
   100% {
-    filter: drop-shadow(0 0 8px rgba(167, 139, 250, 0.35));
+    filter: drop-shadow(
+        0 0 8px color-mix(in srgb, var(--frame-glow) 40%, transparent)
+      );
   }
   50% {
-    filter: drop-shadow(0 0 18px rgba(251, 191, 36, 0.45))
-      drop-shadow(0 0 28px rgba(99, 102, 241, 0.35));
+    filter: drop-shadow(
+        0 0 18px color-mix(in srgb, var(--frame-primary) 55%, transparent)
+      )
+      drop-shadow(
+        0 0 28px color-mix(in srgb, var(--frame-glow) 45%, transparent)
+      );
   }
 }
 
+/* Scale only — do not animate filter here; it overrides per-frame lottieFilter */
 @keyframes legendary-lottie-pulse {
   0%,
   100% {
-    filter: brightness(1) saturate(1);
     transform: scale(1.1);
   }
   50% {
-    filter: brightness(1.15) saturate(1.2);
     transform: scale(1.14);
   }
 }

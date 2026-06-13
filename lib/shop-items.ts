@@ -34,7 +34,38 @@ export interface ShopItem {
   badgeLabel?: string;
 }
 
-export const SHOP_ITEMS: ShopItem[] = [
+export const RARITY_LABELS: Record<ShopRarity, string> = {
+  common: "普通",
+  rare: "稀有",
+  epic: "史诗",
+  legendary: "传说",
+};
+
+const SHOP_TYPE_ORDER: Record<ShopItemType, number> = {
+  avatar_frame: 0,
+  title_badge: 1,
+};
+
+const SHOP_RARITY_ORDER: Record<ShopRarity, number> = {
+  common: 0,
+  rare: 1,
+  epic: 2,
+  legendary: 3,
+};
+
+/** Avatar frames first (common→legendary), then title badges (common→legendary). */
+export function sortShopItems(items: ShopItem[]): ShopItem[] {
+  return [...items].sort((a, b) => {
+    const typeDiff = SHOP_TYPE_ORDER[a.type] - SHOP_TYPE_ORDER[b.type];
+    if (typeDiff !== 0) return typeDiff;
+    const rarityDiff =
+      SHOP_RARITY_ORDER[a.rarity] - SHOP_RARITY_ORDER[b.rarity];
+    if (rarityDiff !== 0) return rarityDiff;
+    return a.price - b.price || a.slug.localeCompare(b.slug);
+  });
+}
+
+const BASE_SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-ember",
     name: "余烬脉冲框",
@@ -201,6 +232,8 @@ export const SHOP_ITEMS: ShopItem[] = [
   ...SHOP_VARIANT_ITEMS,
 ];
 
+export const SHOP_ITEMS: ShopItem[] = sortShopItems(BASE_SHOP_ITEMS);
+
 const itemMap = new Map(SHOP_ITEMS.map((item) => [item.slug, item]));
 
 export function getShopItem(slug: string): ShopItem | undefined {
@@ -326,10 +359,3 @@ export function getTitleBadgeClass(slug: string | null | undefined): string {
   if (!slug) return "title-badge-default";
   return TITLE_BADGE_CLASSES[slug] ?? "title-badge-default";
 }
-
-export const RARITY_LABELS: Record<ShopRarity, string> = {
-  common: "普通",
-  rare: "稀有",
-  epic: "史诗",
-  legendary: "传说",
-};

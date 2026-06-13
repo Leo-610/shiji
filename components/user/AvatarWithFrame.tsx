@@ -68,6 +68,14 @@ export function AvatarWithFrame({
           theme.rarity === "legendary" && "avatar-premium-legendary",
           className
         )}
+        style={
+          theme.rarity === "legendary"
+            ? ({
+                "--frame-glow": theme.glow,
+                "--frame-primary": theme.primary,
+              } as React.CSSProperties)
+            : undefined
+        }
       >
         <div
           className={cn(
