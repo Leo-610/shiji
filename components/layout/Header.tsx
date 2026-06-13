@@ -71,10 +71,15 @@ export function Header({ user }: HeaderProps) {
             <div className="flex items-center gap-2 sm:gap-3 ml-1">
               <Link
                 href="/shop"
-                className="hidden sm:flex items-center gap-1 text-xs text-theme-muted hover:text-theme-accent transition-colors font-orbitron"
+                title="积分商店"
+                className="hidden sm:flex items-center gap-1.5 text-xs text-theme-muted hover:text-theme-accent transition-colors"
               >
-                <Coins className="size-3.5" />
-                {user.points ?? 0}
+                <Coins className="size-3.5 shrink-0 text-theme-accent" aria-hidden />
+                <span className="tabular-nums text-theme-heading font-medium">
+                  {Number.isFinite(Number(user.points))
+                    ? Number(user.points)
+                    : 0}
+                </span>
               </Link>
               <Link
                 href="/profile"

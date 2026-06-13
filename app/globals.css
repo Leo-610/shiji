@@ -3,7 +3,6 @@
 @custom-variant light (&:where(.light, .light *));
 
 @theme {
-  --font-orbitron: "Orbitron", sans-serif;
   --font-noto: "Noto Sans SC", sans-serif;
 
   --color-cyber-bg: #0a0a0f;
@@ -859,6 +858,12 @@ html.light .svip-badge-op {
   height: 100%;
   transform: scale(1.06);
   transform-origin: center center;
+}
+
+/* DotLottie may inject a fallback img on load failure — hide to avoid broken-icon glyph */
+.avatar-lottie-wrap img,
+.avatar-lottie-player img {
+  display: none !important;
 }
 
 .avatar-lottie-player {
