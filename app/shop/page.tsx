@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { getShopPageData } from "@/app/actions/shop";
 import { formatShopValidityNote } from "@/lib/shop-duration";
+import { getPointRuleDescriptions } from "@/lib/points";
 import { ShopGrid } from "@/components/shop/ShopGrid";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { GlitchText } from "@/components/cyber/GlitchText";

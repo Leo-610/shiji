@@ -87,7 +87,7 @@ async function tryLegendShardMilestone(
 
   for (const slug of legendaryFrames) {
     if (await hasPermanentShopItem(userId, slug)) continue;
-    const grant = await grantPermanentShopItem(userId, slug, "shard_milestone");
+    const grant = await grantPermanentShopItem(userId, slug);
     if (grant.ok) {
       const item = getShopItem(slug);
       return {
@@ -254,11 +254,7 @@ export async function spinWheel(payment: WheelPaymentMethod) {
       }
       case "frame_permanent": {
         const slug = prize.itemSlug ?? ULTIMATE_FRAME_SLUG;
-        const grant = await grantPermanentShopItem(
-          session.user.id,
-          slug,
-          "wheel_ultimate"
-        );
+        const grant = await grantPermanentShopItem(session.user.id, slug);
         if (grant.ok) {
           description = describeWheelPrize(prize);
           newLuck = 0;
