@@ -11,7 +11,7 @@ import {
 import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { Button } from "@/components/ui/button";
-import { getFrameTheme, frameHasAnimatedOverlay, getTitleBadgeClass } from "@/lib/shop-items";
+import { frameHasAnimatedOverlay, getTitleBadgeClass } from "@/lib/shop-items";
 import { cn } from "@/lib/utils";
 
 interface ShopGridProps {
