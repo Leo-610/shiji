@@ -28,6 +28,10 @@ export const users = pgTable("users", {
   equippedTitleBadge: text("equipped_title_badge"),
   /** Public display ID — unique, permanent, shown as #10001 */
   readerId: integer("reader_id").unique(),
+  /** Successful nickname changes (first change is free). */
+  nameChangeCount: integer("name_change_count").notNull().default(0),
+  /** Successful avatar uploads (first upload is free). */
+  avatarChangeCount: integer("avatar_change_count").notNull().default(0),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 

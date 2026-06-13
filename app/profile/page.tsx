@@ -13,8 +13,10 @@ import { CheckInButton } from "@/components/user/CheckInButton";
 import { AchievementGrid } from "@/components/user/AchievementGrid";
 import { WeeklyTasksCard } from "@/components/user/WeeklyTasksCard";
 import { ProfileSettingsForm } from "@/components/profile/ProfileSettingsForm";
+import { getProfileEditMeta } from "@/app/actions/profile";
 import { getPointRuleDescriptions } from "@/lib/points";
 import { getDailyCapRuleDescriptions } from "@/lib/point-caps";
+import { getProfileEditRuleDescriptions } from "@/lib/profile-edit-cost";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -25,9 +27,11 @@ export default async function ProfilePage() {
   const profile = await getMyLevelProfile();
   const achievements = await getMyAchievements();
   const weeklyTasks = await getMyWeeklyTasks();
+  const editMeta = await getProfileEditMeta();
   const rules = getXpRuleDescriptions();
   const pointRules = getPointRuleDescriptions();
   const dailyCapRules = getDailyCapRuleDescriptions();
+  const profileEditRules = getProfileEditRuleDescriptions();
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
@@ -47,6 +51,15 @@ export default async function ProfilePage() {
           readerId={session.user.readerId}
           role={session.user.role}
           frameSlug={session.user.equippedAvatarFrame}
+          editMeta={
+            editMeta ?? {
+              points: profile?.points ?? 0,
+              nameChangeCount: 0,
+              avatarChangeCount: 0,
+              nextNameCost: 0,
+              nextAvatarCost: 0,
+            }
+          }
         />
 
         <div className="flex items-center gap-4">
@@ -141,8 +154,26 @@ export default async function ProfilePage() {
         </ul>
         <div className="border-t border-theme-subtle pt-4 space-y-3">
           <p className="text-xs font-orbitron tracking-widest text-theme-accent opacity-70 uppercase">
-            每日积分上限
+            资料修改消耗
           </p>
+          <ul className="space-y-2">
+            {profileEditRules.map((rule) => (
+              <li
+                key={rule.action}
+                className="flex items-start justify-between gap-4 text-sm"
+              >
+                <div>
+                  <p className="text-theme-heading">{rule.action}</p>
+                  <p className="text-xs text-theme-muted mt-0.5">{rule.note}</p>
+                </div>
+                <span className="text-theme-accent font-orbitron shrink-0 text-xs">
+                  {rule.firstFree ? "首免" : "—"}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="border-t border-theme-subtle pt-4 space-y-3">
           <ul className="space-y-2">
             {dailyCapRules.map((rule) => (
               <li

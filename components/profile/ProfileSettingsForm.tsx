@@ -10,7 +10,9 @@ import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
 import {
   updateProfileName,
   uploadProfileAvatar,
+  type ProfileEditMeta,
 } from "@/app/actions/profile";
+import { formatProfileEditCost } from "@/lib/profile-edit-cost";
 import type { UserRole } from "@/lib/roles";
 
 interface ProfileSettingsFormProps {
@@ -19,6 +21,7 @@ interface ProfileSettingsFormProps {
   readerId: number | null;
   role: UserRole;
   frameSlug: string | null;
+  editMeta: ProfileEditMeta;
 }
 
 export function ProfileSettingsForm({
@@ -27,6 +30,7 @@ export function ProfileSettingsForm({
   readerId,
   role,
   frameSlug,
+  editMeta: initialEditMeta,
 }: ProfileSettingsFormProps) {
   const router = useRouter();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -37,6 +41,7 @@ export function ProfileSettingsForm({
   const [namePending, setNamePending] = useState(false);
   const [avatarPending, setAvatarPending] = useState(false);
   const [nameSaved, setNameSaved] = useState(false);
+  const [editMeta, setEditMeta] = useState(initialEditMeta);
 
   async function handleNameSave() {
     setNameError(null);
@@ -51,6 +56,14 @@ export function ProfileSettingsForm({
       return;
     }
     setNameSaved(true);
+    if (result.points !== undefined) {
+      setEditMeta((prev) => ({
+        ...prev,
+        points: result.points!,
+        nameChangeCount: result.nameChangeCount ?? prev.nameChangeCount,
+        nextNameCost: result.nextNameCost ?? prev.nextNameCost,
+      }));
+    }
     router.refresh();
   }
 
@@ -67,6 +80,14 @@ export function ProfileSettingsForm({
     }
     if (result?.imageUrl) {
       setPreviewImage(result.imageUrl);
+    }
+    if (result.points !== undefined) {
+      setEditMeta((prev) => ({
+        ...prev,
+        points: result.points!,
+        avatarChangeCount: result.avatarChangeCount ?? prev.avatarChangeCount,
+        nextAvatarCost: result.nextAvatarCost ?? prev.nextAvatarCost,
+      }));
     }
     router.refresh();
   }
@@ -85,6 +106,13 @@ export function ProfileSettingsForm({
             </span>
           )}
         </p>
+        <p className="text-[11px] text-theme-muted mt-1">
+          昵称与头像各有一次免费修改机会，之后消耗积分且费用逐次递增（当前积分{" "}
+          <span className="font-orbitron text-theme-accent tabular-nums">
+            {editMeta.points}
+          </span>
+          ）
+        </p>
       </div>
 
       <div className="flex flex-col sm:flex-row items-center sm:items-start gap-5">
@@ -98,7 +126,11 @@ export function ProfileSettingsForm({
           />
           <button
             type="button"
-            disabled={avatarPending}
+            disabled={
+              avatarPending ||
+              (editMeta.nextAvatarCost > 0 &&
+                editMeta.points < editMeta.nextAvatarCost)
+            }
             onClick={() => fileInputRef.current?.click()}
             className="absolute -bottom-1 -right-1 flex size-9 items-center justify-center rounded-full border border-theme-subtle bg-theme-surface text-theme-accent shadow-lg hover:bg-[color:var(--app-accent)]/15 transition-colors disabled:opacity-50"
             aria-label="上传头像"
@@ -124,7 +156,10 @@ export function ProfileSettingsForm({
 
         <div className="flex-1 w-full space-y-3 min-w-0">
           <p className="text-[11px] text-theme-muted text-center sm:text-left">
-            支持 JPG / PNG / WebP / GIF，最大 2MB
+            支持 JPG / PNG / WebP / GIF，最大 2MB · 本次修改{" "}
+            <span className="text-theme-accent">
+              {formatProfileEditCost(editMeta.nextAvatarCost)}
+            </span>
           </p>
           {avatarError && (
             <p className="text-sm text-red-400">{avatarError}</p>
@@ -147,7 +182,11 @@ export function ProfileSettingsForm({
               <Button
                 type="button"
                 variant="outline"
-                disabled={namePending}
+                disabled={
+                  namePending ||
+                  (editMeta.nextNameCost > 0 &&
+                    editMeta.points < editMeta.nextNameCost)
+                }
                 onClick={handleNameSave}
                 className="shrink-0"
               >
@@ -156,7 +195,9 @@ export function ProfileSettingsForm({
                 ) : (
                   <UserPen className="size-4" />
                 )}
-                保存
+                {editMeta.nextNameCost === 0
+                  ? "保存"
+                  : `保存 · ${editMeta.nextNameCost}`}
               </Button>
             </div>
             {nameError && <p className="text-sm text-red-400">{nameError}</p>}
@@ -164,7 +205,10 @@ export function ProfileSettingsForm({
               <p className="text-xs text-emerald-400">昵称已更新</p>
             )}
             <p className="text-[11px] text-theme-muted">
-              2–24 个字符，支持中文、字母、数字；不可与已有昵称重复
+              2–24 个字符，支持中文、字母、数字；不可与已有昵称重复 · 本次修改{" "}
+              <span className="text-theme-accent">
+                {formatProfileEditCost(editMeta.nextNameCost)}
+              </span>
             </p>
           </div>
         </div>
