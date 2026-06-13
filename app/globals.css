@@ -824,21 +824,33 @@ html.light .svip-badge-op {
 
 .avatar-premium-face {
   position: absolute;
-  inset: 21%;
   z-index: 1;
   border-radius: 9999px;
   overflow: hidden;
   box-shadow: 0 0 0 2px var(--app-bg);
 }
 
+/* SVG rings: larger face, tighter overlay */
+.avatar-premium-face-svg {
+  inset: 5%;
+}
+
+/* Lottie wings: smaller face, wider overlay */
+.avatar-premium-face-lottie {
+  inset: 21%;
+}
+
 .avatar-premium-overlay {
   position: absolute;
-  inset: -14%;
   z-index: 2;
   pointer-events: none;
 }
 
-.avatar-premium-animated .avatar-premium-overlay {
+.avatar-premium-overlay-svg {
+  inset: -8%;
+}
+
+.avatar-premium-overlay-lottie {
   inset: -22%;
 }
 

@@ -65,17 +65,30 @@ export function AvatarWithFrame({
         className={cn(
           "avatar-premium-shell",
           shellSizeMap[size],
-          theme.lottieSrc && "avatar-premium-animated",
           className
         )}
       >
-        <div className="avatar-premium-face">
+        <div
+          className={cn(
+            "avatar-premium-face",
+            theme.lottieSrc
+              ? "avatar-premium-face-lottie"
+              : "avatar-premium-face-svg"
+          )}
+        >
           <Avatar className="size-full">
             <AvatarImage src={image ?? undefined} />
             <AvatarFallback>{fallback}</AvatarFallback>
           </Avatar>
         </div>
-        <div className="avatar-premium-overlay">
+        <div
+          className={cn(
+            "avatar-premium-overlay",
+            theme.lottieSrc
+              ? "avatar-premium-overlay-lottie"
+              : "avatar-premium-overlay-svg"
+          )}
+        >
           <FrameOverlay theme={theme} />
         </div>
       </div>
