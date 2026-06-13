@@ -14,6 +14,7 @@ import { AchievementGrid } from "@/components/user/AchievementGrid";
 import { WeeklyTasksCard } from "@/components/user/WeeklyTasksCard";
 import { ProfileSettingsForm } from "@/components/profile/ProfileSettingsForm";
 import { getPointRuleDescriptions } from "@/lib/points";
+import { getDailyCapRuleDescriptions } from "@/lib/point-caps";
 
 export default async function ProfilePage() {
   const session = await auth();
@@ -26,6 +27,7 @@ export default async function ProfilePage() {
   const weeklyTasks = await getMyWeeklyTasks();
   const rules = getXpRuleDescriptions();
   const pointRules = getPointRuleDescriptions();
+  const dailyCapRules = getDailyCapRuleDescriptions();
 
   return (
     <div className="max-w-2xl mx-auto space-y-8">
@@ -137,6 +139,27 @@ export default async function ProfilePage() {
             </li>
           ))}
         </ul>
+        <div className="border-t border-theme-subtle pt-4 space-y-3">
+          <p className="text-xs font-orbitron tracking-widest text-theme-accent opacity-70 uppercase">
+            每日积分上限
+          </p>
+          <ul className="space-y-2">
+            {dailyCapRules.map((rule) => (
+              <li
+                key={rule.category}
+                className="flex items-start justify-between gap-4 text-sm"
+              >
+                <div>
+                  <p className="text-theme-heading">{rule.category}</p>
+                  <p className="text-xs text-theme-muted mt-0.5">{rule.note}</p>
+                </div>
+                <span className="text-theme-accent font-orbitron shrink-0 text-xs">
+                  ≤{rule.cap}/日
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
         <p className="text-xs text-theme-muted">
           <Link href="/shop" className="text-theme-accent hover:underline">
             打开积分商店 →

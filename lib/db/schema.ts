@@ -224,6 +224,19 @@ export const userWeeklyTasks = pgTable(
   (t) => [primaryKey({ columns: [t.userId, t.weekStart, t.taskId] })]
 );
 
+export const userDailyPoints = pgTable(
+  "user_daily_points",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    date: text("date").notNull(),
+    category: text("category").notNull(),
+    points: integer("points").notNull().default(0),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.date, t.category] })]
+);
+
 export const rateLimitEvents = pgTable("rate_limit_events", {
   id: uuid("id").primaryKey().defaultRandom(),
   key: text("key").notNull(),
@@ -240,6 +253,7 @@ export const usersRelations = relations(users, ({ many }) => ({
   notifications: many(notifications),
   achievements: many(userAchievements),
   weeklyTasks: many(userWeeklyTasks),
+  dailyPoints: many(userDailyPoints),
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({

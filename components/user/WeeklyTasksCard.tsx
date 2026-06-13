@@ -17,6 +17,9 @@ export function WeeklyTasksCard({ board }: WeeklyTasksCardProps) {
             <p className="text-[10px] text-theme-muted mt-0.5">
               每周一 0:00 刷新 · {board.weekLabel}
             </p>
+            <p className="text-[10px] text-theme-subtle mt-0.5">
+              补差奖励（已扣行为分）· 最高 {board.totalPoints} 积分
+            </p>
           </div>
         </div>
         <div className="text-right shrink-0">
@@ -84,7 +87,7 @@ export function WeeklyTasksCard({ board }: WeeklyTasksCardProps) {
       </ul>
 
       <p className="text-[10px] text-theme-subtle leading-relaxed">
-        完成每周任务可获得额外积分，与日常发帖、评论、签到奖励叠加。
+        周任务积分为补差发放：发帖/评论/签到行为分已计入日常奖励，任务只补剩余差额。
       </p>
     </div>
   );

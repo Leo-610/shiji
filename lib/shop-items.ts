@@ -1,4 +1,9 @@
 import { LOTTIE_ASSETS } from "@/lib/lottie-frames";
+import {
+  SHOP_VARIANT_BADGE_CLASSES,
+  SHOP_VARIANT_FRAME_THEMES,
+  SHOP_VARIANT_ITEMS,
+} from "@/lib/shop-variants";
 
 export type ShopItemType = "avatar_frame" | "title_badge";
 export type ShopRarity = "common" | "rare" | "epic" | "legendary";
@@ -81,17 +86,17 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-void",
     name: "虚空裂隙框",
-    description: "Lottie 羽翼动效 · 虚空靛换色，传说档压迫感。",
+    description: "Lottie 羽翼动效 · 虚空靛换色，传说档强化脉冲外环。",
     type: "avatar_frame",
-    price: 4000,
+    price: 10000,
     rarity: "legendary",
   },
   {
     slug: "frame-ascension",
     name: "升格神谕框",
-    description: "Lottie 羽翼动效 · 原色典藏款，传说档旗舰动效框。",
+    description: "Lottie 羽翼动效 · 原色典藏款，传说档旗舰强化动效。",
     type: "avatar_frame",
-    price: 4000,
+    price: 10000,
     rarity: "legendary",
   },
   {
@@ -171,7 +176,7 @@ export const SHOP_ITEMS: ShopItem[] = [
     name: "虚空领主徽章",
     description: "深空紫黑辉光称号，虚空裂隙守护者。",
     type: "title_badge",
-    price: 650,
+    price: 2000,
     rarity: "legendary",
     badgeLabel: "虚空领主",
   },
@@ -180,7 +185,7 @@ export const SHOP_ITEMS: ShopItem[] = [
     name: "升格者徽章",
     description: "金橙流光 shimmer 称号，升格之路见证者。",
     type: "title_badge",
-    price: 900,
+    price: 2800,
     rarity: "legendary",
     badgeLabel: "升格者",
   },
@@ -189,10 +194,11 @@ export const SHOP_ITEMS: ShopItem[] = [
     name: "余烬先知徽章",
     description: "金红至尊脉冲称号，积分商店终极铭牌。",
     type: "title_badge",
-    price: 1200,
+    price: 4000,
     rarity: "legendary",
     badgeLabel: "余烬先知",
   },
+  ...SHOP_VARIANT_ITEMS,
 ];
 
 const itemMap = new Map(SHOP_ITEMS.map((item) => [item.slug, item]));
@@ -274,7 +280,9 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     glow: "#fcd34d",
     rarity: "legendary",
     lottieSrc: LOTTIE_ASSETS.avatarFrame,
+    lottieFilter: "saturate(1.2) brightness(1.05)",
   },
+  ...SHOP_VARIANT_FRAME_THEMES,
 };
 
 export function getFrameTheme(
@@ -311,6 +319,7 @@ export const TITLE_BADGE_CLASSES: Record<string, string> = {
   "badge-void-lord": "title-badge-void-lord",
   "badge-ascendant": "title-badge-ascendant",
   "badge-prophet": "title-badge-prophet",
+  ...SHOP_VARIANT_BADGE_CLASSES,
 };
 
 export function getTitleBadgeClass(slug: string | null | undefined): string {

@@ -2,7 +2,7 @@ import { eq, sql } from "drizzle-orm";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { threads, threadViews, users } from "@/lib/db/schema";
-import { awardPoints } from "@/lib/award";
+import { awardPointsWithDailyCap } from "@/lib/point-caps";
 import { levelFromXp, XP_REWARDS } from "@/lib/level";
 import { POINT_REWARDS } from "@/lib/points";
 
@@ -59,7 +59,11 @@ export async function recordThreadView(threadId: string, authorId: string | null
 
     if (authorId) {
       await awardXp(authorId, XP_REWARDS.threadViewReceived);
-      await awardPoints(authorId, POINT_REWARDS.threadViewReceived);
+      await awardPointsWithDailyCap(
+        authorId,
+        POINT_REWARDS.threadViewReceived,
+        "thread_view_received"
+      );
     }
   } catch {
     // tables may be missing until migration

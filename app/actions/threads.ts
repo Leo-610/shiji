@@ -11,7 +11,7 @@ import { isSuperAdmin } from "@/lib/roles";
 import { rateLimitForUserOrIp } from "@/lib/rate-limit";
 import { CONTENT_MAX_LENGTH } from "@/lib/content";
 import { XP_REWARDS } from "@/lib/level";
-import { awardPoints } from "@/lib/award";
+import { awardPointsWithDailyCap } from "@/lib/point-caps";
 import { awardXp } from "@/lib/xp";
 import { POINT_REWARDS } from "@/lib/points";
 import { createThreadSlug } from "@/lib/utils";
@@ -79,7 +79,11 @@ export async function createThread(formData: FormData) {
 
   if (session?.user?.id) {
     await awardXp(session.user.id, XP_REWARDS.createThread);
-    await awardPoints(session.user.id, POINT_REWARDS.createThread);
+    await awardPointsWithDailyCap(
+      session.user.id,
+      POINT_REWARDS.createThread,
+      "create_thread"
+    );
     await checkStatAchievements(session.user.id);
     const weeklyRewards = await trackWeeklyTask(session.user.id, "post_thread");
     if (weeklyRewards.length > 0) {
@@ -140,7 +144,11 @@ export async function createComment(formData: FormData) {
 
   if (session?.user?.id) {
     await awardXp(session.user.id, XP_REWARDS.createComment);
-    await awardPoints(session.user.id, POINT_REWARDS.createComment);
+    await awardPointsWithDailyCap(
+      session.user.id,
+      POINT_REWARDS.createComment,
+      "create_comment"
+    );
     await checkStatAchievements(session.user.id);
 
     await createReplyNotifications({

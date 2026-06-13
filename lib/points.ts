@@ -18,6 +18,33 @@ export function getCheckInPoints(streak: number): number {
   return POINT_REWARDS.dailyCheckIn + streakBonus + milestone;
 }
 
+/** Weekly task payout after deducting action points already earned for the same actions. */
+export function getWeeklyTaskPointBonus(
+  taskId: "post_thread" | "post_comments" | "check_in_days",
+  target: number,
+  nominalPoints: number
+): number {
+  switch (taskId) {
+    case "post_thread":
+      return Math.max(
+        0,
+        nominalPoints - POINT_REWARDS.createThread * target
+      );
+    case "post_comments":
+      return Math.max(
+        0,
+        nominalPoints - POINT_REWARDS.createComment * target
+      );
+    case "check_in_days":
+      return Math.max(
+        0,
+        nominalPoints - POINT_REWARDS.dailyCheckIn * target
+      );
+    default:
+      return nominalPoints;
+  }
+}
+
 export function getPointRuleDescriptions() {
   return [
     { action: "每日签到抽卡", points: POINT_REWARDS.dailyCheckIn, note: "连续签到额外 +5/天" },
@@ -27,6 +54,10 @@ export function getPointRuleDescriptions() {
     { action: "帖子被点赞", points: POINT_REWARDS.receiveThreadLike, note: "每次新增点赞" },
     { action: "评论被点赞", points: POINT_REWARDS.receiveCommentLike, note: "每次新增点赞" },
     { action: "帖子被浏览", points: POINT_REWARDS.threadViewReceived, note: "每位登录读者首次浏览" },
-    { action: "每周任务", points: 170, note: "每周一刷新，三项合计最高奖励" },
+    {
+      action: "每周任务补差",
+      points: 30,
+      note: "完成周任务后发放，已扣除发帖/评论/签到行为分（约 20+10+0）",
+    },
   ];
 }

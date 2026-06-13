@@ -12,7 +12,7 @@ import {
   threads,
 } from "@/lib/db/schema";
 import { XP_REWARDS } from "@/lib/level";
-import { awardPoints } from "@/lib/award";
+import { awardPointsWithDailyCap } from "@/lib/point-caps";
 import { awardXp } from "@/lib/xp";
 import { POINT_REWARDS } from "@/lib/points";
 import { unlockAchievement } from "@/lib/achievements";
@@ -60,7 +60,11 @@ export async function toggleThreadLike(threadId: string, threadSlug: string) {
   });
   if (thread?.authorId && thread.authorId !== user.userId) {
     await awardXp(thread.authorId, XP_REWARDS.receiveThreadLike);
-    await awardPoints(thread.authorId, POINT_REWARDS.receiveThreadLike);
+    await awardPointsWithDailyCap(
+      thread.authorId,
+      POINT_REWARDS.receiveThreadLike,
+      "receive_thread_like"
+    );
     await unlockAchievement(thread.authorId, "liked_once");
   }
 
@@ -106,7 +110,11 @@ export async function toggleCommentLike(
   });
   if (comment?.authorId && comment.authorId !== user.userId) {
     await awardXp(comment.authorId, XP_REWARDS.receiveCommentLike);
-    await awardPoints(comment.authorId, POINT_REWARDS.receiveCommentLike);
+    await awardPointsWithDailyCap(
+      comment.authorId,
+      POINT_REWARDS.receiveCommentLike,
+      "receive_comment_like"
+    );
     await unlockAchievement(comment.authorId, "liked_once");
   }
 

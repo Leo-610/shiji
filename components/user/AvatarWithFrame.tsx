@@ -65,6 +65,7 @@ export function AvatarWithFrame({
         className={cn(
           "avatar-premium-shell",
           shellSizeMap[size],
+          theme.rarity === "legendary" && "avatar-premium-legendary",
           className
         )}
       >

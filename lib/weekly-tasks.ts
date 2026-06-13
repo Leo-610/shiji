@@ -1,5 +1,6 @@
 import { and, eq } from "drizzle-orm";
 import { awardPoints } from "@/lib/award";
+import { getWeeklyTaskPointBonus } from "@/lib/points";
 import { formatWeekRangeLabel, getWeekStartInShanghai } from "@/lib/date";
 import { db } from "@/lib/db";
 import { userWeeklyTasks } from "@/lib/db/schema";
@@ -82,13 +83,18 @@ export async function getWeeklyTasksBoard(userId: string): Promise<WeeklyTasksBo
     const row = rowMap.get(def.id);
     const progress = row?.progress ?? 0;
     const completed = row?.completedAt != null;
+    const bonusPoints = getWeeklyTaskPointBonus(
+      def.id,
+      def.target,
+      def.points
+    );
     return {
       id: def.id,
       name: def.name,
       description: def.description,
       target: def.target,
       progress: Math.min(progress, def.target),
-      points: def.points,
+      points: bonusPoints,
       completed,
       completedAt: row?.completedAt?.toISOString() ?? null,
     };
@@ -98,7 +104,11 @@ export async function getWeeklyTasksBoard(userId: string): Promise<WeeklyTasksBo
   const earnedPoints = items
     .filter((i) => i.completed)
     .reduce((sum, i) => sum + i.points, 0);
-  const totalPoints = WEEKLY_TASKS.reduce((sum, t) => sum + t.points, 0);
+  const totalPoints = WEEKLY_TASKS.reduce(
+    (sum, t) =>
+      sum + getWeeklyTaskPointBonus(t.id, t.target, t.points),
+    0
+  );
 
   return {
     weekStart,
@@ -149,8 +159,11 @@ export async function trackWeeklyTask(
       completedAt: completed ? new Date() : null,
     });
     if (completed) {
-      await awardPoints(userId, def.points);
-      rewards.push({ taskId, name: def.name, points: def.points });
+      const bonus = getWeeklyTaskPointBonus(def.id, def.target, def.points);
+      if (bonus > 0) {
+        await awardPoints(userId, bonus);
+      }
+      rewards.push({ taskId, name: def.name, points: bonus });
     }
     return rewards;
   }
@@ -175,8 +188,11 @@ export async function trackWeeklyTask(
     );
 
   if (completed) {
-    await awardPoints(userId, def.points);
-    rewards.push({ taskId, name: def.name, points: def.points });
+    const bonus = getWeeklyTaskPointBonus(def.id, def.target, def.points);
+    if (bonus > 0) {
+      await awardPoints(userId, bonus);
+    }
+    rewards.push({ taskId, name: def.name, points: bonus });
   }
 
   return rewards;
