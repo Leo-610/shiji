@@ -12,11 +12,19 @@ interface AvatarWithFrameProps {
   className?: string;
 }
 
-const sizeMap = {
+/** Plain avatar diameter (no frame). */
+const plainSizeMap = {
   xs: "size-6",
   sm: "size-8",
   md: "size-10",
   lg: "size-14",
+};
+
+const shellSizeMap = {
+  xs: "avatar-shell-xs",
+  sm: "avatar-shell-sm",
+  md: "avatar-shell-md",
+  lg: "avatar-shell-lg",
 };
 
 export function AvatarWithFrame({
@@ -28,24 +36,29 @@ export function AvatarWithFrame({
   className,
 }: AvatarWithFrameProps) {
   const admin = isSuperAdmin(role);
-  const avatarSize = sizeMap[size];
   const shopFrame = !admin ? getFrameClass(frameSlug) : null;
-
-  const wrapClass = admin
-    ? "svip-avatar-wrap-admin"
-    : shopFrame ?? null;
-
+  const frameClass = admin ? "avatar-frame-admin" : shopFrame;
   const fallback = name?.[0]?.toUpperCase() ?? "U";
 
-  if (wrapClass) {
+  if (frameClass) {
     return (
-      <div className={cn("shrink-0", wrapClass, avatarSize, className)}>
-        <div className={cn("svip-avatar-inner", avatarSize)}>
+      <div
+        className={cn(
+          "avatar-frame-shell",
+          shellSizeMap[size],
+          frameClass,
+          className
+        )}
+      >
+        <div className="avatar-frame-halo" aria-hidden />
+        <div className="avatar-frame-orbit" aria-hidden />
+        <div className="avatar-frame-ring" aria-hidden />
+        <div className="avatar-frame-face">
           <Avatar className="size-full">
             <AvatarImage src={image ?? undefined} />
             <AvatarFallback>{fallback}</AvatarFallback>
           </Avatar>
-          <div className="svip-avatar-shimmer" aria-hidden />
+          <div className="avatar-frame-shine" aria-hidden />
         </div>
       </div>
     );
@@ -55,7 +68,7 @@ export function AvatarWithFrame({
     <Avatar
       className={cn(
         "shrink-0 border border-[color:var(--app-border)]",
-        avatarSize,
+        plainSizeMap[size],
         className
       )}
     >
