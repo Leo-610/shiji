@@ -11,6 +11,7 @@ import {
 import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { Button } from "@/components/ui/button";
+import { getFrameTheme } from "@/lib/shop-items";
 import { cn } from "@/lib/utils";
 
 interface ShopGridProps {
@@ -143,6 +144,9 @@ export function ShopGrid({
                 >
                   {item.rarityLabel}
                   {item.type === "avatar_frame" ? " · 头像框" : " · 称号"}
+                  {item.type === "avatar_frame" &&
+                    getFrameTheme(item.slug)?.lottieSrc &&
+                    " · 动效"}
                 </span>
               </div>
               <span className="text-sm font-orbitron text-theme-accent shrink-0">
@@ -154,7 +158,7 @@ export function ShopGrid({
               {item.description}
             </p>
 
-            {item.type === "avatar_frame" && item.frameClass && (
+            {item.type === "avatar_frame" && (
               <div className="flex justify-center py-2">
                 <AvatarWithFrame
                   name={userName}

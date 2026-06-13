@@ -1,5 +1,18 @@
+import { LOTTIE_FRAME_URLS } from "@/lib/lottie-frames";
+
 export type ShopItemType = "avatar_frame" | "title_badge";
 export type ShopRarity = "common" | "rare" | "epic" | "legendary";
+
+export interface FrameTheme {
+  id: string;
+  primary: string;
+  secondary: string;
+  accent: string;
+  glow: string;
+  rarity: ShopRarity;
+  /** Lottie overlay for animated frames (epic+). */
+  lottieSrc?: string;
+}
 
 export interface ShopItem {
   slug: string;
@@ -8,8 +21,6 @@ export interface ShopItem {
   type: ShopItemType;
   price: number;
   rarity: ShopRarity;
-  /** CSS wrapper class for avatar frames */
-  frameClass?: string;
   /** Short label for title badges */
   badgeLabel?: string;
 }
@@ -22,7 +33,6 @@ export const SHOP_ITEMS: ShopItem[] = [
     type: "avatar_frame",
     price: 60,
     rarity: "common",
-    frameClass: "avatar-frame-ember",
   },
   {
     slug: "frame-ion",
@@ -31,61 +41,54 @@ export const SHOP_ITEMS: ShopItem[] = [
     type: "avatar_frame",
     price: 120,
     rarity: "common",
-    frameClass: "avatar-frame-ion",
   },
   {
     slug: "frame-nebula",
     name: "星云旋臂框",
-    description: "紫青星云渐变，讨论区辨识度拉满。",
+    description: "紫青星云渐变 + Lottie 动效，讨论区辨识度拉满。",
     type: "avatar_frame",
     price: 200,
     rarity: "rare",
-    frameClass: "avatar-frame-nebula",
   },
   {
     slug: "frame-entropy",
     name: "熵流之环",
-    description: "暗紫熵流涌动，神秘读者专属。",
+    description: "暗紫熵流涌动 + Lottie 动效，神秘读者专属。",
     type: "avatar_frame",
     price: 280,
     rarity: "rare",
-    frameClass: "avatar-frame-entropy",
   },
   {
     slug: "frame-solar",
     name: "日冕金环",
-    description: "金色日冕闪耀，如同恒星大气层。",
+    description: "金色日冕 Lottie 动效，如同恒星大气层。",
     type: "avatar_frame",
     price: 400,
     rarity: "epic",
-    frameClass: "avatar-frame-solar",
   },
   {
     slug: "frame-quantum",
     name: "量子棱镜框",
-    description: "七彩棱镜折射，高阶收藏款。",
+    description: "七彩棱镜 Lottie 动效，高阶收藏款。",
     type: "avatar_frame",
     price: 550,
     rarity: "epic",
-    frameClass: "avatar-frame-quantum",
   },
   {
     slug: "frame-void",
     name: "虚空裂隙框",
-    description: "深空裂隙边框，压迫感与高级感并存。",
+    description: "深空裂隙 Lottie 动效，压迫感与高级感并存。",
     type: "avatar_frame",
     price: 720,
     rarity: "legendary",
-    frameClass: "avatar-frame-void",
   },
   {
     slug: "frame-ascension",
     name: "升格神谕框",
-    description: "至尊光效头像框，积分商店终极奖励。",
+    description: "至尊 Lottie 动效头像框，积分商店终极奖励。",
     type: "avatar_frame",
     price: 1200,
     rarity: "legendary",
-    frameClass: "avatar-frame-ascension",
   },
   {
     slug: "badge-stargazer",
@@ -122,11 +125,84 @@ export function getShopItem(slug: string): ShopItem | undefined {
   return itemMap.get(slug);
 }
 
-export function getFrameClass(slug: string | null | undefined): string | null {
+export const FRAME_THEMES: Record<string, FrameTheme> = {
+  "frame-ember": {
+    id: "ember",
+    primary: "#fb923c",
+    secondary: "#ea580c",
+    accent: "#fde047",
+    glow: "#f97316",
+    rarity: "common",
+  },
+  "frame-ion": {
+    id: "ion",
+    primary: "#22d3ee",
+    secondary: "#0891b2",
+    accent: "#67e8f9",
+    glow: "#06b6d4",
+    rarity: "common",
+  },
+  "frame-nebula": {
+    id: "nebula",
+    primary: "#c084fc",
+    secondary: "#7c3aed",
+    accent: "#e0e7ff",
+    glow: "#a78bfa",
+    rarity: "rare",
+    lottieSrc: LOTTIE_FRAME_URLS.nebula,
+  },
+  "frame-entropy": {
+    id: "entropy",
+    primary: "#8b5cf6",
+    secondary: "#4c1d95",
+    accent: "#ddd6fe",
+    glow: "#7c3aed",
+    rarity: "rare",
+    lottieSrc: LOTTIE_FRAME_URLS.entropy,
+  },
+  "frame-solar": {
+    id: "solar",
+    primary: "#fbbf24",
+    secondary: "#d97706",
+    accent: "#fef3c7",
+    glow: "#f59e0b",
+    rarity: "epic",
+    lottieSrc: LOTTIE_FRAME_URLS.solar,
+  },
+  "frame-quantum": {
+    id: "quantum",
+    primary: "#22d3ee",
+    secondary: "#f472b6",
+    accent: "#c084fc",
+    glow: "#e879f9",
+    rarity: "epic",
+    lottieSrc: LOTTIE_FRAME_URLS.quantum,
+  },
+  "frame-void": {
+    id: "void",
+    primary: "#6366f1",
+    secondary: "#312e81",
+    accent: "#a5b4fc",
+    glow: "#4f46e5",
+    rarity: "legendary",
+    lottieSrc: LOTTIE_FRAME_URLS.void,
+  },
+  "frame-ascension": {
+    id: "ascension",
+    primary: "#ffd700",
+    secondary: "#ff6b6b",
+    accent: "#c084fc",
+    glow: "#fcd34d",
+    rarity: "legendary",
+    lottieSrc: LOTTIE_FRAME_URLS.ascension,
+  },
+};
+
+export function getFrameTheme(
+  slug: string | null | undefined
+): FrameTheme | null {
   if (!slug) return null;
-  const item = itemMap.get(slug);
-  if (item?.type !== "avatar_frame" || !item.frameClass) return null;
-  return item.frameClass;
+  return FRAME_THEMES[slug] ?? null;
 }
 
 export function getTitleBadge(slug: string | null | undefined): string | null {

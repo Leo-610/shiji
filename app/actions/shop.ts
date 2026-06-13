@@ -20,7 +20,6 @@ export type ShopItemView = {
   price: number;
   rarity: string;
   rarityLabel: string;
-  frameClass?: string;
   badgeLabel?: string;
   owned: boolean;
   equipped: boolean;
@@ -55,7 +54,6 @@ export async function getShopPageData() {
       price: item.price,
       rarity: item.rarity,
       rarityLabel: RARITY_LABELS[item.rarity],
-      frameClass: item.frameClass,
       badgeLabel: item.badgeLabel,
       owned: ownedSet.has(item.slug),
       equipped:
