@@ -14,12 +14,68 @@ export function AvatarFrameSvg({ theme }: { theme: FrameTheme }) {
   const { id, primary, secondary, accent, glow, rarity, frameStyle } = theme;
   const uid = id.replace(/[^a-z0-9-]/gi, "");
   const style = frameStyle ?? "gems";
+  const animated = style !== "static";
   const gemCount =
     style === "entropy" ? 6 : style === "gems" ? 5 : rarity === "legendary" ? 8 : 4;
   const gems = gemPoints(50, 50, 46.5, gemCount);
   const arcs = gemPoints(50, 50, 44, 4);
   const isEpic = rarity === "epic" || rarity === "legendary";
-  const showChevrons = isEpic || style === "prism";
+  const showChevrons = animated && (isEpic || style === "prism");
+
+  if (style === "static") {
+    return (
+      <svg
+        viewBox="0 0 100 100"
+        className="avatar-frame-svg"
+        aria-hidden
+        overflow="visible"
+      >
+        <defs>
+          <linearGradient id={`fg-${uid}`} x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor={primary} />
+            <stop offset="45%" stopColor={accent} />
+            <stop offset="100%" stopColor={secondary} />
+          </linearGradient>
+          <linearGradient id={`fg2-${uid}`} x1="100%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stopColor={accent} />
+            <stop offset="100%" stopColor={primary} />
+          </linearGradient>
+          <radialGradient id={`glow-${uid}`} cx="50%" cy="50%" r="50%">
+            <stop offset="60%" stopColor={glow} stopOpacity="0" />
+            <stop offset="85%" stopColor={glow} stopOpacity="0.22" />
+            <stop offset="100%" stopColor={glow} stopOpacity="0.38" />
+          </radialGradient>
+        </defs>
+        <circle cx="50" cy="50" r="49" fill={`url(#glow-${uid})`} />
+        <circle
+          cx="50"
+          cy="50"
+          r="47"
+          fill="none"
+          stroke={`url(#fg-${uid})`}
+          strokeWidth="2.6"
+        />
+        <circle
+          cx="50"
+          cy="50"
+          r="44"
+          fill="none"
+          stroke={accent}
+          strokeWidth="1"
+          opacity="0.55"
+        />
+        <circle
+          cx="50"
+          cy="50"
+          r="40"
+          fill="none"
+          stroke={`url(#fg2-${uid})`}
+          strokeWidth="1.8"
+          opacity="0.85"
+        />
+      </svg>
+    );
+  }
 
   return (
     <svg
@@ -65,10 +121,13 @@ export function AvatarFrameSvg({ theme }: { theme: FrameTheme }) {
         cy="50"
         r="49"
         fill={`url(#glow-${uid})`}
-        className="avatar-frame-breathe"
+        className={animated ? "avatar-frame-breathe" : undefined}
       />
 
-      <g className="avatar-frame-rotate-slow" filter={`url(#soft-${uid})`}>
+      <g
+        className={animated ? "avatar-frame-rotate-slow" : undefined}
+        filter={`url(#soft-${uid})`}
+      >
         <circle
           cx="50"
           cy="50"
@@ -90,7 +149,7 @@ export function AvatarFrameSvg({ theme }: { theme: FrameTheme }) {
           ))}
       </g>
 
-      <g className="avatar-frame-rotate-fast">
+      <g className={animated ? "avatar-frame-rotate-fast" : undefined}>
         <circle
           cx="50"
           cy="50"
@@ -104,7 +163,7 @@ export function AvatarFrameSvg({ theme }: { theme: FrameTheme }) {
       </g>
 
       {style === "entropy" && (
-        <g className="avatar-frame-rotate-reverse">
+        <g className={animated ? "avatar-frame-rotate-reverse" : undefined}>
           <circle
             cx="50"
             cy="50"
@@ -119,7 +178,7 @@ export function AvatarFrameSvg({ theme }: { theme: FrameTheme }) {
       )}
 
       {style === "prism" && (
-        <g className="avatar-frame-rotate-fast" opacity="0.9">
+        <g className={animated ? "avatar-frame-rotate-fast" : undefined} opacity="0.9">
           <circle
             cx="50"
             cy="50"
@@ -143,7 +202,10 @@ export function AvatarFrameSvg({ theme }: { theme: FrameTheme }) {
       )}
 
       {showChevrons && (
-        <g className="avatar-frame-rotate-slow" opacity="0.85">
+        <g
+          className={animated ? "avatar-frame-rotate-slow" : undefined}
+          opacity="0.85"
+        >
           {arcs.map((p, i) => (
             <path
               key={i}

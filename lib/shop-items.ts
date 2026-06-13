@@ -15,7 +15,7 @@ export interface FrameTheme {
   /** CSS filter to tint a shared Lottie asset per frame theme. */
   lottieFilter?: string;
   /** SVG overlay layout when not using Lottie. */
-  frameStyle?: "gems" | "entropy" | "prism";
+  frameStyle?: "static" | "gems" | "entropy" | "prism";
 }
 
 export interface ShopItem {
@@ -33,7 +33,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-ember",
     name: "余烬脉冲框",
-    description: "微弱余烬环绕头像，入门款科幻光晕。",
+    description: "静态余烬光环，入门款纯色边框，无动效。",
     type: "avatar_frame",
     price: 120,
     rarity: "common",
@@ -41,7 +41,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-ion",
     name: "离子流框",
-    description: "青色离子流沿边框循环，清爽耐看。",
+    description: "静态离子光环，清爽青色边框，无动效。",
     type: "avatar_frame",
     price: 120,
     rarity: "common",
@@ -65,7 +65,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-solar",
     name: "日冕金环",
-    description: "Lottie 羽翼动效 · 日冕金款，史诗档专属动效。",
+    description: "SVG 棱镜轨道动效 · 日冕金配色，与量子棱镜同款结构。",
     type: "avatar_frame",
     price: 500,
     rarity: "epic",
@@ -209,6 +209,7 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#fde047",
     glow: "#f97316",
     rarity: "common",
+    frameStyle: "static",
   },
   "frame-ion": {
     id: "ion",
@@ -217,6 +218,7 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#67e8f9",
     glow: "#06b6d4",
     rarity: "common",
+    frameStyle: "static",
   },
   "frame-nebula": {
     id: "nebula",
@@ -243,8 +245,7 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#fef3c7",
     glow: "#f59e0b",
     rarity: "epic",
-    lottieSrc: LOTTIE_ASSETS.avatarFrame,
-    lottieFilter: "hue-rotate(32deg) saturate(1.55) brightness(1.12)",
+    frameStyle: "prism",
   },
   "frame-quantum": {
     id: "quantum",
@@ -286,6 +287,7 @@ export function getFrameTheme(
 export function frameHasAnimatedOverlay(slug: string): boolean {
   const theme = getFrameTheme(slug);
   if (!theme) return false;
+  if (theme.frameStyle === "static") return false;
   return !!theme.lottieSrc || theme.rarity !== "common";
 }
 
