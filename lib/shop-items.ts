@@ -33,7 +33,7 @@ export const SHOP_ITEMS: ShopItem[] = [
     name: "余烬脉冲框",
     description: "微弱余烬环绕头像，入门款科幻光晕。",
     type: "avatar_frame",
-    price: 60,
+    price: 120,
     rarity: "common",
   },
   {
