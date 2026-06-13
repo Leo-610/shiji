@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,9 +8,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { createComment, deleteComment } from "@/app/actions/threads";
 import { CONTENT_MAX_LENGTH } from "@/lib/content";
+import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
 import { PrestigeAuthor } from "@/components/user/PrestigeAuthor";
 import { LikeButton } from "@/components/discussion/LikeButton";
-import { formatDate, getAuthorName } from "@/lib/utils";
+import { formatCommentDate, formatDate, getAuthorName } from "@/lib/utils";
+import { cn } from "@/lib/utils";
 import { isSuperAdmin, type UserRole } from "@/lib/roles";
 
 interface CommentData {
@@ -65,6 +67,72 @@ export function CommentSection({
 
   function isCommentOp(authorId: string | null) {
     return authorId !== null && authorId === threadAuthorId;
+  }
+
+  function CommentTimestamp({ date }: { date: Date }) {
+    return (
+      <>
+        <span className="sm:hidden">{formatCommentDate(date)}</span>
+        <span className="hidden sm:inline">{formatDate(date)}</span>
+      </>
+    );
+  }
+
+  function CommentBody({
+    authorName,
+    author,
+    authorId,
+    createdAt,
+    content,
+    size,
+    actions,
+  }: {
+    authorName: string;
+    author: CommentData["author"];
+    authorId: string | null;
+    createdAt: Date;
+    content: string;
+    size: "xs" | "sm";
+    actions: ReactNode;
+  }) {
+    return (
+      <div className="flex gap-3">
+        <AvatarWithFrame
+          name={authorName}
+          image={author?.image}
+          role={author?.role}
+          frameSlug={author?.equippedAvatarFrame}
+          size={size}
+          className="shrink-0"
+        />
+        <div className="min-w-0 flex-1 space-y-2">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+            <PrestigeAuthor
+              name={authorName}
+              role={author?.role}
+              level={author?.level}
+              titleBadge={author?.equippedTitleBadge}
+              isThreadOp={isCommentOp(authorId)}
+              size={size}
+              showAvatar={false}
+              className="min-w-0"
+            />
+            <span className="text-xs text-theme-subtle shrink-0 whitespace-nowrap">
+              <CommentTimestamp date={createdAt} />
+            </span>
+          </div>
+          <div className="flex items-center gap-1 flex-wrap">{actions}</div>
+          <p
+            className={cn(
+              "text-sm text-theme-heading whitespace-pre-wrap",
+              size === "xs" ? "mt-0" : ""
+            )}
+          >
+            {content}
+          </p>
+        </div>
+      </div>
+    );
   }
 
   const topLevel = comments.filter((c) => !c.parentId);
@@ -132,67 +200,54 @@ export function CommentSection({
           return (
             <div key={comment.id} className="space-y-3">
               <NeonCard className="p-4" glow="none">
-                <div className="flex gap-3">
-                  <PrestigeAuthor
-                    name={authorName}
-                    image={comment.author?.image}
-                    role={comment.author?.role}
-                    level={comment.author?.level}
-                    avatarFrame={comment.author?.equippedAvatarFrame}
-                    titleBadge={comment.author?.equippedTitleBadge}
-                    isThreadOp={isCommentOp(comment.authorId)}
-                    size="sm"
-                    className="shrink-0"
-                  />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs text-theme-subtle">
-                        {formatDate(comment.createdAt)}
-                      </span>
-                      <div className="flex items-center gap-1">
-                        <LikeButton
-                          target="comment"
-                          targetId={comment.id}
-                          threadSlug={threadSlug}
-                          count={commentLikeCounts[comment.id] ?? 0}
-                          liked={likedSet.has(comment.id)}
-                          isLoggedIn={isLoggedIn}
-                          size="icon"
-                        />
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() =>
-                            setReplyingTo(
-                              replyingTo === comment.id ? null : comment.id
-                            )
-                          }
+                <CommentBody
+                  authorName={authorName}
+                  author={comment.author}
+                  authorId={comment.authorId}
+                  createdAt={comment.createdAt}
+                  content={comment.content}
+                  size="sm"
+                  actions={
+                    <>
+                      <LikeButton
+                        target="comment"
+                        targetId={comment.id}
+                        threadSlug={threadSlug}
+                        count={commentLikeCounts[comment.id] ?? 0}
+                        liked={likedSet.has(comment.id)}
+                        isLoggedIn={isLoggedIn}
+                        size="icon"
+                      />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() =>
+                          setReplyingTo(
+                            replyingTo === comment.id ? null : comment.id
+                          )
+                        }
+                      >
+                        回复
+                      </Button>
+                      {canDeleteComment(comment.authorId) && (
+                        <form
+                          action={async () => {
+                            await deleteComment(comment.id, threadSlug);
+                          }}
                         >
-                          回复
-                        </Button>
-                        {canDeleteComment(comment.authorId) && (
-                            <form
-                              action={async () => {
-                                await deleteComment(comment.id, threadSlug);
-                              }}
-                            >
-                              <Button
-                                variant="ghost"
-                                size="icon"
-                                type="submit"
-                                className="text-red-400 hover:text-red-300"
-                              >
-                                <Trash2 className="size-4" />
-                              </Button>
-                            </form>
-                          )}
-                      </div>
-                    </div>
-                    <p className="mt-2 text-sm text-theme-heading whitespace-pre-wrap">
-                      {comment.content}
-                    </p>
-                  </div>
-                </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            type="submit"
+                            className="text-red-400 hover:text-red-300"
+                          >
+                            <Trash2 className="size-4" />
+                          </Button>
+                        </form>
+                      )}
+                    </>
+                  }
+                />
               </NeonCard>
 
               {commentReplies.map((reply) => {
@@ -203,59 +258,46 @@ export function CommentSection({
                 return (
                   <NeonCard
                     key={reply.id}
-                    className="p-3 ml-8 border-[color:var(--app-border-subtle)]"
+                    className="p-3 ml-4 sm:ml-8 border-[color:var(--app-border-subtle)]"
                     glow="none"
                   >
-                    <div className="flex gap-3">
-                      <PrestigeAuthor
-                        name={replyAuthor}
-                        image={reply.author?.image}
-                        role={reply.author?.role}
-                        level={reply.author?.level}
-                        avatarFrame={reply.author?.equippedAvatarFrame}
-                        titleBadge={reply.author?.equippedTitleBadge}
-                        isThreadOp={isCommentOp(reply.authorId)}
-                        size="xs"
-                        className="shrink-0"
-                      />
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center justify-between gap-2">
-                          <span className="text-xs text-theme-subtle">
-                            {formatDate(reply.createdAt)}
-                          </span>
-                          <div className="flex items-center gap-1">
-                            <LikeButton
-                              target="comment"
-                              targetId={reply.id}
-                              threadSlug={threadSlug}
-                              count={commentLikeCounts[reply.id] ?? 0}
-                              liked={likedSet.has(reply.id)}
-                              isLoggedIn={isLoggedIn}
-                              size="icon"
-                            />
-                            {canDeleteComment(reply.authorId) && (
-                                <form
-                                  action={async () => {
-                                    await deleteComment(reply.id, threadSlug);
-                                  }}
-                                >
-                                  <Button
-                                    variant="ghost"
-                                    size="icon"
-                                    type="submit"
-                                    className="text-red-400 hover:text-red-300 size-7"
-                                  >
-                                    <Trash2 className="size-3" />
-                                  </Button>
-                                </form>
-                              )}
-                          </div>
-                        </div>
-                        <p className="mt-1 text-sm text-theme-heading whitespace-pre-wrap">
-                          {reply.content}
-                        </p>
-                      </div>
-                    </div>
+                    <CommentBody
+                      authorName={replyAuthor}
+                      author={reply.author}
+                      authorId={reply.authorId}
+                      createdAt={reply.createdAt}
+                      content={reply.content}
+                      size="xs"
+                      actions={
+                        <>
+                          <LikeButton
+                            target="comment"
+                            targetId={reply.id}
+                            threadSlug={threadSlug}
+                            count={commentLikeCounts[reply.id] ?? 0}
+                            liked={likedSet.has(reply.id)}
+                            isLoggedIn={isLoggedIn}
+                            size="icon"
+                          />
+                          {canDeleteComment(reply.authorId) && (
+                            <form
+                              action={async () => {
+                                await deleteComment(reply.id, threadSlug);
+                              }}
+                            >
+                              <Button
+                                variant="ghost"
+                                size="icon"
+                                type="submit"
+                                className="text-red-400 hover:text-red-300 size-7"
+                              >
+                                <Trash2 className="size-3" />
+                              </Button>
+                            </form>
+                          )}
+                        </>
+                      }
+                    />
                   </NeonCard>
                 );
               })}

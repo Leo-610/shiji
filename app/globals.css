@@ -622,16 +622,21 @@ html.light .svip-badge-op {
 .fortune-card-inner {
   position: relative;
   width: 100%;
+  min-height: 11rem;
   transform-style: preserve-3d;
   transition: transform 0.01s;
 }
 
 .fortune-card-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
 }
 
 .fortune-card-mystery {
+  transform: rotateY(0deg) translateZ(1px);
   background: linear-gradient(
     145deg,
     color-mix(in srgb, var(--app-bg) 70%, #0a1628),
@@ -640,7 +645,7 @@ html.light .svip-badge-op {
 }
 
 .fortune-card-front {
-  transform: rotateY(180deg);
+  transform: rotateY(180deg) translateZ(1px);
 }
 
 .fortune-card-supreme-burst {

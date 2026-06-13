@@ -53,26 +53,28 @@ export function PrestigeAuthor({
         />
       )}
 
-      <div className="flex items-center gap-1.5 min-w-0 flex-wrap">
+      <div className="flex items-center gap-1.5 min-w-0 flex-wrap max-w-full">
         <span
           className={cn(
-            "font-medium truncate",
+            "font-medium truncate max-w-[9rem] sm:max-w-[12rem]",
             size === "xs" ? "text-xs" : size === "sm" ? "text-sm" : "text-base",
             nameStyleClass
           )}
         >
           {name}
         </span>
+        <div className="flex items-center gap-1 flex-wrap max-w-full">
         {admin && (
-          <span className="svip-badge svip-badge-admin">
+          <span className="svip-badge svip-badge-admin shrink-0">
             <Crown className="size-3 shrink-0" aria-hidden />
-            至尊站长
+            <span className="max-sm:hidden">至尊站长</span>
+            <span className="sm:hidden">至尊</span>
           </span>
         )}
         {shopBadge && (
           <span
             className={cn(
-              "shop-title-badge shop-title-badge-inline",
+              "shop-title-badge shop-title-badge-inline shrink-0 max-w-[7rem] truncate",
               getTitleBadgeClass(titleBadge)
             )}
           >
@@ -80,9 +82,12 @@ export function PrestigeAuthor({
           </span>
         )}
         {showLevel && level && level > 0 && !admin && (
-          <LevelBadge level={level} className="scale-90" />
+          <LevelBadge level={level} className="scale-90 shrink-0" />
         )}
-        {isThreadOp && <span className="svip-badge svip-badge-op">贴主</span>}
+        {isThreadOp && (
+          <span className="svip-badge svip-badge-op shrink-0">贴主</span>
+        )}
+        </div>
       </div>
     </div>
   );

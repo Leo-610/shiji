@@ -42,6 +42,16 @@ export function formatDate(date: Date): string {
   }).format(date);
 }
 
+/** Compact timestamp for comment headers on narrow screens. */
+export function formatCommentDate(date: Date): string {
+  return new Intl.DateTimeFormat("zh-CN", {
+    month: "numeric",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit",
+  }).format(date);
+}
+
 export function getAuthorName(
   user: { name: string | null } | null | undefined,
   guestName: string | null | undefined

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import { Sparkles, Stars } from "lucide-react";
 import {
   FORTUNE_TIER_STYLES,
@@ -42,6 +42,49 @@ export function FortuneCard({
 
   const isSupreme = fortune.tier === "supreme";
 
+  const revealedFront = (
+    <div
+      className={cn(
+        "fortune-card fortune-card-front-static relative overflow-hidden rounded-xl border p-5 sm:p-6",
+        style.border,
+        style.glow,
+        isSupreme && "fortune-card-supreme-burst"
+      )}
+    >
+      <div className="fortune-card-shimmer" aria-hidden />
+      {isSupreme && <div className="fortune-burst-rays" aria-hidden />}
+      <div className="relative z-10 space-y-3">
+        <div className="flex items-center justify-between gap-3">
+          <span className="fortune-tier-label font-orbitron text-xs tracking-widest uppercase">
+            {fortune.tierLabel}
+          </span>
+          <Sparkles className="size-4 text-theme-accent opacity-70" />
+        </div>
+        <div>
+          <p className="text-lg font-bold text-theme-heading font-orbitron tracking-wide">
+            {fortune.name}
+          </p>
+          <p className="text-xs text-theme-muted mt-1">今日运势签</p>
+        </div>
+        <p className="text-sm text-theme-heading leading-relaxed border-l-2 border-theme-accent pl-3">
+          {fortune.oracle}
+        </p>
+        <p className="text-xs text-theme-muted bg-theme-surface/50 rounded-lg px-3 py-2">
+          <span className="text-theme-accent">宜：</span>
+          {fortune.advice}
+        </p>
+      </div>
+    </div>
+  );
+
+  if (revealed && flipped) {
+    return (
+      <div className={cn("fortune-card-static mx-auto w-full max-w-md", className)}>
+        {revealedFront}
+      </div>
+    );
+  }
+
   return (
     <div className={cn("fortune-card-3d mx-auto w-full max-w-md", className)}>
       <motion.div
@@ -62,7 +105,7 @@ export function FortuneCard({
             <div className="fortune-mystery-sigil font-orbitron text-3xl tracking-[0.35em]">
               签
             </div>
-            <p className="text-xs font-orbitron tracking-[0.25em] text-theme-accent uppercase">
+            <p className="text-xs font-orbitron tracking-[0.2em] text-theme-accent uppercase">
               量子余烬 · 每日神谕
             </p>
             <p className="text-[11px] text-theme-muted max-w-[220px] leading-relaxed">
@@ -79,7 +122,7 @@ export function FortuneCard({
         {/* Revealed front */}
         <div
           className={cn(
-            "fortune-card-face fortune-card-front fortune-card relative overflow-hidden rounded-xl border p-5 sm:p-6",
+            "fortune-card-face fortune-card-front relative overflow-hidden rounded-xl border p-5 sm:p-6",
             style.border,
             style.glow,
             isSupreme && "fortune-card-supreme-burst"
