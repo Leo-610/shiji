@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { Bell } from "lucide-react";
 import {
@@ -13,16 +14,98 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
+function formatRelativeTime(iso: string): string {
+  const diff = Date.now() - new Date(iso).getTime();
+  const minutes = Math.floor(diff / 60000);
+  if (minutes < 1) return "刚刚";
+  if (minutes < 60) return `${minutes} 分钟前`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours} 小时前`;
+  const days = Math.floor(hours / 24);
+  if (days < 7) return `${days} 天前`;
+  return new Date(iso).toLocaleDateString("zh-CN");
+}
+
+function NotificationPanelContent({
+  unread,
+  loading,
+  items,
+  onMarkAll,
+  onClickItem,
+}: {
+  unread: number;
+  loading: boolean;
+  items: NotificationItem[];
+  onMarkAll: () => void;
+  onClickItem: (item: NotificationItem) => void;
+}) {
+  return (
+    <>
+      <div className="notification-panel-header">
+        <span className="text-xs font-orbitron tracking-widest text-theme-accent uppercase">
+          通知
+        </span>
+        {unread > 0 && (
+          <button
+            type="button"
+            onClick={onMarkAll}
+            className="text-[10px] text-theme-muted hover:text-theme-accent transition-colors"
+          >
+            全部已读
+          </button>
+        )}
+      </div>
+
+      <div className="notification-panel-body">
+        {loading ? (
+          <p className="px-3 py-6 text-center text-xs text-theme-muted">加载中…</p>
+        ) : items.length === 0 ? (
+          <p className="px-3 py-6 text-center text-xs text-theme-muted">暂无通知</p>
+        ) : (
+          items.map((item) => (
+            <Link
+              key={item.id}
+              href={`/discussions/${item.threadSlug}`}
+              onClick={() => onClickItem(item)}
+              className={cn(
+                "notification-item block px-3 py-2.5 text-left transition-colors",
+                !item.read && "notification-item-unread"
+              )}
+            >
+              <p className="text-xs text-theme-heading leading-relaxed">{item.body}</p>
+              <p className="text-[10px] text-theme-muted mt-1">
+                {formatRelativeTime(item.createdAt)}
+              </p>
+            </Link>
+          ))
+        )}
+      </div>
+    </>
+  );
+}
+
 export function NotificationBell() {
   const [open, setOpen] = useState(false);
   const [unread, setUnread] = useState(0);
   const [items, setItems] = useState<NotificationItem[]>([]);
   const [loading, setLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const refreshCount = useCallback(async () => {
     const count = await getUnreadNotificationCount();
     setUnread(count);
+  }, []);
+
+  useEffect(() => setMounted(true), []);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 639px)");
+    const update = () => setIsMobile(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
   }, []);
 
   useEffect(() => {
@@ -38,7 +121,7 @@ export function NotificationBell() {
   }, [open]);
 
   useEffect(() => {
-    if (!open) return;
+    if (!open || isMobile) return;
     function onPointerDown(e: MouseEvent) {
       if (!panelRef.current?.contains(e.target as Node)) {
         setOpen(false);
@@ -46,7 +129,15 @@ export function NotificationBell() {
     }
     document.addEventListener("mousedown", onPointerDown);
     return () => document.removeEventListener("mousedown", onPointerDown);
-  }, [open]);
+  }, [open, isMobile]);
+
+  useEffect(() => {
+    if (!open || !isMobile) return;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open, isMobile]);
 
   async function handleOpen() {
     setOpen((v) => !v);
@@ -71,6 +162,39 @@ export function NotificationBell() {
     }
   }
 
+  const panelContent = (
+    <NotificationPanelContent
+      unread={unread}
+      loading={loading}
+      items={items}
+      onMarkAll={handleMarkAll}
+      onClickItem={handleClickItem}
+    />
+  );
+
+  const mobileOverlay =
+    open && mounted && isMobile
+      ? createPortal(
+          <>
+            <button
+              type="button"
+              className="notification-mobile-backdrop"
+              aria-label="关闭通知"
+              onClick={() => setOpen(false)}
+            />
+            <div
+              className="notification-panel notification-panel-sheet"
+              role="dialog"
+              aria-modal="true"
+              aria-label="通知"
+            >
+              {panelContent}
+            </div>
+          </>,
+          document.body
+        )
+      : null;
+
   return (
     <div className="relative" ref={panelRef}>
       <Button
@@ -79,6 +203,7 @@ export function NotificationBell() {
         size="icon"
         className="size-8 shrink-0 relative"
         aria-label="通知"
+        aria-expanded={open}
         onClick={handleOpen}
       >
         <Bell className="size-4" />
@@ -87,67 +212,11 @@ export function NotificationBell() {
         )}
       </Button>
 
-      {open && (
-        <div className="notification-panel max-sm:notification-panel-sheet">
-          <div className="flex items-center justify-between gap-2 px-3 py-2 border-b border-theme-subtle">
-            <span className="text-xs font-orbitron tracking-widest text-theme-accent uppercase">
-              通知
-            </span>
-            {unread > 0 && (
-              <button
-                type="button"
-                onClick={handleMarkAll}
-                className="text-[10px] text-theme-muted hover:text-theme-accent transition-colors"
-              >
-                全部已读
-              </button>
-            )}
-          </div>
-
-          <div className="max-h-72 overflow-y-auto">
-            {loading ? (
-              <p className="px-3 py-6 text-center text-xs text-theme-muted">
-                加载中…
-              </p>
-            ) : items.length === 0 ? (
-              <p className="px-3 py-6 text-center text-xs text-theme-muted">
-                暂无通知
-              </p>
-            ) : (
-              items.map((item) => (
-                <Link
-                  key={item.id}
-                  href={`/discussions/${item.threadSlug}`}
-                  onClick={() => handleClickItem(item)}
-                  className={cn(
-                    "notification-item block px-3 py-2.5 text-left transition-colors hover:bg-theme-surface/60",
-                    !item.read && "notification-item-unread"
-                  )}
-                >
-                  <p className="text-xs text-theme-heading leading-relaxed">
-                    {item.body}
-                  </p>
-                  <p className="text-[10px] text-theme-muted mt-1">
-                    {formatRelativeTime(item.createdAt)}
-                  </p>
-                </Link>
-              ))
-            )}
-          </div>
-        </div>
+      {open && !isMobile && (
+        <div className="notification-panel">{panelContent}</div>
       )}
+
+      {mobileOverlay}
     </div>
   );
-}
-
-function formatRelativeTime(iso: string): string {
-  const diff = Date.now() - new Date(iso).getTime();
-  const minutes = Math.floor(diff / 60000);
-  if (minutes < 1) return "刚刚";
-  if (minutes < 60) return `${minutes} 分钟前`;
-  const hours = Math.floor(minutes / 60);
-  if (hours < 24) return `${hours} 小时前`;
-  const days = Math.floor(hours / 24);
-  if (days < 7) return `${days} 天前`;
-  return new Date(iso).toLocaleDateString("zh-CN");
 }
