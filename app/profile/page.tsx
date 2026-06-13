@@ -12,7 +12,7 @@ import { LevelBadge } from "@/components/user/LevelBadge";
 import { CheckInButton } from "@/components/user/CheckInButton";
 import { AchievementGrid } from "@/components/user/AchievementGrid";
 import { WeeklyTasksCard } from "@/components/user/WeeklyTasksCard";
-import { AvatarWithFrame } from "@/components/user/AvatarWithFrame";
+import { ProfileSettingsForm } from "@/components/profile/ProfileSettingsForm";
 import { getPointRuleDescriptions } from "@/lib/points";
 
 export default async function ProfilePage() {
@@ -39,27 +39,22 @@ export default async function ProfilePage() {
       </div>
 
       <NeonCard className="p-6 sm:p-8 space-y-6">
+        <ProfileSettingsForm
+          initialName={session.user.name ?? null}
+          initialImage={session.user.image ?? null}
+          role={session.user.role}
+          frameSlug={session.user.equippedAvatarFrame}
+        />
+
         <div className="flex items-center gap-4">
-          <AvatarWithFrame
-            name={session.user.name}
-            image={session.user.image}
-            role={session.user.role}
-            frameSlug={session.user.equippedAvatarFrame}
-            size="lg"
-          />
-          <div className="min-w-0">
-            <p className="text-lg font-medium text-theme-heading truncate">
-              {session.user.name ?? "读者"}
-            </p>
+          <div className="min-w-0 flex-1">
             {profile ? (
-              <div className="flex items-center gap-2 mt-1 flex-wrap">
+              <div className="flex items-center gap-2 flex-wrap">
                 <LevelBadge level={profile.level} />
                 <span className="text-sm text-theme-accent">{profile.title}</span>
               </div>
             ) : (
-              <p className="text-sm text-theme-muted mt-1">
-                等级数据加载中…
-              </p>
+              <p className="text-sm text-theme-muted">等级数据加载中…</p>
             )}
           </div>
         </div>

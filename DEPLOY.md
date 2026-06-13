@@ -32,6 +32,7 @@
 | `AUTH_GITHUB_SECRET` | GitHub OAuth Client Secret | 来自 GitHub Developer Settings |
 | `AUTH_RESEND_KEY` | Resend API Key（邮箱验证码登录） | 来自 [Resend API Keys](https://resend.com/api-keys) |
 | `AUTH_RESEND_FROM` | 发件人（需验证域名） | `量子余烬 <notify@shiji.ink>` |
+| `BLOB_READ_WRITE_TOKEN` | Vercel Blob（用户头像上传） | Vercel Storage → Blob → 创建后复制 |
 | `AUTH_URL` | 生产环境域名 | `https://shiji.ink` |
 
 所有变量请勾选 **Production**、**Preview**、**Development** 三个环境。
@@ -83,6 +84,16 @@ export AUTH_RESEND_KEY=re_xxxx
 export AUTH_RESEND_FROM='量子余烬 <notify@shiji.ink>'
 ./scripts/configure-email-auth.sh
 ```
+
+## 配置头像上传（Vercel Blob）
+
+用户可在 `/profile` 上传头像，需 Blob 存储：
+
+```bash
+./scripts/configure-blob.sh
+```
+
+或手动：Vercel Dashboard → Storage → Blob → 创建并连接到 `shiji` 项目，会自动写入 `BLOB_READ_WRITE_TOKEN`。
 
 ## 自动部署
 

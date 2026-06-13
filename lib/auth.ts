@@ -58,7 +58,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
                   .values({
                     email,
                     emailVerified: new Date(),
-                    name: email.split("@")[0],
                   })
                   .returning();
                 user = created;
@@ -117,6 +116,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           const dbUser = await db.query.users.findFirst({
             where: eq(users.id, token.id as string),
             columns: {
+              name: true,
+              image: true,
               role: true,
               level: true,
               xp: true,
@@ -125,12 +126,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
               equippedTitleBadge: true,
             },
           });
-          token.role = (dbUser?.role as UserRole | undefined) ?? "user";
-          token.level = dbUser?.level ?? 1;
-          token.xp = dbUser?.xp ?? 0;
-          token.points = dbUser?.points ?? 0;
-          token.equippedAvatarFrame = dbUser?.equippedAvatarFrame ?? null;
-          token.equippedTitleBadge = dbUser?.equippedTitleBadge ?? null;
+          if (dbUser) {
+            token.name = dbUser.name ?? undefined;
+            token.picture = dbUser.image ?? undefined;
+            token.role = (dbUser.role as UserRole | undefined) ?? "user";
+            token.level = dbUser.level ?? 1;
+            token.xp = dbUser.xp ?? 0;
+            token.points = dbUser.points ?? 0;
+            token.equippedAvatarFrame = dbUser.equippedAvatarFrame ?? null;
+            token.equippedTitleBadge = dbUser.equippedTitleBadge ?? null;
+          } else {
+            token.role = "user";
+            token.level = 1;
+            token.xp = 0;
+            token.points = 0;
+            token.equippedAvatarFrame = null;
+            token.equippedTitleBadge = null;
+          }
         } catch {
           token.role = "user";
           token.level = 1;
