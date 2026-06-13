@@ -643,6 +643,11 @@ html.light .svip-badge-op {
   inset: -22%;
 }
 
+.avatar-lottie-wrap {
+  width: 100%;
+  height: 100%;
+}
+
 .avatar-lottie-player {
   width: 100% !important;
   height: 100% !important;

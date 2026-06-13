@@ -21,15 +21,20 @@ export function AvatarFrameOverlay({
   }
 
   return (
-    <DotLottieReact
-      src={lottieSrc}
-      loop
-      autoplay
-      className="avatar-lottie-player"
-      dotLottieRefCallback={(instance) => {
-        if (!instance) return;
-        instance.addEventListener("loadError", () => setFailed(true));
-      }}
-    />
+    <div
+      className="avatar-lottie-wrap size-full"
+      style={theme.lottieFilter ? { filter: theme.lottieFilter } : undefined}
+    >
+      <DotLottieReact
+        src={lottieSrc}
+        loop
+        autoplay
+        className="avatar-lottie-player"
+        dotLottieRefCallback={(instance) => {
+          if (!instance) return;
+          instance.addEventListener("loadError", () => setFailed(true));
+        }}
+      />
+    </div>
   );
 }

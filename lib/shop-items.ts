@@ -1,4 +1,4 @@
-import { LOTTIE_FRAME_URLS } from "@/lib/lottie-frames";
+import { LOTTIE_ASSETS } from "@/lib/lottie-frames";
 
 export type ShopItemType = "avatar_frame" | "title_badge";
 export type ShopRarity = "common" | "rare" | "epic" | "legendary";
@@ -12,6 +12,8 @@ export interface FrameTheme {
   rarity: ShopRarity;
   /** Lottie overlay for animated frames (epic+). */
   lottieSrc?: string;
+  /** CSS filter to tint a shared Lottie asset per frame theme. */
+  lottieFilter?: string;
 }
 
 export interface ShopItem {
@@ -149,7 +151,8 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#e0e7ff",
     glow: "#a78bfa",
     rarity: "rare",
-    lottieSrc: LOTTIE_FRAME_URLS.nebula,
+    lottieSrc: LOTTIE_ASSETS.widgetRing,
+    lottieFilter: "hue-rotate(248deg) saturate(1.45) brightness(1.08)",
   },
   "frame-entropy": {
     id: "entropy",
@@ -158,7 +161,8 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#ddd6fe",
     glow: "#7c3aed",
     rarity: "rare",
-    lottieSrc: LOTTIE_FRAME_URLS.entropy,
+    lottieSrc: LOTTIE_ASSETS.widgetRing,
+    lottieFilter: "hue-rotate(265deg) saturate(1.35) brightness(0.95)",
   },
   "frame-solar": {
     id: "solar",
@@ -167,7 +171,8 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#fef3c7",
     glow: "#f59e0b",
     rarity: "epic",
-    lottieSrc: LOTTIE_FRAME_URLS.solar,
+    lottieSrc: LOTTIE_ASSETS.avatarFrame,
+    lottieFilter: "hue-rotate(32deg) saturate(1.55) brightness(1.12)",
   },
   "frame-quantum": {
     id: "quantum",
@@ -176,7 +181,8 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#c084fc",
     glow: "#e879f9",
     rarity: "epic",
-    lottieSrc: LOTTIE_FRAME_URLS.quantum,
+    lottieSrc: LOTTIE_ASSETS.avatarFrame,
+    lottieFilter: "hue-rotate(155deg) saturate(1.4) brightness(1.05)",
   },
   "frame-void": {
     id: "void",
@@ -185,7 +191,8 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#a5b4fc",
     glow: "#4f46e5",
     rarity: "legendary",
-    lottieSrc: LOTTIE_FRAME_URLS.void,
+    lottieSrc: LOTTIE_ASSETS.avatarFrame,
+    lottieFilter: "hue-rotate(205deg) saturate(1.15) brightness(0.88)",
   },
   "frame-ascension": {
     id: "ascension",
@@ -194,7 +201,7 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#c084fc",
     glow: "#fcd34d",
     rarity: "legendary",
-    lottieSrc: LOTTIE_FRAME_URLS.ascension,
+    lottieSrc: LOTTIE_ASSETS.avatarFrame,
   },
 };
 
