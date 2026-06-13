@@ -5,6 +5,7 @@ import {
   timestamp,
   uuid,
   integer,
+  boolean,
   primaryKey,
 } from "drizzle-orm/pg-core";
 import type { AdapterAccountType } from "next-auth/adapters";
@@ -86,6 +87,8 @@ export const threads = pgTable("threads", {
   }),
   guestName: text("guest_name"),
   viewCount: integer("view_count").notNull().default(0),
+  pinned: boolean("pinned").notNull().default(false),
+  pinnedAt: timestamp("pinned_at", { mode: "date" }),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });

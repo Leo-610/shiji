@@ -156,6 +156,41 @@ export async function deleteThread(threadId: string) {
   redirect("/discussions");
 }
 
+export async function toggleThreadPin(threadId: string) {
+  const session = await auth();
+  if (!session?.user?.id || !isSuperAdmin(session.user.role)) {
+    return { error: "仅站长可置顶帖子" };
+  }
+
+  const thread = await db.query.threads.findFirst({
+    where: eq(threads.id, threadId),
+  });
+
+  if (!thread) {
+    return { error: "帖子不存在" };
+  }
+
+  const pinned = !thread.pinned;
+
+  try {
+    await db
+      .update(threads)
+      .set({
+        pinned,
+        pinnedAt: pinned ? new Date() : null,
+      })
+      .where(eq(threads.id, threadId));
+  } catch {
+    return { error: "置顶功能尚未就绪，请稍后再试" };
+  }
+
+  revalidatePath("/");
+  revalidatePath("/discussions");
+  revalidatePath(`/discussions/${thread.slug}`);
+
+  return { success: true, pinned };
+}
+
 export async function deleteComment(commentId: string, threadSlug: string) {
   const session = await auth();
   if (!session?.user?.id) {

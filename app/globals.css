@@ -581,3 +581,18 @@ html.light .svip-badge-op {
 .fortune-glow-ominous .fortune-tier-label {
   color: #f87171;
 }
+
+.thread-pinned-badge {
+  color: var(--app-accent-bright, #67e8f9);
+  border: 1px solid rgba(0, 240, 255, 0.45);
+  background: linear-gradient(
+    135deg,
+    rgba(0, 240, 255, 0.14),
+    rgba(255, 215, 0, 0.1)
+  );
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+}
+
+.thread-card-pinned {
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.08);
+}

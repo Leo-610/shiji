@@ -2,6 +2,12 @@ import { count, desc, eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import { categories, threads, comments } from "@/lib/db/schema";
 
+const threadListOrder = [
+  desc(threads.pinned),
+  desc(threads.pinnedAt),
+  desc(threads.createdAt),
+];
+
 export async function getCategories() {
   return db.query.categories.findMany({
     orderBy: (c, { asc }) => [asc(c.sortOrder)],
@@ -20,7 +26,7 @@ export async function getStats() {
 export async function getRecentThreads(limit = 5) {
   return db.query.threads.findMany({
     limit,
-    orderBy: [desc(threads.createdAt)],
+    orderBy: threadListOrder,
     with: {
       category: true,
       author: true,
@@ -38,7 +44,7 @@ export async function getThreads(categorySlug?: string) {
 
     return db.query.threads.findMany({
       where: eq(threads.categoryId, category.id),
-      orderBy: [desc(threads.createdAt)],
+      orderBy: threadListOrder,
       with: {
         category: true,
         author: true,
@@ -48,7 +54,7 @@ export async function getThreads(categorySlug?: string) {
   }
 
   return db.query.threads.findMany({
-    orderBy: [desc(threads.createdAt)],
+    orderBy: threadListOrder,
     with: {
       category: true,
       author: true,

@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { Eye, MessageSquare } from "lucide-react";
+import { Eye, MessageSquare, Pin } from "lucide-react";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { PrestigeAuthor } from "@/components/user/PrestigeAuthor";
-import { formatDate, getAuthorName } from "@/lib/utils";
+import { formatDate, getAuthorName, cn } from "@/lib/utils";
 
 interface ThreadPreview {
   id: string;
@@ -18,19 +18,32 @@ interface ThreadPreview {
     level?: number | null;
   } | null;
   viewCount?: number;
+  pinned?: boolean;
   comments?: { id: string }[];
 }
 
 export function ThreadCard({ thread }: { thread: ThreadPreview }) {
   const authorName = getAuthorName(thread.author, thread.guestName);
   const commentCount = thread.comments?.length ?? 0;
+  const isPinned = thread.pinned ?? false;
 
   return (
     <Link href={`/discussions/${thread.slug}`}>
-      <NeonCard className="p-4 hover:border-[color:var(--app-accent)]/40 cursor-pointer group">
+      <NeonCard
+        className={cn(
+          "p-4 hover:border-[color:var(--app-accent)]/40 cursor-pointer group",
+          isPinned && "thread-card-pinned border-[color:var(--app-accent)]/35"
+        )}
+      >
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center gap-2 mb-2 flex-wrap">
+              {isPinned && (
+                <span className="thread-pinned-badge text-xs px-2 py-0.5 rounded font-orbitron tracking-wide flex items-center gap-1">
+                  <Pin className="size-3" />
+                  置顶
+                </span>
+              )}
               <span className="text-xs px-2 py-0.5 rounded badge-theme">
                 {thread.category.name}
               </span>

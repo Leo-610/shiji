@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Eye, Trash2 } from "lucide-react";
+import { Eye, Pin, PinOff, Trash2 } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { getThreadBySlug } from "@/lib/queries";
-import { deleteThread } from "@/app/actions/threads";
+import { deleteThread, toggleThreadPin } from "@/app/actions/threads";
 import { recordThreadView } from "@/lib/xp";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { Button } from "@/components/ui/button";
@@ -56,10 +56,15 @@ export default async function ThreadDetailPage({
       </div>
 
       <NeonCard className="p-6 sm:p-8">
-        <div className="flex items-center gap-2 mb-4">
+        <div className="flex items-center gap-2 mb-4 flex-wrap">
           <span className="text-xs px-2 py-0.5 rounded badge-theme">
             {thread.category.name}
           </span>
+          {thread.pinned && (
+            <span className="thread-pinned-badge text-xs px-2 py-0.5 rounded font-orbitron tracking-wide">
+              置顶
+            </span>
+          )}
         </div>
 
         <h1 className="text-2xl sm:text-3xl font-bold text-theme-heading mb-4">
@@ -83,22 +88,51 @@ export default async function ThreadDetailPage({
             </span>
           </div>
           {canDeleteThread && (
-            <form
-              action={async () => {
-                "use server";
-                await deleteThread(thread.id);
-              }}
-            >
-              <Button
-                variant="ghost"
-                size="sm"
-                type="submit"
-                className="text-red-400 hover:text-red-300"
+            <div className="flex items-center gap-1">
+              {isSuperAdminUser && (
+                <form
+                  action={async () => {
+                    "use server";
+                    await toggleThreadPin(thread.id);
+                  }}
+                >
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    type="submit"
+                    className="text-theme-accent hover:text-theme-accent"
+                  >
+                    {thread.pinned ? (
+                      <>
+                        <PinOff className="size-4" />
+                        取消置顶
+                      </>
+                    ) : (
+                      <>
+                        <Pin className="size-4" />
+                        置顶
+                      </>
+                    )}
+                  </Button>
+                </form>
+              )}
+              <form
+                action={async () => {
+                  "use server";
+                  await deleteThread(thread.id);
+                }}
               >
-                <Trash2 className="size-4" />
-                删除
-              </Button>
-            </form>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  type="submit"
+                  className="text-red-400 hover:text-red-300"
+                >
+                  <Trash2 className="size-4" />
+                  删除
+                </Button>
+              </form>
+            </div>
           )}
         </div>
 
