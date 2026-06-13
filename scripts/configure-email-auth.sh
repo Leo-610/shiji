@@ -14,7 +14,7 @@ export PATH="/tmp/node/bin:${PATH:-}"
 cd "$(dirname "$0")/.."
 
 SITE_URL="${SITE_URL:-https://shiji.ink}"
-RESEND_FROM="${AUTH_RESEND_FROM:-量子余烬 <onboarding@resend.dev>}"
+RESEND_FROM="${AUTH_RESEND_FROM:-量子余烬 <notify@shiji.ink>}"
 RESEND_KEY="${AUTH_RESEND_KEY:-${RESEND_API_KEY:-}}"
 
 echo "==> Project: shiji ($(vercel whoami))"

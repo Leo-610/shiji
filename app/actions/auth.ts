@@ -1,7 +1,12 @@
 "use server";
 
+import { AuthError } from "next-auth";
 import { signIn, signOut } from "@/lib/auth";
-import { rateLimitEmailSignIn } from "@/lib/rate-limit";
+import { sendEmailLoginOtp } from "@/lib/email-otp";
+import {
+  rateLimitEmailOtpVerify,
+  rateLimitEmailSignIn,
+} from "@/lib/rate-limit";
 
 export async function signInWithEmail(formData: FormData) {
   const email = (formData.get("email") as string)?.trim().toLowerCase();
@@ -19,10 +24,46 @@ export async function signInWithEmail(formData: FormData) {
     return { error: rate.error };
   }
 
-  await signIn("resend", {
-    email,
-    redirectTo: "/discussions",
-  });
+  const result = await sendEmailLoginOtp(email);
+  if (result.error) {
+    return { error: result.error };
+  }
+
+  return { success: true, email: result.email };
+}
+
+export async function verifyEmailOtp(formData: FormData) {
+  const email = (formData.get("email") as string)?.trim().toLowerCase();
+  const code = (formData.get("code") as string)?.trim();
+  const callbackUrl = (formData.get("callbackUrl") as string)?.trim();
+  const safeCallback =
+    callbackUrl?.startsWith("/") && !callbackUrl.startsWith("//")
+      ? callbackUrl
+      : "/discussions";
+
+  if (!email || !code) {
+    return { error: "请输入验证码" };
+  }
+
+  const rate = await rateLimitEmailOtpVerify(email);
+  if (!rate.allowed) {
+    return { error: rate.error };
+  }
+
+  try {
+    await signIn("email-otp", {
+      email,
+      code,
+      redirectTo: safeCallback,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return { error: "验证码错误或已过期" };
+    }
+    throw error;
+  }
+
+  return { error: "验证码错误或已过期" };
 }
 
 export async function signOutAction() {

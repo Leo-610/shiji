@@ -30,7 +30,9 @@
 | `AUTH_SECRET` | Auth.js 密钥 | 运行 `openssl rand -base64 32` 生成 |
 | `AUTH_GITHUB_ID` | GitHub OAuth Client ID | 来自 GitHub Developer Settings |
 | `AUTH_GITHUB_SECRET` | GitHub OAuth Client Secret | 来自 GitHub Developer Settings |
-| `AUTH_URL` | 生产环境域名 | `https://shiji.vercel.app`（部署后替换为实际域名） |
+| `AUTH_RESEND_KEY` | Resend API Key（邮箱验证码登录） | 来自 [Resend API Keys](https://resend.com/api-keys) |
+| `AUTH_RESEND_FROM` | 发件人（需验证域名） | `量子余烬 <notify@shiji.ink>` |
+| `AUTH_URL` | 生产环境域名 | `https://shiji.ink` |
 
 所有变量请勾选 **Production**、**Preview**、**Development** 三个环境。
 
@@ -59,6 +61,28 @@ npm run db:seed
 4. 将 Client ID 和 Secret 填入 Vercel 环境变量
 
 部署后若更换域名，需同步更新 GitHub OAuth 和 `AUTH_URL`，并在 Vercel 中 Redeploy。
+
+## 配置 Resend 邮箱验证码登录
+
+邮箱登录使用 **6 位验证码**（在站内输入，不依赖邮件中的回调链接），适合微信 / QQ 内无法打开魔法链接的场景。
+
+1. 在 [Resend](https://resend.com) 创建 API Key，填入 `AUTH_RESEND_KEY`（Vercel Resend 集成会设置 `RESEND_API_KEY`，同样可用）
+2. 在 Resend → **Domains** 添加 `shiji.ink`，按提示添加 DNS 记录（SPF、DKIM 等）
+3. 域名验证通过后设置发件人：
+   ```
+   AUTH_RESEND_FROM=量子余烬 <notify@shiji.ink>
+   ```
+4. Redeploy 后访问 `/auth/signin` 测试：输入邮箱 → 收信 → 在 `/auth/verify-code` 输入验证码
+
+未验证自定义域名时，可临时使用 Resend 测试地址 `onboarding@resend.dev`，但仅可向你在 Resend 注册的邮箱发信。
+
+本地一键写入 Vercel 环境变量（需已 `vercel link`）：
+
+```bash
+export AUTH_RESEND_KEY=re_xxxx
+export AUTH_RESEND_FROM='量子余烬 <notify@shiji.ink>'
+./scripts/configure-email-auth.sh
+```
 
 ## 自动部署
 

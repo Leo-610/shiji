@@ -3,6 +3,7 @@ import { NeonCard } from "@/components/cyber/NeonCard";
 import { Button } from "@/components/ui/button";
 import { GlitchText } from "@/components/cyber/GlitchText";
 import { EmailSignInForm } from "@/components/auth/EmailSignInForm";
+import { WeChatEmailTip } from "@/components/auth/WeChatEmailTip";
 
 const githubConfigured =
   process.env.AUTH_GITHUB_ID && process.env.AUTH_GITHUB_SECRET;
@@ -25,9 +26,12 @@ export default function SignInPage() {
         {resendConfigured && (
           <div>
             <p className="text-xs font-orbitron tracking-widest text-theme-accent opacity-70 mb-4 uppercase">
-              邮箱魔法链接
+              邮箱验证码
             </p>
-            <EmailSignInForm />
+            <WeChatEmailTip variant="compact" />
+            <div className="mt-4">
+              <EmailSignInForm />
+            </div>
           </div>
         )}
 

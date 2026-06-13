@@ -1,7 +1,6 @@
 import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
-import Resend from "next-auth/providers/resend";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { eq } from "drizzle-orm";
 import { db } from "@/lib/db";
 import {
@@ -10,6 +9,9 @@ import {
   sessions,
   verificationTokens,
 } from "@/lib/db/schema";
+import { verifyEmailLoginOtp } from "@/lib/email-otp";
+import { getResendApiKey } from "@/lib/resend";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import {
   getSuperAdminGitHubUsername,
   SUPER_ADMIN_ROLE,
@@ -29,14 +31,51 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       clientId: process.env.AUTH_GITHUB_ID ?? "",
       clientSecret: process.env.AUTH_GITHUB_SECRET ?? "",
     }),
-    ...((process.env.AUTH_RESEND_KEY ?? process.env.RESEND_API_KEY)
+    ...(getResendApiKey()
       ? [
-          Resend({
-            apiKey:
-              process.env.AUTH_RESEND_KEY ?? process.env.RESEND_API_KEY ?? "",
-            from:
-              process.env.AUTH_RESEND_FROM ??
-              "量子余烬 <onboarding@resend.dev>",
+          Credentials({
+            id: "email-otp",
+            name: "Email OTP",
+            credentials: {
+              email: { label: "Email", type: "email" },
+              code: { label: "Code", type: "text" },
+            },
+            authorize: async (credentials) => {
+              const email = (credentials?.email as string)?.trim().toLowerCase();
+              const code = (credentials?.code as string)?.trim();
+              if (!email || !code) return null;
+
+              const valid = await verifyEmailLoginOtp(email, code);
+              if (!valid) return null;
+
+              let user = await db.query.users.findFirst({
+                where: eq(users.email, email),
+              });
+
+              if (!user) {
+                const [created] = await db
+                  .insert(users)
+                  .values({
+                    email,
+                    emailVerified: new Date(),
+                    name: email.split("@")[0],
+                  })
+                  .returning();
+                user = created;
+              } else if (!user.emailVerified) {
+                await db
+                  .update(users)
+                  .set({ emailVerified: new Date() })
+                  .where(eq(users.id, user.id));
+              }
+
+              return {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                image: user.image,
+              };
+            },
           }),
         ]
       : []),

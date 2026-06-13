@@ -7,6 +7,7 @@ const HOUR_MS = 60 * 60 * 1000;
 
 const LIMITS = {
   email_signin: { limit: 5, windowMs: HOUR_MS },
+  email_otp_verify: { limit: 10, windowMs: HOUR_MS },
   create_thread: { limit: 5, windowMs: HOUR_MS },
   create_comment: { limit: 30, windowMs: HOUR_MS },
 } as const;
@@ -42,6 +43,7 @@ export async function checkRateLimit(
   if (recent >= limit) {
     const messages: Record<RateLimitScope, string> = {
       email_signin: "发送过于频繁，请一小时后再试",
+      email_otp_verify: "验证尝试过多，请一小时后再试",
       create_thread: "发帖过于频繁，请稍后再试",
       create_comment: "评论过于频繁，请稍后再试",
     };
@@ -64,4 +66,8 @@ export async function rateLimitForUserOrIp(
 export async function rateLimitEmailSignIn() {
   const ip = await getClientIp();
   return checkRateLimit("email_signin", `ip:${ip}`);
+}
+
+export async function rateLimitEmailOtpVerify(email: string) {
+  return checkRateLimit("email_otp_verify", `email:${email}`);
 }
