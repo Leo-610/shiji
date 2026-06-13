@@ -1,5 +1,6 @@
 import { Crown } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { LevelBadge } from "@/components/user/LevelBadge";
 import { cn } from "@/lib/utils";
 import { isSuperAdmin } from "@/lib/roles";
 
@@ -7,9 +8,11 @@ interface PrestigeAuthorProps {
   name: string;
   image?: string | null;
   role?: string | null;
+  level?: number | null;
   isThreadOp?: boolean;
   size?: "xs" | "sm" | "md";
   showAvatar?: boolean;
+  showLevel?: boolean;
   className?: string;
 }
 
@@ -17,9 +20,11 @@ export function PrestigeAuthor({
   name,
   image,
   role,
+  level,
   isThreadOp = false,
   size = "md",
   showAvatar = true,
+  showLevel = true,
   className,
 }: PrestigeAuthorProps) {
   const admin = isSuperAdmin(role);
@@ -73,6 +78,9 @@ export function PrestigeAuthor({
             <Crown className="size-3 shrink-0" aria-hidden />
             至尊站长
           </span>
+        )}
+        {showLevel && level && level > 0 && !admin && (
+          <LevelBadge level={level} className="scale-90" />
         )}
         {isThreadOp && <span className="svip-badge svip-badge-op">贴主</span>}
       </div>

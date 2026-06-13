@@ -24,6 +24,7 @@ interface CommentData {
     name: string | null;
     image: string | null;
     role?: string | null;
+    level?: number | null;
   } | null;
 }
 
@@ -134,6 +135,7 @@ export function CommentSection({
                     name={authorName}
                     image={comment.author?.image}
                     role={comment.author?.role}
+                    level={comment.author?.level}
                     isThreadOp={isCommentOp(comment.authorId)}
                     size="sm"
                     className="shrink-0"
@@ -205,6 +207,7 @@ export function CommentSection({
                         name={replyAuthor}
                         image={reply.author?.image}
                         role={reply.author?.role}
+                        level={reply.author?.level}
                         isThreadOp={isCommentOp(reply.authorId)}
                         size="xs"
                         className="shrink-0"

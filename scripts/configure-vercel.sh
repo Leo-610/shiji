@@ -8,7 +8,7 @@ export PATH="/tmp/node/bin:${PATH:-}"
 cd "$(dirname "$0")/.."
 
 AUTH_SECRET="${AUTH_SECRET:-$(openssl rand -base64 32)}"
-AUTH_URL="${AUTH_URL:-https://shiji-tau.vercel.app}"
+AUTH_URL="${AUTH_URL:-https://shiji.ink}"
 
 echo "==> Project: shiji"
 vercel whoami

@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { Trash2 } from "lucide-react";
+import { Eye, Trash2 } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { getThreadBySlug } from "@/lib/queries";
 import { deleteThread } from "@/app/actions/threads";
+import { recordThreadView } from "@/lib/xp";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { Button } from "@/components/ui/button";
 import { CommentSection } from "@/components/discussion/CommentSection";
@@ -28,6 +29,8 @@ export default async function ThreadDetailPage({
   if (!thread) {
     notFound();
   }
+
+  await recordThreadView(thread.id, thread.authorId);
 
   const authorName = getAuthorName(thread.author, thread.guestName);
   const isAuthor = session?.user?.id === thread.authorId;
@@ -69,10 +72,15 @@ export default async function ThreadDetailPage({
               name={authorName}
               image={thread.author?.image}
               role={thread.author?.role}
+              level={thread.author?.level}
               isThreadOp
               size="md"
             />
             <span>{formatDate(thread.createdAt)}</span>
+            <span className="flex items-center gap-1">
+              <Eye className="size-3.5" />
+              {thread.viewCount ?? 0}
+            </span>
           </div>
           {canDeleteThread && (
             <form

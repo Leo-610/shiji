@@ -6,9 +6,13 @@ import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import {
   commentLikes,
+  comments,
   threadFavorites,
   threadLikes,
+  threads,
 } from "@/lib/db/schema";
+import { XP_REWARDS } from "@/lib/level";
+import { awardXp } from "@/lib/xp";
 
 async function requireUser() {
   const session = await auth();
@@ -46,6 +50,15 @@ export async function toggleThreadLike(threadId: string, threadSlug: string) {
     userId: user.userId,
     threadId,
   });
+
+  const thread = await db.query.threads.findFirst({
+    where: eq(threads.id, threadId),
+    columns: { authorId: true },
+  });
+  if (thread?.authorId && thread.authorId !== user.userId) {
+    await awardXp(thread.authorId, XP_REWARDS.receiveThreadLike);
+  }
+
   revalidatePath(`/discussions/${threadSlug}`);
   return { liked: true };
 }
@@ -81,6 +94,15 @@ export async function toggleCommentLike(
     userId: user.userId,
     commentId,
   });
+
+  const comment = await db.query.comments.findFirst({
+    where: eq(comments.id, commentId),
+    columns: { authorId: true },
+  });
+  if (comment?.authorId && comment.authorId !== user.userId) {
+    await awardXp(comment.authorId, XP_REWARDS.receiveCommentLike);
+  }
+
   revalidatePath(`/discussions/${threadSlug}`);
   return { liked: true };
 }

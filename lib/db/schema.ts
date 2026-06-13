@@ -17,6 +17,10 @@ export const users = pgTable("users", {
   emailVerified: timestamp("email_verified", { mode: "date" }),
   image: text("image"),
   role: text("role").notNull().default("user"),
+  xp: integer("xp").notNull().default(0),
+  level: integer("level").notNull().default(1),
+  lastCheckIn: text("last_check_in"),
+  checkInStreak: integer("check_in_streak").notNull().default(0),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
@@ -80,6 +84,7 @@ export const threads = pgTable("threads", {
     onDelete: "set null",
   }),
   guestName: text("guest_name"),
+  viewCount: integer("view_count").notNull().default(0),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
   updatedAt: timestamp("updated_at", { mode: "date" }).defaultNow().notNull(),
 });
@@ -128,6 +133,20 @@ export const commentLikes = pgTable(
 
 export const threadFavorites = pgTable(
   "thread_favorites",
+  {
+    userId: uuid("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    threadId: uuid("thread_id")
+      .notNull()
+      .references(() => threads.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.userId, t.threadId] })]
+);
+
+export const threadViews = pgTable(
+  "thread_views",
   {
     userId: uuid("user_id")
       .notNull()

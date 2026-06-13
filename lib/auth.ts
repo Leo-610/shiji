@@ -77,11 +77,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         try {
           const dbUser = await db.query.users.findFirst({
             where: eq(users.id, token.id as string),
-            columns: { role: true },
+            columns: { role: true, level: true, xp: true },
           });
           token.role = (dbUser?.role as UserRole | undefined) ?? "user";
+          token.level = dbUser?.level ?? 1;
+          token.xp = dbUser?.xp ?? 0;
         } catch {
           token.role = "user";
+          token.level = 1;
+          token.xp = 0;
         }
       }
       return token;
@@ -90,6 +94,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (session.user && token.id) {
         session.user.id = token.id as string;
         session.user.role = (token.role as UserRole | undefined) ?? "user";
+        session.user.level = (token.level as number | undefined) ?? 1;
+        session.user.xp = (token.xp as number | undefined) ?? 0;
       }
       return session;
     },

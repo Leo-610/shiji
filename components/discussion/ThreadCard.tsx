@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { MessageSquare } from "lucide-react";
+import { Eye, MessageSquare } from "lucide-react";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { PrestigeAuthor } from "@/components/user/PrestigeAuthor";
 import { formatDate, getAuthorName } from "@/lib/utils";
@@ -11,7 +11,13 @@ interface ThreadPreview {
   createdAt: Date;
   guestName: string | null;
   category: { name: string; slug: string };
-  author: { name: string | null; image: string | null; role?: string | null } | null;
+  author: {
+    name: string | null;
+    image: string | null;
+    role?: string | null;
+    level?: number | null;
+  } | null;
+  viewCount?: number;
   comments?: { id: string }[];
 }
 
@@ -37,12 +43,17 @@ export function ThreadCard({ thread }: { thread: ThreadPreview }) {
                 name={authorName}
                 image={thread.author?.image}
                 role={thread.author?.role}
+                level={thread.author?.level}
                 isThreadOp
                 size="sm"
                 showAvatar={false}
                 className="gap-1"
               />
               <span>{formatDate(thread.createdAt)}</span>
+              <span className="flex items-center gap-1">
+                <Eye className="size-3" />
+                {thread.viewCount ?? 0}
+              </span>
               <span className="flex items-center gap-1">
                 <MessageSquare className="size-3" />
                 {commentCount}

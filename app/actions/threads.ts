@@ -10,6 +10,8 @@ import { threads, comments } from "@/lib/db/schema";
 import { isSuperAdmin } from "@/lib/roles";
 import { rateLimitForUserOrIp } from "@/lib/rate-limit";
 import { CONTENT_MAX_LENGTH } from "@/lib/content";
+import { XP_REWARDS } from "@/lib/level";
+import { awardXp } from "@/lib/xp";
 import { createThreadSlug } from "@/lib/utils";
 
 const createThreadSchema = z.object({
@@ -70,6 +72,10 @@ export async function createThread(formData: FormData) {
     })
     .returning();
 
+  if (session?.user?.id) {
+    await awardXp(session.user.id, XP_REWARDS.createThread);
+  }
+
   revalidatePath("/");
   revalidatePath("/discussions");
   redirect(`/discussions/${thread.slug}`);
@@ -106,6 +112,10 @@ export async function createComment(formData: FormData) {
     authorId: session?.user?.id ?? null,
     guestName: session?.user ? null : parsed.data.guestName?.trim(),
   });
+
+  if (session?.user?.id) {
+    await awardXp(session.user.id, XP_REWARDS.createComment);
+  }
 
   const thread = await db.query.threads.findFirst({
     where: eq(threads.id, parsed.data.threadId),

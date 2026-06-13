@@ -3,6 +3,7 @@ import { signOut } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { LevelBadge } from "@/components/user/LevelBadge";
 import { isSuperAdmin } from "@/lib/roles";
 
 interface HeaderProps {
@@ -11,6 +12,7 @@ interface HeaderProps {
     email?: string | null;
     image?: string | null;
     role?: string | null;
+    level?: number;
   } | null;
 }
 
@@ -43,18 +45,29 @@ export function Header({ user }: HeaderProps) {
           >
             发帖
           </Link>
+          {user && (
+            <Link
+              href="/profile"
+              className="text-sm text-theme-muted hover:text-theme-accent transition-colors px-2 py-1 hidden sm:inline"
+            >
+              等级
+            </Link>
+          )}
 
           <ThemeToggle />
 
           {user ? (
             <div className="flex items-center gap-3 ml-1">
-              <Avatar className="size-7">
-                <AvatarImage src={user.image ?? undefined} />
-                <AvatarFallback>
-                  {user.name?.[0]?.toUpperCase() ?? "U"}
-                </AvatarFallback>
-              </Avatar>
-              <span className="text-sm text-theme-heading hidden sm:inline max-w-[100px] truncate">
+              <Link href="/profile" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+                <Avatar className="size-7">
+                  <AvatarImage src={user.image ?? undefined} />
+                  <AvatarFallback>
+                    {user.name?.[0]?.toUpperCase() ?? "U"}
+                  </AvatarFallback>
+                </Avatar>
+                <LevelBadge level={user.level ?? 1} className="hidden sm:inline-flex" />
+              </Link>
+              <span className="text-sm text-theme-heading hidden md:inline max-w-[100px] truncate">
                 {user.name}
               </span>
               {isSuperAdmin(user.role) && (
