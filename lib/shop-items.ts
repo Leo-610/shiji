@@ -81,7 +81,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-void",
     name: "虚空裂隙框",
-    description: "SVG 传说星冠动效 · 虚空靛配色，深空裂隙光环。",
+    description: "Lottie 羽翼动效 · 虚空靛换色，传说档压迫感。",
     type: "avatar_frame",
     price: 500,
     rarity: "legendary",
@@ -89,7 +89,7 @@ export const SHOP_ITEMS: ShopItem[] = [
   {
     slug: "frame-ascension",
     name: "升格神谕框",
-    description: "SVG 传说星冠动效 · 金彩典藏，至尊光环。",
+    description: "Lottie 羽翼动效 · 原色典藏款，积分商店动效框标准价。",
     type: "avatar_frame",
     price: 500,
     rarity: "legendary",
@@ -263,7 +263,8 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#a5b4fc",
     glow: "#4f46e5",
     rarity: "legendary",
-    frameStyle: "entropy",
+    lottieSrc: LOTTIE_ASSETS.avatarFrame,
+    lottieFilter: "hue-rotate(205deg) saturate(1.15) brightness(0.88)",
   },
   "frame-ascension": {
     id: "ascension",
@@ -272,7 +273,7 @@ export const FRAME_THEMES: Record<string, FrameTheme> = {
     accent: "#c084fc",
     glow: "#fcd34d",
     rarity: "legendary",
-    frameStyle: "prism",
+    lottieSrc: LOTTIE_ASSETS.avatarFrame,
   },
 };
 

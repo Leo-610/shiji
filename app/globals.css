@@ -835,9 +835,9 @@ html.light .svip-badge-op {
   inset: 5%;
 }
 
-/* Lottie wings: smaller face, wider overlay */
+/* Lottie wings: enlarge face cutout, moderate wing bleed */
 .avatar-premium-face-lottie {
-  inset: 21%;
+  inset: 10%;
 }
 
 .avatar-premium-overlay {
@@ -851,12 +851,14 @@ html.light .svip-badge-op {
 }
 
 .avatar-premium-overlay-lottie {
-  inset: -22%;
+  inset: -18%;
 }
 
 .avatar-lottie-wrap {
   width: 100%;
   height: 100%;
+  transform: scale(1.06);
+  transform-origin: center center;
 }
 
 .avatar-lottie-player {
