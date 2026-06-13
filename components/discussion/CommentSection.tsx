@@ -2,15 +2,16 @@
 
 import { useState } from "react";
 import { Trash2 } from "lucide-react";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { createComment, deleteComment } from "@/app/actions/threads";
 import { CONTENT_MAX_LENGTH } from "@/lib/content";
+import { PrestigeAuthor } from "@/components/user/PrestigeAuthor";
 import { LikeButton } from "@/components/discussion/LikeButton";
 import { formatDate, getAuthorName } from "@/lib/utils";
+import { isSuperAdmin, type UserRole } from "@/lib/roles";
 
 interface CommentData {
   id: string;
@@ -19,14 +20,20 @@ interface CommentData {
   guestName: string | null;
   parentId: string | null;
   authorId: string | null;
-  author: { name: string | null; image: string | null } | null;
+  author: {
+    name: string | null;
+    image: string | null;
+    role?: string | null;
+  } | null;
 }
 
 interface CommentSectionProps {
   threadId: string;
   threadSlug: string;
+  threadAuthorId: string | null;
   comments: CommentData[];
   currentUserId?: string;
+  currentUserRole?: UserRole;
   isLoggedIn: boolean;
   commentLikeCounts?: Record<string, number>;
   commentLikedIds?: string[];
@@ -35,8 +42,10 @@ interface CommentSectionProps {
 export function CommentSection({
   threadId,
   threadSlug,
+  threadAuthorId,
   comments,
   currentUserId,
+  currentUserRole,
   isLoggedIn,
   commentLikeCounts = {},
   commentLikedIds = [],
@@ -44,6 +53,16 @@ export function CommentSection({
   const likedSet = new Set(commentLikedIds);
   const [error, setError] = useState<string | null>(null);
   const [replyingTo, setReplyingTo] = useState<string | null>(null);
+
+  function canDeleteComment(authorId: string | null) {
+    if (!currentUserId) return false;
+    if (authorId === currentUserId) return true;
+    return isSuperAdmin(currentUserRole);
+  }
+
+  function isCommentOp(authorId: string | null) {
+    return authorId !== null && authorId === threadAuthorId;
+  }
 
   const topLevel = comments.filter((c) => !c.parentId);
   const replies = comments.filter((c) => c.parentId);
@@ -111,22 +130,19 @@ export function CommentSection({
             <div key={comment.id} className="space-y-3">
               <NeonCard className="p-4" glow="none">
                 <div className="flex gap-3">
-                  <Avatar className="size-8 shrink-0">
-                    <AvatarImage src={comment.author?.image ?? undefined} />
-                    <AvatarFallback>
-                      {authorName[0]?.toUpperCase()}
-                    </AvatarFallback>
-                  </Avatar>
+                  <PrestigeAuthor
+                    name={authorName}
+                    image={comment.author?.image}
+                    role={comment.author?.role}
+                    isThreadOp={isCommentOp(comment.authorId)}
+                    size="sm"
+                    className="shrink-0"
+                  />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-sm font-medium text-theme-heading">
-                          {authorName}
-                        </span>
-                        <span className="text-xs text-theme-subtle">
-                          {formatDate(comment.createdAt)}
-                        </span>
-                      </div>
+                      <span className="text-xs text-theme-subtle">
+                        {formatDate(comment.createdAt)}
+                      </span>
                       <div className="flex items-center gap-1">
                         <LikeButton
                           target="comment"
@@ -148,8 +164,7 @@ export function CommentSection({
                         >
                           回复
                         </Button>
-                        {currentUserId &&
-                          comment.authorId === currentUserId && (
+                        {canDeleteComment(comment.authorId) && (
                             <form
                               action={async () => {
                                 await deleteComment(comment.id, threadSlug);
@@ -186,24 +201,19 @@ export function CommentSection({
                     glow="none"
                   >
                     <div className="flex gap-3">
-                      <Avatar className="size-6 shrink-0">
-                        <AvatarImage
-                          src={reply.author?.image ?? undefined}
-                        />
-                        <AvatarFallback className="text-xs">
-                          {replyAuthor[0]?.toUpperCase()}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-2">
-                            <span className="text-sm text-theme-heading">
-                              {replyAuthor}
-                            </span>
-                            <span className="text-xs text-theme-subtle">
-                              {formatDate(reply.createdAt)}
-                            </span>
-                          </div>
+                      <PrestigeAuthor
+                        name={replyAuthor}
+                        image={reply.author?.image}
+                        role={reply.author?.role}
+                        isThreadOp={isCommentOp(reply.authorId)}
+                        size="xs"
+                        className="shrink-0"
+                      />
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <span className="text-xs text-theme-subtle">
+                            {formatDate(reply.createdAt)}
+                          </span>
                           <div className="flex items-center gap-1">
                             <LikeButton
                               target="comment"
@@ -214,8 +224,7 @@ export function CommentSection({
                               isLoggedIn={isLoggedIn}
                               size="icon"
                             />
-                            {currentUserId &&
-                              reply.authorId === currentUserId && (
+                            {canDeleteComment(reply.authorId) && (
                                 <form
                                   action={async () => {
                                     await deleteComment(reply.id, threadSlug);

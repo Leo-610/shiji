@@ -3,12 +3,14 @@ import { signOut } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { isSuperAdmin } from "@/lib/roles";
 
 interface HeaderProps {
   user?: {
     name?: string | null;
     email?: string | null;
     image?: string | null;
+    role?: string | null;
   } | null;
 }
 
@@ -55,6 +57,11 @@ export function Header({ user }: HeaderProps) {
               <span className="text-sm text-theme-heading hidden sm:inline max-w-[100px] truncate">
                 {user.name}
               </span>
+              {isSuperAdmin(user.role) && (
+                <span className="svip-badge svip-badge-admin hidden sm:inline-flex">
+                  至尊
+                </span>
+              )}
               <form
                 action={async () => {
                   "use server";

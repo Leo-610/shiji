@@ -11,7 +11,9 @@ import { MarkdownContent } from "@/components/discussion/MarkdownContent";
 import { formatDate, getAuthorName, decodeSlugParam } from "@/lib/utils";
 import { getThreadEngagement } from "@/lib/queries/engagement";
 import { threadUrl } from "@/lib/site";
+import { PrestigeAuthor } from "@/components/user/PrestigeAuthor";
 import { ThreadEngagementBar } from "@/components/discussion/ThreadEngagementBar";
+import { isSuperAdmin } from "@/lib/roles";
 
 export default async function ThreadDetailPage({
   params,
@@ -29,6 +31,8 @@ export default async function ThreadDetailPage({
 
   const authorName = getAuthorName(thread.author, thread.guestName);
   const isAuthor = session?.user?.id === thread.authorId;
+  const isSuperAdminUser = isSuperAdmin(session?.user?.role);
+  const canDeleteThread = isAuthor || isSuperAdminUser;
   const isLoggedIn = !!session?.user;
   const commentIds = thread.comments.map((c) => c.id);
   const engagement = await getThreadEngagement(
@@ -60,11 +64,17 @@ export default async function ThreadDetailPage({
         </h1>
 
         <div className="flex items-center justify-between gap-4 mb-6 text-sm text-theme-muted">
-          <div className="flex items-center gap-3">
-            <span className="text-theme-heading">{authorName}</span>
+          <div className="flex items-center gap-3 flex-wrap">
+            <PrestigeAuthor
+              name={authorName}
+              image={thread.author?.image}
+              role={thread.author?.role}
+              isThreadOp
+              size="md"
+            />
             <span>{formatDate(thread.createdAt)}</span>
           </div>
-          {isAuthor && (
+          {canDeleteThread && (
             <form
               action={async () => {
                 "use server";
@@ -101,8 +111,10 @@ export default async function ThreadDetailPage({
       <CommentSection
         threadId={thread.id}
         threadSlug={thread.slug}
+        threadAuthorId={thread.authorId}
         comments={thread.comments}
         currentUserId={session?.user?.id}
+        currentUserRole={session?.user?.role}
         isLoggedIn={isLoggedIn}
         commentLikeCounts={engagement.commentLikeCounts}
         commentLikedIds={engagement.commentLikedIds}

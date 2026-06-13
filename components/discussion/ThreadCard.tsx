@@ -1,6 +1,7 @@
 import Link from "next/link";
-import { MessageSquare, User } from "lucide-react";
+import { MessageSquare } from "lucide-react";
 import { NeonCard } from "@/components/cyber/NeonCard";
+import { PrestigeAuthor } from "@/components/user/PrestigeAuthor";
 import { formatDate, getAuthorName } from "@/lib/utils";
 
 interface ThreadPreview {
@@ -10,7 +11,7 @@ interface ThreadPreview {
   createdAt: Date;
   guestName: string | null;
   category: { name: string; slug: string };
-  author: { name: string | null; image: string | null } | null;
+  author: { name: string | null; image: string | null; role?: string | null } | null;
   comments?: { id: string }[];
 }
 
@@ -31,11 +32,16 @@ export function ThreadCard({ thread }: { thread: ThreadPreview }) {
             <h3 className="text-base font-medium text-theme-heading group-hover:text-theme-accent transition-colors truncate">
               {thread.title}
             </h3>
-            <div className="flex items-center gap-3 mt-2 text-xs text-theme-subtle">
-              <span className="flex items-center gap-1">
-                <User className="size-3" />
-                {authorName}
-              </span>
+            <div className="flex items-center gap-3 mt-2 text-xs text-theme-subtle flex-wrap">
+              <PrestigeAuthor
+                name={authorName}
+                image={thread.author?.image}
+                role={thread.author?.role}
+                isThreadOp
+                size="sm"
+                showAvatar={false}
+                className="gap-1"
+              />
               <span>{formatDate(thread.createdAt)}</span>
               <span className="flex items-center gap-1">
                 <MessageSquare className="size-3" />

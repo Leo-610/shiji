@@ -7,6 +7,7 @@ import { z } from "zod";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
 import { threads, comments } from "@/lib/db/schema";
+import { isSuperAdmin } from "@/lib/roles";
 import { rateLimitForUserOrIp } from "@/lib/rate-limit";
 import { CONTENT_MAX_LENGTH } from "@/lib/content";
 import { createThreadSlug } from "@/lib/utils";
@@ -131,7 +132,10 @@ export async function deleteThread(threadId: string) {
     return { error: "帖子不存在" };
   }
 
-  if (thread.authorId !== session.user.id) {
+  if (
+    thread.authorId !== session.user.id &&
+    !isSuperAdmin(session.user.role)
+  ) {
     return { error: "无权删除此帖子" };
   }
 
@@ -156,7 +160,10 @@ export async function deleteComment(commentId: string, threadSlug: string) {
     return { error: "评论不存在" };
   }
 
-  if (comment.authorId !== session.user.id) {
+  if (
+    comment.authorId !== session.user.id &&
+    !isSuperAdmin(session.user.role)
+  ) {
     return { error: "无权删除此评论" };
   }
 
