@@ -499,3 +499,85 @@ html.light .svip-badge-op {
   transition: width 0.4s ease;
   box-shadow: 0 0 12px rgba(0, 240, 255, 0.35);
 }
+
+/* Daily fortune gacha cards */
+.fortune-card {
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--app-surface) 92%, transparent),
+    color-mix(in srgb, var(--app-bg) 88%, transparent)
+  );
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.fortune-card-shimmer {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    115deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.08) 50%,
+    transparent 70%
+  );
+  animation: fortune-shimmer 3.5s ease-in-out infinite;
+}
+
+@keyframes fortune-shimmer {
+  0%,
+  100% {
+    transform: translateX(-30%);
+    opacity: 0.4;
+  }
+  50% {
+    transform: translateX(30%);
+    opacity: 0.9;
+  }
+}
+
+.fortune-tier-label {
+  color: var(--app-accent-bright, #67e8f9);
+}
+
+.fortune-tier-supreme {
+  border-color: rgba(255, 215, 0, 0.65);
+  box-shadow: 0 0 24px rgba(255, 215, 0, 0.25), inset 0 0 30px rgba(255, 107, 107, 0.08);
+}
+
+.fortune-tier-great {
+  border-color: rgba(251, 191, 36, 0.55);
+  box-shadow: 0 0 18px rgba(251, 191, 36, 0.2);
+}
+
+.fortune-tier-good {
+  border-color: rgba(0, 240, 255, 0.45);
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.15);
+}
+
+.fortune-tier-fair {
+  border-color: rgba(192, 132, 252, 0.4);
+  box-shadow: 0 0 12px rgba(192, 132, 252, 0.12);
+}
+
+.fortune-tier-small {
+  border-color: rgba(148, 163, 184, 0.45);
+}
+
+.fortune-tier-neutral {
+  border-color: var(--app-border);
+}
+
+.fortune-tier-ominous {
+  border-color: rgba(248, 113, 113, 0.45);
+  box-shadow: 0 0 14px rgba(248, 113, 113, 0.12);
+}
+
+.fortune-glow-supreme .fortune-tier-label {
+  color: #ffd700;
+  animation: svip-glow-pulse 2.5s ease-in-out infinite;
+}
+
+.fortune-glow-ominous .fortune-tier-label {
+  color: #f87171;
+}

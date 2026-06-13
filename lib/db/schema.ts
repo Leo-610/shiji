@@ -21,6 +21,7 @@ export const users = pgTable("users", {
   level: integer("level").notNull().default(1),
   lastCheckIn: text("last_check_in"),
   checkInStreak: integer("check_in_streak").notNull().default(0),
+  dailyFortuneId: text("daily_fortune_id"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 

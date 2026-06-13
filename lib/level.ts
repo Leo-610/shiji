@@ -114,7 +114,7 @@ export function getLevelTier(level: number): "bronze" | "silver" | "gold" | "pur
 
 export function getXpRuleDescriptions() {
   return [
-    { action: "每日签到", xp: XP_REWARDS.dailyCheckIn, note: "连续签到额外 +2/天，上限 7 天" },
+    { action: "每日签到抽卡", xp: 10, note: "经验 + 今日运势签（内置 40+ 种）" },
     { action: "连续 7 天签到", xp: XP_REWARDS.checkInMilestone7, note: "第七天一次性奖励" },
     { action: "发布帖子", xp: XP_REWARDS.createThread, note: "仅登录用户" },
     { action: "发表评论", xp: XP_REWARDS.createComment, note: "仅登录用户" },

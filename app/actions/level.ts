@@ -7,6 +7,11 @@ import { getTodayInShanghai, getYesterdayInShanghai } from "@/lib/date";
 import { db } from "@/lib/db";
 import { users } from "@/lib/db/schema";
 import {
+  getFortuneById,
+  pickDailyFortune,
+  serializeFortune,
+} from "@/lib/fortunes";
+import {
   getCheckInXp,
   getLevelTitle,
   getXpProgress,
@@ -25,6 +30,7 @@ export async function getMyLevelProfile() {
         level: true,
         lastCheckIn: true,
         checkInStreak: true,
+        dailyFortuneId: true,
       },
     });
     if (!user) return null;
@@ -32,6 +38,20 @@ export async function getMyLevelProfile() {
     const today = getTodayInShanghai();
     const level = user.level ?? 1;
     const xp = user.xp ?? 0;
+    const checkedInToday = user.lastCheckIn === today;
+    let fortuneId = user.dailyFortuneId;
+
+    if (checkedInToday && !fortuneId) {
+      const backfill = pickDailyFortune(session.user.id, today);
+      fortuneId = backfill.id;
+      await db
+        .update(users)
+        .set({ dailyFortuneId: backfill.id })
+        .where(eq(users.id, session.user.id));
+    }
+
+    const fortune =
+      checkedInToday && fortuneId ? getFortuneById(fortuneId) : null;
 
     return {
       xp,
@@ -39,14 +59,15 @@ export async function getMyLevelProfile() {
       title: getLevelTitle(level),
       progress: getXpProgress(xp, level),
       checkInStreak: user.checkInStreak ?? 0,
-      checkedInToday: user.lastCheckIn === today,
+      checkedInToday,
       todayCheckInXp: getCheckInXp(
-        user.lastCheckIn === today
+        checkedInToday
           ? user.checkInStreak ?? 0
           : user.lastCheckIn === getYesterdayInShanghai()
             ? (user.checkInStreak ?? 0) + 1
             : 1
       ),
+      dailyFortune: fortune ? serializeFortune(fortune) : null,
     };
   } catch {
     return null;
@@ -70,6 +91,7 @@ export async function dailyCheckIn() {
         level: true,
         lastCheckIn: true,
         checkInStreak: true,
+        dailyFortuneId: true,
       },
     });
 
@@ -78,10 +100,12 @@ export async function dailyCheckIn() {
     }
 
     if (user.lastCheckIn === today) {
+      const fortune = getFortuneById(user.dailyFortuneId);
       return {
         error: "今日已签到",
         alreadyCheckedIn: true,
         streak: user.checkInStreak ?? 0,
+        fortune: fortune ? serializeFortune(fortune) : null,
       };
     }
 
@@ -91,6 +115,7 @@ export async function dailyCheckIn() {
     const prevLevel = user.level ?? 1;
     const newXp = (user.xp ?? 0) + xpGain;
     const newLevel = levelFromXp(newXp);
+    const fortune = pickDailyFortune(session.user.id, today);
 
     await db
       .update(users)
@@ -99,6 +124,7 @@ export async function dailyCheckIn() {
         checkInStreak: streak,
         xp: newXp,
         level: newLevel,
+        dailyFortuneId: fortune.id,
       })
       .where(eq(users.id, session.user.id));
 
@@ -113,6 +139,7 @@ export async function dailyCheckIn() {
       level: newLevel,
       title: getLevelTitle(newLevel),
       leveledUp: newLevel > prevLevel,
+      fortune: serializeFortune(fortune),
     };
   } catch {
     return { error: "签到功能尚未就绪，请稍后再试" };

@@ -25,7 +25,7 @@ export default async function ProfilePage() {
           我的等级
         </GlitchText>
         <p className="text-sm text-theme-muted">
-          登录用户专属成长体系 · 参考哔哩哔哩 / QQ 等级
+          登录用户专属成长体系 · 每日签到抽运势卡
         </p>
       </div>
 
@@ -79,6 +79,7 @@ export default async function ProfilePage() {
             checkedInToday={profile.checkedInToday}
             streak={profile.checkInStreak}
             todayXp={profile.todayCheckInXp}
+            initialFortune={profile.dailyFortune}
           />
         )}
       </NeonCard>
