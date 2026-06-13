@@ -33,7 +33,7 @@ export default async function VerifyCodePage({
 
       <NeonCard className="p-8 space-y-6">
         <VerifyCodeForm email={email} callbackUrl={safeCallback} />
-        <Link href="/auth/signin">
+        <Link href="/auth/signin" className="block">
           <Button variant="outline" className="w-full" type="button">
             返回重新发送
           </Button>

@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -9,7 +8,6 @@ import { Label } from "@/components/ui/label";
 import { signInWithEmail } from "@/app/actions/auth";
 
 export function EmailSignInForm() {
-  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -23,7 +21,7 @@ export function EmailSignInForm() {
       return;
     }
     if (result?.success && result.email) {
-      router.push(
+      window.location.assign(
         `/auth/verify-code?email=${encodeURIComponent(result.email)}`
       );
     }
