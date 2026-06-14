@@ -58,6 +58,7 @@ export type WheelPageData = {
     label: string;
     shortLabel: string;
     color: string;
+    tier: WheelPrize["tier"];
   }>;
   activeTrials: Array<{
     itemSlug: string;
@@ -143,6 +144,7 @@ export async function getWheelPageData(): Promise<WheelPageData | null> {
         label: p.label,
         shortLabel: p.shortLabel,
         color: p.color,
+        tier: p.tier,
       })),
       activeTrials: grants.map((g) => {
         const item = getShopItem(g.itemSlug);
