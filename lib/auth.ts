@@ -15,8 +15,6 @@ import { assignReaderIdIfMissing } from "@/lib/reader-id";
 import { clearExpiredEquippedItems } from "@/lib/shop-ownership";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import {
-  getSuperAdminGitHubUsername,
-  SUPER_ADMIN_ROLE,
   type UserRole,
 } from "@/lib/roles";
 
@@ -94,18 +92,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (!user.id || account?.provider !== "github") return;
 
       const profileLogin = (profile as { login?: string } | undefined)?.login;
-      if (
-        profileLogin?.toLowerCase() ===
-        getSuperAdminGitHubUsername().toLowerCase()
-      ) {
-        try {
-          await db
-            .update(users)
-            .set({ role: SUPER_ADMIN_ROLE })
-            .where(eq(users.id, user.id));
-        } catch {
-          // role column may be missing until migration is applied
-        }
+      if (!profileLogin) return;
+
+      try {
+        await db
+          .update(users)
+          .set({ githubLogin: profileLogin })
+          .where(eq(users.id, user.id));
+      } catch {
+        // github_login column may be missing until migration is applied
       }
     },
   },

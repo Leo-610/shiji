@@ -1,7 +1,8 @@
 import { and, count, eq, gte } from "drizzle-orm";
 import { db } from "@/lib/db";
-import { rateLimitEvents } from "@/lib/db/schema";
+import { rateLimitEvents, users } from "@/lib/db/schema";
 import { getClientIp } from "@/lib/request";
+import { isOwnerGitHubLogin } from "@/lib/roles";
 
 const HOUR_MS = 60 * 60 * 1000;
 
@@ -32,6 +33,14 @@ async function recordEvent(key: string) {
   await db.insert(rateLimitEvents).values({ key });
 }
 
+async function isRateLimitExemptUser(userId: string): Promise<boolean> {
+  const user = await db.query.users.findFirst({
+    where: eq(users.id, userId),
+    columns: { githubLogin: true },
+  });
+  return isOwnerGitHubLogin(user?.githubLogin);
+}
+
 export async function checkRateLimit(
   scope: RateLimitScope,
   identifier: string
@@ -58,6 +67,10 @@ export async function rateLimitForUserOrIp(
   scope: "create_thread" | "create_comment",
   userId?: string | null
 ) {
+  if (userId && (await isRateLimitExemptUser(userId))) {
+    return { allowed: true as const };
+  }
+
   const ip = await getClientIp();
   const identifier = userId ? `user:${userId}` : `ip:${ip}`;
   return checkRateLimit(scope, identifier);

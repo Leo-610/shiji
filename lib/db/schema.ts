@@ -40,6 +40,8 @@ export const users = pgTable("users", {
   legendShards: integer("legend_shards").notNull().default(0),
   /** Last calendar date (Asia/Shanghai) a free wheel spin was used. */
   lastFreeWheelDate: text("last_free_wheel_date"),
+  /** GitHub username from OAuth login (e.g. Leo-610). */
+  githubLogin: text("github_login"),
   createdAt: timestamp("created_at", { mode: "date" }).defaultNow().notNull(),
 });
 
