@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { VantaNetBackground } from "@/components/cyber/VantaNetBackground";
-import { NovelCover3D } from "@/components/cyber/NovelCover3D";
+import { AppLogo } from "@/components/brand/AppLogo";
 
 const STORAGE_KEY = "shiji-boot-v3";
 const DURATION_MS = 3600;
@@ -131,7 +131,7 @@ export function BootSequence() {
                   </linearGradient>
                 </defs>
               </svg>
-              <NovelCover3D size="md" priority />
+              <AppLogo size="boot" priority className="shadow-[0_0_48px_rgba(0,240,255,0.25)]" />
             </motion.div>
 
             <motion.p

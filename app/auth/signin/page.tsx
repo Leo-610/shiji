@@ -1,6 +1,7 @@
 import { signIn } from "@/lib/auth";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { Button } from "@/components/ui/button";
+import { AppLogo } from "@/components/brand/AppLogo";
 import { GlitchText } from "@/components/cyber/GlitchText";
 import { EmailSignInForm } from "@/components/auth/EmailSignInForm";
 import { WeChatEmailTip } from "@/components/auth/WeChatEmailTip";
@@ -14,6 +15,9 @@ export default function SignInPage() {
   return (
     <div className="max-w-md mx-auto py-16">
       <div className="text-center mb-8">
+        <div className="flex justify-center mb-4">
+          <AppLogo size="lg" />
+        </div>
         <GlitchText as="h1" className="text-2xl font-bold mb-2">
           登录
         </GlitchText>

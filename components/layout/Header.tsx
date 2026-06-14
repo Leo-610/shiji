@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Coins } from "lucide-react";
+import { AppLogo } from "@/components/brand/AppLogo";
 import { signOut } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/layout/ThemeToggle";
@@ -28,7 +29,11 @@ export function Header({ user }: HeaderProps) {
       style={{ backgroundColor: "var(--app-header-bg)" }}
     >
       <div className="mx-auto flex h-14 sm:h-16 max-w-6xl items-center justify-between px-4">
-        <Link href="/" className="flex items-center gap-2 group min-w-0">
+        <Link href="/" className="flex items-center gap-2.5 group min-w-0">
+          <AppLogo
+            size="sm"
+            className="group-hover:opacity-90 transition-opacity"
+          />
           <span className="text-base sm:text-lg font-bold text-theme-accent group-hover:opacity-80 transition-opacity tracking-wide truncate">
             <span className="max-[360px]:hidden">量子余烬</span>
             <span className="hidden max-[360px]:inline">余烬</span>

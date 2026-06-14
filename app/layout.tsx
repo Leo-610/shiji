@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 export const dynamic = "force-dynamic";
 import { Orbitron, Noto_Sans_SC } from "next/font/google";
 import { auth } from "@/lib/auth";
+import { AppLogo } from "@/components/brand/AppLogo";
 import { Header } from "@/components/layout/Header";
 import { NewThreadFab } from "@/components/layout/NewThreadFab";
 import { GridBackground } from "@/components/cyber/GridBackground";
@@ -26,6 +27,16 @@ export const metadata: Metadata = {
   title: "量子余烬 — 读者讨论区",
   description:
     "《量子余烬》读者讨论论坛（作者时寂）：量子意识、灵魂数据化与伦理困境的硬科幻交流空间",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
+  openGraph: {
+    title: "量子余烬 — 读者讨论区",
+    description:
+      "《量子余烬》读者讨论论坛（作者时寂）：量子意识、灵魂数据化与伦理困境的硬科幻交流空间",
+    images: [{ url: "/logo.png", width: 512, height: 512, alt: "量子余烬" }],
+  },
 };
 
 export default async function RootLayout({
@@ -50,9 +61,12 @@ export default async function RootLayout({
             <NewThreadFab />
             <footer className="border-t border-theme-subtle py-8 mt-16">
               <div className="mx-auto max-w-6xl px-4 text-center text-sm text-theme-muted">
-                <p className="font-orbitron text-theme-accent opacity-60 text-xs tracking-widest mb-2">
-                  量子余烬 · 作者时寂
-                </p>
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <AppLogo size="xs" />
+                  <p className="font-orbitron text-theme-accent opacity-60 text-xs tracking-widest">
+                    量子余烬 · 作者时寂
+                  </p>
+                </div>
                 <p>科幻小说读者讨论论坛 · 与未来对话</p>
               </div>
             </footer>
