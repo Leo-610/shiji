@@ -38,8 +38,14 @@ export function Header({ user }: HeaderProps) {
             <span className="max-[360px]:hidden">量子余烬</span>
             <span className="hidden max-[360px]:inline">余烬</span>
           </span>
-          <span className="text-xs text-theme-accent-secondary hidden sm:inline opacity-80">
-            {"// 时寂"}
+          <span className="hidden sm:flex items-center gap-2 text-xs text-theme-muted shrink-0">
+            <span
+              className="h-3 w-px bg-theme-subtle opacity-60"
+              aria-hidden
+            />
+            <span className="tracking-wide text-theme-accent-secondary opacity-90">
+              时寂
+            </span>
           </span>
         </Link>
 
