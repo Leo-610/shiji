@@ -298,15 +298,11 @@ export function getWheelRuleDescriptions() {
     },
     {
       action: "幸运值",
-      note: "每次抽奖 +2 幸运值，提升稀有奖励与碎片概率，并累积终极大奖保底",
+      note: "每次抽奖 +2 幸运值，持续积攒好运",
     },
     {
       action: "传说碎片",
       note: `集满 ${LEGEND_SHARD_GOAL} 枚可兑换永久传说头像框`,
-    },
-    {
-      action: "终极大奖",
-      note: "传说头像框永久使用权，基础概率约 0.00001%，幸运值可微量提升",
     },
     {
       action: "体验装扮",
@@ -314,17 +310,3 @@ export function getWheelRuleDescriptions() {
     },
   ];
 }
-
-/** Approximate ultimate hit rate display for UI. */
-export function formatUltimateChance(luck: number): string {
-  const weights = getEffectiveWeights(luck);
-  const total = weights.reduce((s, w) => s + w, 0);
-  const ultimateIdx = WHEEL_PRIZES.findIndex((p) => p.tier === "ultimate");
-  if (ultimateIdx < 0 || total <= 0) return "—";
-  const pct = (weights[ultimateIdx] / total) * 100;
-  if (pct < 0.0001) return "<0.0001%";
-  if (pct < 0.01) return pct.toFixed(4) + "%";
-  return pct.toFixed(3) + "%";
-}
-
-export const WHEEL_WEIGHT_POOL_TOTAL = WEIGHT_POOL_TOTAL;

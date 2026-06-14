@@ -18,7 +18,6 @@ import { getShopItem } from "@/lib/shop-items";
 import { checkStatAchievements } from "@/lib/achievements";
 import {
   describeWheelPrize,
-  getLuckBonusSummary,
   LEGEND_SHARD_GOAL,
   LUCK_CAP,
   LUCK_PER_SPIN,
@@ -27,7 +26,6 @@ import {
   ULTIMATE_FRAME_SLUG,
   WHEEL_PRIZES,
   WHEEL_SPIN_POINT_COST,
-  formatUltimateChance,
   type WheelPrize,
 } from "@/lib/wheel";
 
@@ -51,8 +49,6 @@ export type WheelPageData = {
   shardGoal: number;
   spinPointCost: number;
   freeSpinAvailable: boolean;
-  luckSummary: ReturnType<typeof getLuckBonusSummary>;
-  ultimateChanceLabel: string;
   prizes: Array<{
     id: string;
     label: string;
@@ -137,8 +133,6 @@ export async function getWheelPageData(): Promise<WheelPageData | null> {
       shardGoal: LEGEND_SHARD_GOAL,
       spinPointCost: WHEEL_SPIN_POINT_COST,
       freeSpinAvailable: user.lastFreeWheelDate !== today,
-      luckSummary: getLuckBonusSummary(luck),
-      ultimateChanceLabel: formatUltimateChance(luck),
       prizes: WHEEL_PRIZES.map((p) => ({
         id: p.id,
         label: p.label,

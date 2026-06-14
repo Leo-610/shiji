@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Coins, Gift, Loader2, Sparkles, Ticket, Zap } from "lucide-react";
+import { Coins, Gift, Loader2, Sparkles, Ticket } from "lucide-react";
 import {
   spinWheel,
   type WheelPageData,
@@ -35,10 +35,6 @@ export function WheelLottery({ initialData }: WheelLotteryProps) {
   const [tickets, setTickets] = useState(initialData.wheelTickets);
   const [luck, setLuck] = useState(initialData.wheelLuck);
   const [shards, setShards] = useState(initialData.legendShards);
-  const [ultimateChance, setUltimateChance] = useState(
-    initialData.ultimateChanceLabel
-  );
-  const [luckSummary, setLuckSummary] = useState(initialData.luckSummary);
   const [payment, setPayment] = useState<WheelPaymentMethod>(
     initialData.freeSpinAvailable ? "free" : "points"
   );
@@ -56,8 +52,6 @@ export function WheelLottery({ initialData }: WheelLotteryProps) {
     setTickets(initialData.wheelTickets);
     setLuck(initialData.wheelLuck);
     setShards(initialData.legendShards);
-    setUltimateChance(initialData.ultimateChanceLabel);
-    setLuckSummary(initialData.luckSummary);
     setTrials(initialData.activeTrials);
     setFreeSpinAvailable(initialData.freeSpinAvailable);
     if (initialData.freeSpinAvailable) {
@@ -152,15 +146,10 @@ export function WheelLottery({ initialData }: WheelLotteryProps) {
       </div>
 
       <NeonCard glow="purple" className="p-4 space-y-3">
-        <div className="flex justify-between items-center gap-2 text-xs">
-          <span className="font-orbitron tracking-wide text-theme-heading">
-            传说碎片{" "}
-            <span className="text-theme-accent">{shards}</span>
-            <span className="text-theme-muted">/{initialData.shardGoal}</span>
-          </span>
-          <span className="text-theme-muted shrink-0">
-            终极大奖 <span className="text-amber-400/90">{ultimateChance}</span>
-          </span>
+        <div className="text-xs font-orbitron tracking-wide text-theme-heading">
+          传说碎片{" "}
+          <span className="text-theme-accent">{shards}</span>
+          <span className="text-theme-muted">/{initialData.shardGoal}</span>
         </div>
         <div className="wheel-shard-track">
           <div
@@ -168,10 +157,6 @@ export function WheelLottery({ initialData }: WheelLotteryProps) {
             style={{ width: `${shardPercent}%` }}
           />
         </div>
-        <p className="text-[11px] text-theme-muted leading-relaxed flex items-center gap-1.5">
-          <Zap className="size-3 text-theme-accent shrink-0" />
-          稀有 +{luckSummary.rareBoostPercent}% · 碎片 +{luckSummary.shardBoostPercent}% · 终奖保底 +{luckSummary.ultimatePityBonus}
-        </p>
       </NeonCard>
 
       <div className="flex justify-center gap-2 flex-wrap">
@@ -264,7 +249,7 @@ export function WheelLottery({ initialData }: WheelLotteryProps) {
       </div>
 
       <p className="text-center text-[11px] text-theme-muted px-2">
-        {WHEEL_SEGMENT_COUNT} 格量子奖池 · 暗色区块为低奖 · 金格为终极大奖
+        {WHEEL_SEGMENT_COUNT} 格量子奖池 · 金格为传说档奖励
       </p>
 
       <div className="flex justify-center">
