@@ -5,6 +5,7 @@ import { getWheelPageData } from "@/app/actions/wheel";
 import { WheelLottery } from "@/components/wheel/WheelLottery";
 import { NeonCard } from "@/components/cyber/NeonCard";
 import { GlitchText } from "@/components/cyber/GlitchText";
+import { formatShopValidityNote } from "@/lib/shop-duration";
 import { getWheelRuleDescriptions } from "@/lib/wheel";
 
 export default async function WheelPage() {
@@ -52,7 +53,7 @@ export default async function WheelPage() {
         </ul>
         <p className="text-xs text-theme-muted">
           <Link href="/shop" className="text-theme-accent hover:underline">
-            积分商店兑换永久装扮 →
+            积分商店兑换限时装扮（{formatShopValidityNote()}）→
           </Link>
         </p>
       </NeonCard>

@@ -1,4 +1,5 @@
 import { getShopItem } from "@/lib/shop-items";
+import { formatShopValidityNote } from "@/lib/shop-duration";
 
 export const WHEEL_SPIN_POINT_COST = 80;
 export const WHEEL_SEGMENT_COUNT = 12;
@@ -302,11 +303,15 @@ export function getWheelRuleDescriptions() {
     },
     {
       action: "传说碎片",
-      note: `集满 ${LEGEND_SHARD_GOAL} 枚可兑换永久传说头像框`,
+      note: `转盘集满 ${LEGEND_SHARD_GOAL} 枚可获得传说头像框永久使用权（转盘终奖，非商店）`,
+    },
+    {
+      action: "积分商店",
+      note: formatShopValidityNote(),
     },
     {
       action: "体验装扮",
-      note: "传说框体验 12 小时，到期自动卸下；已永久拥有则折算积分",
+      note: "转盘传说框体验 12 小时，到期自动卸下；已拥有同款则折算积分",
     },
   ];
 }
