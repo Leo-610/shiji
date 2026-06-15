@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 
 export const dynamic = "force-dynamic";
 import { Orbitron, Noto_Sans_SC } from "next/font/google";
-import { auth } from "@/lib/auth";
+import { getLayoutUser } from "@/lib/session-user";
 import { AppLogo } from "@/components/brand/AppLogo";
 import { Header } from "@/components/layout/Header";
 import { NewThreadFab } from "@/components/layout/NewThreadFab";
@@ -44,7 +44,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await auth();
+  const user = await getLayoutUser();
 
   return (
     <html
@@ -56,7 +56,7 @@ export default async function RootLayout({
         <ThemeProvider>
           <AppShell>
             <GridBackground />
-            <Header user={session?.user} />
+            <Header user={user} />
             <main className="mx-auto max-w-6xl px-4 py-8">{children}</main>
             <NewThreadFab />
             <footer className="border-t border-theme-subtle py-8 mt-16">
